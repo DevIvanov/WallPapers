@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="xxs">2dp</dimen>
+    <dimen name="xs">4dp</dimen>
+    <dimen name="s">8dp</dimen>
+    <dimen name="m">12dp</dimen>
+    <dimen name="l">16dp</dimen>
+    <dimen name="xl">20dp</dimen>
+    <dimen name="xxl">24dp</dimen>
+
+    <dimen name="image_size">70dp</dimen>
+    <dimen name="round_button_size">40dp</dimen>
+
+    <dimen name="text_xs">12sp</dimen>
+    <dimen name="text_s">14sp</dimen>
+    <dimen name="text_m">16sp</dimen>
+    <dimen name="text_l">18sp</dimen>
+    <dimen name="text_xl">24sp</dimen>
+    <dimen name="text_xxl">32sp</dimen>
+</resources>
