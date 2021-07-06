@@ -8,7 +8,6 @@ import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
 
-
 class SearchFragment : BaseFragment(R.layout.fragment_search) {
 
     private lateinit var binding: FragmentSearchBinding
@@ -21,5 +20,4 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
 
         return binding.root
     }
-
 }
