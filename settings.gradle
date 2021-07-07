@@ -1,0 +1,4 @@
+rootProject.name = "Ivanov_P3"
+include ':app'
+include ':data'
+include ':domain'

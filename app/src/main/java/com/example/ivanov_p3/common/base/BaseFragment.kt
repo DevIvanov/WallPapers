@@ -8,6 +8,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.example.ivanov_l22_t1.util.view.AlertDialogUtil
 import com.example.ivanov_l22_t1.util.view.toast
+import com.example.ivanov_p3.util.view.hideKeyboard
 
 abstract class BaseFragment (@LayoutRes layoutId: Int) : Fragment(layoutId) {
 
@@ -36,5 +37,9 @@ abstract class BaseFragment (@LayoutRes layoutId: Int) : Fragment(layoutId) {
             }
             backPressedTime = System.currentTimeMillis()
         }
+    }
+
+    fun hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
     }
 }

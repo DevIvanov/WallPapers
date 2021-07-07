@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Wallpapers</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_hint">San Francisco</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favourite</string>
+    <string name="history">History</string>
+</resources>

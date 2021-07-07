@@ -2,6 +2,7 @@ package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -33,6 +34,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
 
     private fun onClick() {
         binding.button.setOnClickListener {
+            hideKeyboard()
             val searchString = binding.editText.text.toString()
             toast(searchString)
 
@@ -51,16 +53,14 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
             Log.d(TAG, "Url = $urlString")
 
             // start AsyncTask
-            val searchTask = GoogleSearchAsyncTask()
+            val searchTask = GoogleSearchAsyncTask(requireContext())
             searchTask.execute(url)
-
-            setAdapter()   //searchTask.getArray()
         }
 
     }
 
-    private fun setAdapter() { //array: ArrayList<Bitmap?> ?= null
-        val adapter = GridViewAdapter(requireContext()) //, array
+    fun setAdapter(context: Context) {
+        val adapter = GridViewAdapter(context)
         val gridView = binding.gridView
         gridView.adapter = adapter
     }
