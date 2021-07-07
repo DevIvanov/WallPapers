@@ -1,12 +1,16 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.content.ContentValues.TAG
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Insets.add
 import android.os.AsyncTask
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -17,6 +21,9 @@ class GoogleSearchAsyncTask : AsyncTask<URL?, Int?, String?>() {
     var responseCode: Int = 0
     var responseMessage: String = ""
     var result: String = ""
+    var src: String = ""
+    var bitmap: Bitmap? = null
+    var bitmapArray: ArrayList<Bitmap?> ?= null
 
     override fun onPreExecute() {
         Log.d(TAG, "AsyncTask - onPreExecute")
@@ -49,15 +56,29 @@ class GoogleSearchAsyncTask : AsyncTask<URL?, Int?, String?>() {
                 val rd = BufferedReader(InputStreamReader(conn?.getInputStream()))
                 val sb = StringBuilder()
                 var line: String ?= null
+                var i = 0
 
                 while ((rd.readLine().also { line = it }) != null){
-                    sb.append(line+"\n")
+                    if (i<3) {
+                        if (line!!.contains("\"src\":")) {
+                            src = line.toString()
+                            src = src.replace("\"src\":", "")
+                                .replace("\"", "").replace(" ", "")
+                                .replace(",", "")
+                            bitmap = getBitmapFromURL(src)
+//                            bitmapArray?.add(bitmap)
+                            i++
+                            sb.append(src + "\n")
+                        }
+                    }
                 }
+
                 rd.close()
                 conn?.disconnect()
                 result = sb.toString()
                 Log.d(TAG, "result=$result")
                 result
+
             } else {
 
                 // response problem
@@ -87,8 +108,29 @@ class GoogleSearchAsyncTask : AsyncTask<URL?, Int?, String?>() {
         binding.progressBar.visibility = View.GONE
 
         // make TextView scrollable
-        binding.textView.movementMethod = ScrollingMovementMethod()
+//        binding.textView.movementMethod = ScrollingMovementMethod()
         // show result
-        binding.textView.text = result
+
+        binding.imageView.setImageBitmap(bitmap)
     }
+
+    private fun getBitmapFromURL(src: String?): Bitmap? {
+        return try {
+            val url = URL(src)
+            val connection = url
+                .openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val input: InputStream = connection.inputStream
+            BitmapFactory.decodeStream(input)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+//    fun getArray(): ArrayList<Bitmap?>? {
+//        return bitmapArray
+//    }
+
 }

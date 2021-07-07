@@ -2,6 +2,7 @@ package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
+import com.example.ivanov_p3.ui.adapter.GridViewAdapter
 import java.net.MalformedURLException
 import java.net.URL
 
@@ -51,7 +53,15 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
             // start AsyncTask
             val searchTask = GoogleSearchAsyncTask()
             searchTask.execute(url)
+
+            setAdapter()   //searchTask.getArray()
         }
 
+    }
+
+    private fun setAdapter() { //array: ArrayList<Bitmap?> ?= null
+        val adapter = GridViewAdapter(requireContext()) //, array
+        val gridView = binding.gridView
+        gridView.adapter = adapter
     }
 }
