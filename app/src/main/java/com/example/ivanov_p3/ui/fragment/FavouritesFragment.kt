@@ -18,8 +18,8 @@ class FavouritesFragment : BaseFragment(R.layout.fragment_favourites) {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFavouritesBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
+
+        backPressed()
         return binding.root
     }
-
 }
