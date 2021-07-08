@@ -11,6 +11,14 @@ class UseCase @Inject constructor(private val repository: Repository) {
         return repository.readAll()
     }
 
+    suspend fun insert (image: Images) {
+        repository.insert(image)
+    }
+
+    suspend fun delete(image: Images) {
+        repository.delete(image)
+    }
+
     suspend fun insertAll(images: List<Images>) {
         repository.insertAll(images)
     }

@@ -19,6 +19,14 @@ class ImagesRepository @Inject constructor(
         return imagesDao.readAllData().map { it.map(mapper::fromEntity) }
     }
 
+    override suspend fun delete(image: Images) {
+        return imagesDao.delete(mapper.toEntity(image))
+    }
+
+    override suspend fun insert(image: Images) {
+        return imagesDao.insert(mapper.toEntity(image))
+    }
+
     override suspend fun deleteAll() {
         imagesDao.deleteAll()
     }

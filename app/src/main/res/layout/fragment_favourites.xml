@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.FavouritesFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <GridView
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recycler_view_item_1" />
-
+        android:gravity="center"
+        android:numColumns="2"
+        android:layout_marginBottom="54dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

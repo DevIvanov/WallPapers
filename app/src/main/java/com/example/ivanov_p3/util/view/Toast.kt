@@ -1,4 +1,4 @@
-package com.example.ivanov_l22_t1.util.view
+package com.example.ivanov_p3.util.view
 
 import android.content.Context
 import android.widget.Toast

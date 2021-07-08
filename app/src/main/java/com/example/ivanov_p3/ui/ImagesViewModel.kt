@@ -1,6 +1,7 @@
 package com.example.ivanov_p3.ui
 
 import android.app.Application
+import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
@@ -12,7 +13,7 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
-class ImagesViewModel(application: Application) : AndroidViewModel(application) {
+class ImagesViewModel(application: Application): AndroidViewModel(application) { //(application: Application) : AndroidViewModel(application)
     @Inject
     lateinit var interactor: Interactor
     val readAllData: LiveData<List<Images>>
@@ -20,6 +21,18 @@ class ImagesViewModel(application: Application) : AndroidViewModel(application) 
     init {
         (application as WallpapersApp).getAppComponent().inject(this)
         readAllData = interactor.readAll().asLiveData()
+    }
+
+    fun addData(image: Images) {
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.insert(image)
+        }
+    }
+
+    fun deleteData(image: Images) {
+        viewModelScope.launch {
+            interactor.delete(image)
+        }
     }
 
     private fun addAllData(images: List<Images>) {

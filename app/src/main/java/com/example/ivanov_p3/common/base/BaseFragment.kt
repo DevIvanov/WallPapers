@@ -6,9 +6,9 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.example.ivanov_l22_t1.util.view.AlertDialogUtil
-import com.example.ivanov_l22_t1.util.view.toast
 import com.example.ivanov_p3.util.view.hideKeyboard
+import com.example.ivanov_p3.util.view.showAlertDialog
+import com.example.ivanov_p3.util.view.toast
 
 abstract class BaseFragment (@LayoutRes layoutId: Int) : Fragment(layoutId) {
 
@@ -16,8 +16,8 @@ abstract class BaseFragment (@LayoutRes layoutId: Int) : Fragment(layoutId) {
         requireContext().toast(message)
     }
 
-    fun showAlertDialog(title: String, message: String): AlertDialogUtil {
-        return AlertDialogUtil(title, message)
+    fun showAlertDialog(title: String, message: String){
+        requireContext().showAlertDialog(title, message)
     }
 
     fun navigate(direction: NavDirections) {

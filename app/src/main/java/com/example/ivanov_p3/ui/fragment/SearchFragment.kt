@@ -3,32 +3,41 @@ package com.example.ivanov_p3.ui.fragment
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
+import com.example.ivanov_p3.ui.GoogleSearchAsyncTask
+import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.GridViewAdapter
+import kotlinx.coroutines.DelicateCoroutinesApi
 import java.net.MalformedURLException
 import java.net.URL
 
 @SuppressLint("StaticFieldLeak")
     lateinit var binding: FragmentSearchBinding
 
-class SearchFragment : BaseFragment(R.layout.fragment_search) {
+@DelicateCoroutinesApi
+class SearchFragment: BaseFragment(R.layout.fragment_search) {
+
+    private lateinit var mImagesViewModel: ImagesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
+    ): View {
+        binding = FragmentSearchBinding.inflate(layoutInflater)
+        mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 
         backPressed()
         onClick()
+        setAdapter(requireContext())
+
         return binding.root
     }
 
@@ -48,12 +57,12 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
             try {
                 url = URL(urlString)
             } catch (e: MalformedURLException) {
-                Log.e(TAG, "ERROR converting String to URL " + e.toString())
+                Log.e(TAG, "ERROR converting String to URL $e")
             }
             Log.d(TAG, "Url = $urlString")
 
             // start AsyncTask
-            val searchTask = GoogleSearchAsyncTask(requireContext())
+            val searchTask = GoogleSearchAsyncTask(requireContext(), mImagesViewModel)
             searchTask.execute(url)
         }
 
@@ -64,4 +73,5 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
         val gridView = binding.gridView
         gridView.adapter = adapter
     }
+
 }

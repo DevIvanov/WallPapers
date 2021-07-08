@@ -8,5 +8,5 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
-    fun inject(staffViewModel: ImagesViewModel)
+    fun inject(imagesViewModel: ImagesViewModel)
 }

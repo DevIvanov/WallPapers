@@ -1,30 +1,28 @@
-package com.example.ivanov_p3.ui.fragment
+package com.example.ivanov_p3.ui
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Insets.add
 import android.os.AsyncTask
 import android.os.Build
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
+import androidx.lifecycle.ViewModelProvider
+import com.example.domain.model.Images
+import com.example.ivanov_p3.ui.fragment.SearchFragment
+import kotlinx.coroutines.DelicateCoroutinesApi
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-
-class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context: Context) : AsyncTask<URL?, Int?, String?>() { //(context: Context)
+@DelicateCoroutinesApi
+class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context: Context,
+                            private val mViewModel: ImagesViewModel) : AsyncTask<URL?, Int?, String?>() { //(context: Context)
 
     var responseCode: Int = 0
     var responseMessage: String = ""
@@ -34,13 +32,16 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
 
     companion object {
         var bitmapList: List<Bitmap?> = listOf()
+        var stringBitmapList: List<Images> = listOf()
     }
 
     override fun onPreExecute() {
         Log.d(TAG, "AsyncTask - onPreExecute")
-        // show mProgressBar
+        // clean lists
         bitmapList = listOf()
-        binding.progressBar.visibility = View.VISIBLE
+        stringBitmapList = listOf()
+        // show mProgressBar
+        com.example.ivanov_p3.ui.fragment.binding.progressBar.visibility = View.VISIBLE
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -79,11 +80,15 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
                                 .replace("\"", "").replace(" ", "")
                                 .replace(",", "")
                             bitmap = getBitmapFromURL(src)
-                            Log.d("LOG", "${bitmap}")
-//                            var string = encodePhoto(bitmap)
-//                            Log.d("LOG", "${string}")
+                            Log.d("LOG", "$bitmap")
+
+                            // add string list
+                            var string = encodePhoto(bitmap)
+                            stringBitmapList = stringBitmapList.plus(Images(0, string))
+
+                            // add bitmap list
                             bitmapList = bitmapList.plus(bitmap)
-                            Log.d("LOG", "${bitmapList}")
+                            Log.d("LOG", "$bitmapList")
                             i++
                             sb.append(src + "\n")
                         }
@@ -121,10 +126,15 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
     override fun onPostExecute(result: String?) {
         Log.d(TAG, "AsyncTask - onPostExecute, result=$result")
 
-        binding.progressBar.visibility = View.GONE
+        com.example.ivanov_p3.ui.fragment.binding.progressBar.visibility = View.GONE
 
+        //set adapter
         val searchFragment = SearchFragment()
         searchFragment.setAdapter(context)
+
+        // сохранять временные картинки в базу данных не нужно!
+//        //save in database (very slowly)
+//        mViewModel.insertData(stringBitmapList)
 
     }
 
@@ -150,6 +160,4 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
         val byteArray: ByteArray = bos.toByteArray()
         return Base64.getEncoder().encodeToString(byteArray)
     }
-
-
 }

@@ -10,6 +10,14 @@ class Interactor @Inject constructor(val useCase: UseCase) {
         return useCase.readAll()
     }
 
+    suspend fun insert(image: Images) {
+        useCase.insert(image)
+    }
+
+    suspend fun delete(image: Images) {
+        useCase.delete(image)
+    }
+
     suspend fun insertAll(images: List<Images>) {
         useCase.insertAll(images)
     }

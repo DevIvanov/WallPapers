@@ -7,26 +7,24 @@ import android.os.Build
 import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
-import com.example.data.database.ImagesEntity
-import com.example.ivanov_p3.R
-import com.example.ivanov_p3.ui.GoogleSearchAsyncTask
-import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
-import java.io.ByteArrayOutputStream
+import com.example.domain.model.Images
+import com.example.ivanov_p3.ui.fragment.FavouritesFragmentDirections
 
 
-class GridViewAdapter(private var mContext: Context): BaseAdapter() {
-
-    private var arrayBitmap = GoogleSearchAsyncTask.bitmapList
+class FavouriteGridViewAdapter(private var mContext: Context,
+private val arrayBitmap: List<Images>): BaseAdapter() {
 
     override fun getCount(): Int {
         return arrayBitmap.size
     }
 
     override fun getItem(position: Int): Any {
-        return arrayBitmap[position]!!
+        return arrayBitmap[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -38,19 +36,19 @@ class GridViewAdapter(private var mContext: Context): BaseAdapter() {
         val imageView: ImageView
         if (convertView == null) {
             imageView = ImageView(mContext)
-//            imageView.setLayoutParams(AbsListView.LayoutParams(100, 150))
             imageView.layoutParams = LinearLayout.LayoutParams(400, 600)
             imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             imageView.setPadding(8, 8, 8, 8)
         } else {
             imageView = convertView as ImageView
         }
-        imageView.setImageBitmap(arrayBitmap[position])
+        val imageString: String? = arrayBitmap[position].bitmap
+        val imageBitmap: Bitmap? = decodePhoto(imageString)
 
-        val imageBitmap = arrayBitmap[position]
-        val imageString: String = encodePhoto(imageBitmap).toString()
+        imageView.setImageBitmap(imageBitmap)
+
         imageView.setOnClickListener {
-            val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(imageString)
+            val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageString.toString())
             imageView.findNavController().navigate(action)
         }
         return imageView
@@ -63,13 +61,4 @@ class GridViewAdapter(private var mContext: Context): BaseAdapter() {
             decodedString.size
         )
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun encodePhoto(photo: Bitmap?): String? {
-        val bos = ByteArrayOutputStream()
-        photo?.compress(Bitmap.CompressFormat.PNG, 0, bos)
-        val byteArray: ByteArray = bos.toByteArray()
-        return java.util.Base64.getEncoder().encodeToString(byteArray)
-    }
-
 }
