@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentHistoryBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
-import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.HistoryRecyclerViewAdapter
 
 class HistoryFragment : BaseFragment(R.layout.fragment_history) {

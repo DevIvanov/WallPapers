@@ -17,13 +17,16 @@ import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
-import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.SearchGridViewAdapter
+import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import com.example.ivanov_p3.util.view.MySuggestionProvider
 import kotlinx.coroutines.DelicateCoroutinesApi
+import java.lang.StringBuilder
 import java.net.MalformedURLException
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
 
 @SuppressLint("StaticFieldLeak")
     lateinit var binding: FragmentSearchBinding
@@ -61,7 +64,8 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         binding.button.setOnClickListener {
             hideKeyboard()
             val searchString = binding.editText.text.toString()
-            val history = History(0, searchString, 13, "13 November", true)
+
+            val history = History(0, searchString, 13, getCurrentTime(), true)
             mHistoryViewModel.addData(history)
             toast(searchString)
 
@@ -84,6 +88,20 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             val searchTask = GoogleSearchAsyncTask(requireContext(), mImagesViewModel)
             searchTask.execute(url)
         }
+    }
+
+    private fun getCurrentTime(): String {
+        val monthName = arrayOf(
+            "January", "February", "March", "April", "May", "June", "July",
+            "August", "September", "October", "November",
+            "December"
+        )
+        val simpleDateFormat = SimpleDateFormat("dd.MM HH:mm")
+        val currentDateAndTime: String = simpleDateFormat.format(Date())
+        val month = monthName[SimpleDateFormat("MM").format(Date()).toInt() - 1]
+        val time: String= currentDateAndTime.replaceRange(2, 5, " $month")
+
+        return time
     }
 
     fun setAdapter(context: Context) {
