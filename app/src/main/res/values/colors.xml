@@ -13,4 +13,6 @@
     <color name="center_color">#B2D3EA</color>
     <color name="end_color">#E1E7F3</color>
     <color name="white_transparent">#B0FFFFFF</color>
+
+    <color name="blue_app">#00ABFA</color>
 </resources>

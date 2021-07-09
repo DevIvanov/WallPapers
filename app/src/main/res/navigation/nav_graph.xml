@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
-        android:name="com.example.ivanov_p3.ui.fragment.FavouritesFragment"
+        android:name="com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragment"
         android:label="fragment_favourites"
         tools:layout="@layout/fragment_favourites" >
         <action
@@ -40,6 +40,12 @@
         <action
             android:id="@+id/action_favouritesFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_favouritesFragment_to_favouriteQueryFragment"
+            app:destination="@id/favouriteQueryFragment" />
+        <action
+            android:id="@+id/action_favouritesFragment_to_favouriteImageFragment"
+            app:destination="@id/favouriteImageFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -66,5 +72,23 @@
         <argument
             android:name="currentImage"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteImageFragment"
+        android:name="com.example.ivanov_p3.ui.fragment.favourite.FavouriteImageFragment"
+        android:label="fragment_favourite_image"
+        tools:layout="@layout/fragment_favourite_image" >
+        <action
+            android:id="@+id/action_favouriteImageFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteQueryFragment"
+        android:name="com.example.ivanov_p3.ui.fragment.favourite.FavouriteQueryFragment"
+        android:label="fragment_favourite_query"
+        tools:layout="@layout/fragment_favourite_query" >
+        <action
+            android:id="@+id/action_favouriteQueryFragment_to_favouritesFragment"
+            app:destination="@id/favouritesFragment" />
     </fragment>
 </navigation>

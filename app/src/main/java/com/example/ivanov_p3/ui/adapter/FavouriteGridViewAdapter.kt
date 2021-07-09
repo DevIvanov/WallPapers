@@ -13,7 +13,7 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 import com.example.domain.model.Images
-import com.example.ivanov_p3.ui.fragment.FavouritesFragmentDirections
+import com.example.ivanov_p3.ui.fragment.favourite.FavouriteImageFragmentDirections
 
 
 class FavouriteGridViewAdapter(private var mContext: Context,
@@ -48,7 +48,7 @@ private val arrayBitmap: List<Images>): BaseAdapter() {
         imageView.setImageBitmap(imageBitmap)
 
         imageView.setOnClickListener {
-            val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageString.toString())
+            val action = FavouriteImageFragmentDirections.actionFavouriteImageFragmentToDetailsFragment(imageString.toString())
             imageView.findNavController().navigate(action)
         }
         return imageView
