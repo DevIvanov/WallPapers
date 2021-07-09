@@ -26,6 +26,9 @@
 <!--            <meta-data android:name="android.app.searchable"-->
 <!--                android:resource="@xml/searchable"/>-->
         </activity>
+        <provider
+            android:name=".util.view.MySuggestionProvider"
+            android:authorities="com.example.ivanov_p3.util.view.MySuggestionProvider" />
     </application>
 
 </manifest>

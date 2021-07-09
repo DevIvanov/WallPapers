@@ -1,9 +1,7 @@
 package com.example.ivanov_p3
 
 import android.app.Application
-import com.example.ivanov_p3.di.AppComponent
-import com.example.ivanov_p3.di.AppModule
-import com.example.ivanov_p3.di.DaggerAppComponent
+import com.example.ivanov_p3.di.*
 
 
 class WallpapersApp : Application() {

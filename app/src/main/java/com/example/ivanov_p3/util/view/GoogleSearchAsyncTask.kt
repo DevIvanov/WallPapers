@@ -1,4 +1,4 @@
-package com.example.ivanov_p3.ui
+package com.example.ivanov_p3.util.view
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
@@ -7,11 +7,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Build
+import android.text.method.HideReturnsTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModelProvider
+import com.example.domain.model.History
 import com.example.domain.model.Images
+import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.fragment.SearchFragment
 import kotlinx.coroutines.DelicateCoroutinesApi
 import java.io.*
@@ -22,7 +24,8 @@ import java.util.*
 
 @DelicateCoroutinesApi
 class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context: Context,
-                            private val mViewModel: ImagesViewModel) : AsyncTask<URL?, Int?, String?>() { //(context: Context)
+                            private val mViewModel: ImagesViewModel
+) : AsyncTask<URL?, Int?, String?>() { //(context: Context)
 
     var responseCode: Int = 0
     var responseMessage: String = ""
@@ -33,6 +36,7 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
     companion object {
         var bitmapList: List<Bitmap?> = listOf()
         var stringBitmapList: List<Images> = listOf()
+//        var historyItem: History ?= null
     }
 
     override fun onPreExecute() {

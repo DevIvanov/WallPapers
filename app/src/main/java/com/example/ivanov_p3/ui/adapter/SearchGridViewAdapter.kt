@@ -10,14 +10,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
-import com.example.data.database.ImagesEntity
-import com.example.ivanov_p3.R
-import com.example.ivanov_p3.ui.GoogleSearchAsyncTask
+import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
 import java.io.ByteArrayOutputStream
 
 
-class GridViewAdapter(private var mContext: Context): BaseAdapter() {
+class SearchGridViewAdapter(private var mContext: Context): BaseAdapter() {
 
     private var arrayBitmap = GoogleSearchAsyncTask.bitmapList
 

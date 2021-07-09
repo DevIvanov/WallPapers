@@ -2,7 +2,6 @@ package com.example.ivanov_p3.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentFavouritesBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.FavouriteGridViewAdapter
-import com.example.ivanov_p3.ui.adapter.GridViewAdapter
 
 class FavouritesFragment : BaseFragment(R.layout.fragment_favourites) {
 
