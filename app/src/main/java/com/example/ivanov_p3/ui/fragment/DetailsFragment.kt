@@ -36,7 +36,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 
-        val image = decodePhoto(args.currentImage)
+        val image = decodePhoto(args.currentImage.bitmap)
         binding.imageView.setImageBitmap(image)
         doubleTap()
         longClick()
@@ -69,8 +69,9 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
     }
 
     private fun addToFavourite() {
-        val image = Images(0, args.currentImage)
+        val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
         mImagesViewModel.addData(image)
+        toast(args.currentImage.link.toString())
     }
 
     private fun longClick() {

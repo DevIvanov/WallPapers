@@ -2,29 +2,31 @@ package com.example.ivanov_p3.ui.adapter
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Build
-import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
-import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
+import com.example.data.database.ImagesEntity
+import com.example.domain.model.Images
 import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
+import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import java.io.ByteArrayOutputStream
 
 
 class SearchGridViewAdapter(private var mContext: Context): BaseAdapter() {
 
-    private var arrayBitmap = GoogleSearchAsyncTask.bitmapList
+    private var bitmapList = GoogleSearchAsyncTask.bitmapList
 
     override fun getCount(): Int {
-        return arrayBitmap.size
+        return bitmapList.size
     }
 
     override fun getItem(position: Int): Any {
-        return arrayBitmap[position]!!
+        return bitmapList[position]!!
     }
 
     override fun getItemId(position: Int): Long {
@@ -43,23 +45,17 @@ class SearchGridViewAdapter(private var mContext: Context): BaseAdapter() {
         } else {
             imageView = convertView as ImageView
         }
-        imageView.setImageBitmap(arrayBitmap[position])
+        imageView.setImageBitmap(bitmapList[position])
 
-        val imageBitmap = arrayBitmap[position]
-        val imageString: String = encodePhoto(imageBitmap).toString()
+//        val imageBitmap = bitmapList[position]
+//        val imageString: String = encodePhoto(imageBitmap).toString()
+
         imageView.setOnClickListener {
-            val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(imageString)
+            val imageEntity = GoogleSearchAsyncTask.imagesEntityList[position]
+            val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(imageEntity as ImagesEntity)
             imageView.findNavController().navigate(action)
         }
         return imageView
-    }
-
-    private fun decodePhoto(encodedString: String?): Bitmap? {
-        val decodedString: ByteArray = Base64.decode(encodedString, Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(
-            decodedString, 0,
-            decodedString.size
-        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

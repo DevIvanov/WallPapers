@@ -12,8 +12,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
+import com.example.data.database.ImagesEntity
 import com.example.domain.model.Images
 import com.example.ivanov_p3.ui.fragment.favourite.FavouriteImageFragmentDirections
+import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 
 
 class FavouriteGridViewAdapter(private var mContext: Context,
@@ -48,7 +50,8 @@ private val arrayBitmap: List<Images>): BaseAdapter() {
         imageView.setImageBitmap(imageBitmap)
 
         imageView.setOnClickListener {
-            val action = FavouriteImageFragmentDirections.actionFavouriteImageFragmentToDetailsFragment(imageString.toString())
+            val imageEntity = GoogleSearchAsyncTask.imagesEntityList[position]
+            val action = FavouriteImageFragmentDirections.actionFavouriteImageFragmentToDetailsFragment(imageEntity as ImagesEntity)
             imageView.findNavController().navigate(action)
         }
         return imageView

@@ -34,8 +34,8 @@ class FavouritesFragment : BaseFragment(R.layout.fragment_favourites) {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
 //            tab.text = "TAB ${position + 1}"
             when (position) {
-                0 -> tab.setIcon(R.drawable.ic_bookmark)
-                1 -> tab.setIcon(R.drawable.ic_image)
+                0 -> tab.setIcon(R.drawable.ic_image)
+                1 -> tab.setIcon(R.drawable.ic_bookmark)
             }
         }.attach()
 

@@ -45,13 +45,13 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
         mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
 
-        val intent = Intent()
-        if (Intent.ACTION_SEARCH == intent.action) {
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                SearchRecentSuggestions(requireContext(), MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE)
-                    .saveRecentQuery(query, null)
-            }
-        }
+//        val intent = Intent()
+//        if (Intent.ACTION_SEARCH == intent.action) {
+//            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+//                SearchRecentSuggestions(requireContext(), MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE)
+//                    .saveRecentQuery(query, null)
+//            }
+//        }
 
         backPressed()
         onClick()
@@ -85,7 +85,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             Log.d(TAG, "Url = $urlString")
 
             // start AsyncTask
-            val searchTask = GoogleSearchAsyncTask(requireContext(), mImagesViewModel)
+            val searchTask = GoogleSearchAsyncTask(requireContext())
             searchTask.execute(url)
         }
     }

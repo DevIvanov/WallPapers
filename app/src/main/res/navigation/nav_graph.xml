@@ -69,9 +69,12 @@
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
 
+<!--        <argument-->
+<!--            android:name="currentImage"-->
+<!--            app:argType="string" com.example.domain.model.Images/>-->
         <argument
             android:name="currentImage"
-            app:argType="string" />
+            app:argType="com.example.data.database.ImagesEntity" />
     </fragment>
     <fragment
         android:id="@+id/favouriteImageFragment"

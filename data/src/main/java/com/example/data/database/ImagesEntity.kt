@@ -9,17 +9,19 @@ import androidx.room.PrimaryKey
 data class ImagesEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val bitmap: String?
+    val bitmap: String?,
+    val link: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
+        parcel.readString(),
         parcel.readString()
     )
-
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeString(bitmap)
+        parcel.writeString(link)
     }
 
     override fun describeContents(): Int {
