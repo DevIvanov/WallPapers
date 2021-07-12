@@ -36,6 +36,10 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
         val image = decodePhoto(args.currentImage.bitmap)
         binding.imageView.setImageBitmap(image)
+        binding.webView.visibility = View.INVISIBLE
+//        val link: String = args.currentImage.link.toString()
+//        binding.webView.loadUrl(link)
+
         doubleTap()
         longClick()
 

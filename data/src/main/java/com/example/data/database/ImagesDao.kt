@@ -9,7 +9,7 @@ interface ImagesDao {
     @Query("SELECT * FROM images_table ORDER BY id ASC")
     fun readAllData(): Flow<List<ImagesEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(item: ImagesEntity)
 
     @Delete

@@ -30,13 +30,13 @@ class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image) {
         return binding.root
     }
 
-    fun readData() {
+    private fun readData() {
         mImagesViewModel.readAllData.observe(viewLifecycleOwner, Observer { images ->
             setAdapter(requireContext(), images)
         })
     }
 
-    fun setAdapter(context: Context, images: List<Images>) {
+    private fun setAdapter(context: Context, images: List<Images>) {
         val adapter = FavouriteGridViewAdapter(context, images)
         val gridView = binding.gridView
         gridView.adapter = adapter
