@@ -34,7 +34,7 @@ class HistoryViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
-    private fun updateData(history: History) {
+    fun updateData(history: History) {
         viewModelScope.launch(Dispatchers.IO) {
             interactor.update(history)
         }

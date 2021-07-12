@@ -28,6 +28,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
 
         adapter = HistoryRecyclerViewAdapter(
+            mHistoryViewModel = mHistoryViewModel,
             context = requireContext()
         )
 

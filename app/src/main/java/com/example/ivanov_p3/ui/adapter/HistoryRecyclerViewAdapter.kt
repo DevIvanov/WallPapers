@@ -4,14 +4,20 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.History
+import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.RecyclerViewItemBinding
+import com.example.ivanov_p3.ui.HistoryViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class HistoryRecyclerViewAdapter(
     private var historyList: List<History> = listOf(),
-//    private val mContactsViewModel: ContactsViewModel,
+    private val mHistoryViewModel: HistoryViewModel,
     val context: Context
 ) : RecyclerView.Adapter<HistoryRecyclerViewAdapter.MyViewHolder>() {
 
@@ -46,29 +52,29 @@ class HistoryRecyclerViewAdapter(
             binding.nameTextView.text = currentItem.name
             binding.infoTextView.text = "${currentItem.count} results, ${currentItem.date}"
             if (currentItem.favourite) {
-                binding.imageView.visibility = View.VISIBLE
+                binding.imageView.setImageResource(R.drawable.ic_favorite_blue)
+            }else{
+                binding.imageView.setImageResource(R.drawable.ic_favorite)
             }
 
             itemView.setOnClickListener {
-//                    if (currentItem.body != ""){
-//                        val action = MailsFragmentDirections.actionMailsFragmentToMailBodyFragment(currentItem)
-//                        itemView.findNavController().navigate(action)
-//                    }else{
-//                        Toast.makeText(context, "This mail has not body!", Toast.LENGTH_SHORT).show()
-//                    }
+                Toast.makeText(context, "gewg", Toast.LENGTH_SHORT).show()
             }
 
-//                binding.imageDownload.setOnClickListener {
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        mMailsFragment.downloadAttachment(
-//                            service,
-//                            currentItem.messageId!!,
-//                            currentItem.attachmentId!!,
-//                            currentItem.filename!!
-//                        )
-//                    }
-//                }
+            binding.imageView.setOnClickListener {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val favourite = !currentItem.favourite
+                    val newItem = History(
+                        currentItem.id,
+                        currentItem.name,
+                        currentItem.count,
+                        currentItem.date,
+                        favourite
+                    )
+                    mHistoryViewModel.updateData(newItem)
+                }
             }
+        }
     }
 
     override fun getItemCount(): Int {
