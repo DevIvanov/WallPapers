@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.visibility = View.INVISIBLE
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.splashFragment) {
+            if (destination.id == R.id.splashFragment || destination.id == R.id.detailsFragment) {
                 binding.bottomNavigation.visibility = View.INVISIBLE
             } else {
                 binding.bottomNavigation.visibility = View.VISIBLE

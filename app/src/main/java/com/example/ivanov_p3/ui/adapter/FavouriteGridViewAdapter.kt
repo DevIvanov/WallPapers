@@ -13,20 +13,20 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 import com.example.data.database.ImagesEntity
+import com.example.data.mapper.ImagesModelMapperImpl
 import com.example.domain.model.Images
-import com.example.ivanov_p3.ui.fragment.favourite.FavouriteImageFragmentDirections
-import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
+import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
 
 
 class FavouriteGridViewAdapter(private var mContext: Context,
-private val arrayBitmap: List<Images>): BaseAdapter() {
+private val imagesList: List<Images>): BaseAdapter() {
 
     override fun getCount(): Int {
-        return arrayBitmap.size
+        return imagesList.size
     }
 
     override fun getItem(position: Int): Any {
-        return arrayBitmap[position]
+        return imagesList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -44,14 +44,15 @@ private val arrayBitmap: List<Images>): BaseAdapter() {
         } else {
             imageView = convertView as ImageView
         }
-        val imageString: String? = arrayBitmap[position].bitmap
+        val imageString: String? = imagesList[position].bitmap
         val imageBitmap: Bitmap? = decodePhoto(imageString)
 
         imageView.setImageBitmap(imageBitmap)
 
         imageView.setOnClickListener {
-            val imageEntity = GoogleSearchAsyncTask.imagesEntityList[position]
-            val action = FavouriteImageFragmentDirections.actionFavouriteImageFragmentToDetailsFragment(imageEntity as ImagesEntity)
+            val mapper = ImagesModelMapperImpl()
+            val imageEntity: ImagesEntity = mapper.toEntity(imagesList[position])
+            val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageEntity)
             imageView.findNavController().navigate(action)
         }
         return imageView

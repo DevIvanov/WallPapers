@@ -20,9 +20,6 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_searchFragment_to_favouritesFragment"
-            app:destination="@id/favouritesFragment" />
-        <action
             android:id="@+id/action_searchFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
         <action
@@ -38,14 +35,14 @@
             android:id="@+id/action_favouritesFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <action
-            android:id="@+id/action_favouritesFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
-        <action
             android:id="@+id/action_favouritesFragment_to_favouriteQueryFragment"
             app:destination="@id/favouriteQueryFragment" />
         <action
             android:id="@+id/action_favouritesFragment_to_favouriteImageFragment"
             app:destination="@id/favouriteImageFragment" />
+        <action
+            android:id="@+id/action_favouritesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -55,9 +52,6 @@
         <action
             android:id="@+id/action_historyFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_historyFragment_to_favouritesFragment"
-            app:destination="@id/favouritesFragment" />
         <action
             android:id="@+id/action_historyFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
@@ -69,12 +63,15 @@
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
 
-<!--        <argument-->
-<!--            android:name="currentImage"-->
-<!--            app:argType="string" com.example.domain.model.Images/>-->
         <argument
             android:name="currentImage"
             app:argType="com.example.data.database.ImagesEntity" />
+        <action
+            android:id="@+id/action_detailsFragment_to_favouritesFragment"
+            app:destination="@id/favouritesFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/favouriteImageFragment"
@@ -89,9 +86,5 @@
         android:id="@+id/favouriteQueryFragment"
         android:name="com.example.ivanov_p3.ui.fragment.favourite.FavouriteQueryFragment"
         android:label="fragment_favourite_query"
-        tools:layout="@layout/fragment_favourite_query" >
-        <action
-            android:id="@+id/action_favouriteQueryFragment_to_favouritesFragment"
-            app:destination="@id/favouritesFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_favourite_query" />
 </navigation>

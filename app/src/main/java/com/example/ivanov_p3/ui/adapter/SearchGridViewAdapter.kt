@@ -38,7 +38,6 @@ class SearchGridViewAdapter(private var mContext: Context): BaseAdapter() {
         val imageView: ImageView
         if (convertView == null) {
             imageView = ImageView(mContext)
-//            imageView.setLayoutParams(AbsListView.LayoutParams(100, 150))
             imageView.layoutParams = LinearLayout.LayoutParams(400, 600)
             imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             imageView.setPadding(8, 8, 8, 8)
