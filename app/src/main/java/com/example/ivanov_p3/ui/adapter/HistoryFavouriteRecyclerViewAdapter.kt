@@ -1,18 +1,18 @@
 package com.example.ivanov_p3.ui.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.persistableBundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.database.ImagesEntity
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
-import com.example.ivanov_p3.Temp
 import com.example.ivanov_p3.databinding.RecyclerViewItemBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
+import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
+import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +48,10 @@ class HistoryFavouriteRecyclerViewAdapter(
 
 
                 itemView.setOnClickListener {
-                    Toast.makeText(context, "gewg", Toast.LENGTH_SHORT).show()
+                    val currentQuery = currentItem.name.toString()
+                    val action = FavouritesFragmentDirections.actionFavouritesFragmentToSearchFragment()
+                    action.currentQuery = currentQuery
+                    itemView.findNavController().navigate(action)
                 }
 
                 binding.imageView.setOnClickListener {

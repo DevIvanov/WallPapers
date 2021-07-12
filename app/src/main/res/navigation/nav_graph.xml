@@ -19,6 +19,12 @@
         android:name="com.example.ivanov_p3.ui.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
+        <argument
+            android:name="currentQuery"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue=""/>
+
         <action
             android:id="@+id/action_searchFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
@@ -52,9 +58,6 @@
         <action
             android:id="@+id/action_historyFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_historyFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
@@ -86,5 +89,9 @@
         android:id="@+id/favouriteQueryFragment"
         android:name="com.example.ivanov_p3.ui.fragment.favourite.FavouriteQueryFragment"
         android:label="fragment_favourite_query"
-        tools:layout="@layout/fragment_favourite_query" />
+        tools:layout="@layout/fragment_favourite_query" >
+        <action
+            android:id="@+id/action_favouriteQueryFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
 </navigation>

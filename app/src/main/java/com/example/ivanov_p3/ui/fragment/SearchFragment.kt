@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
@@ -36,6 +37,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
 
     private lateinit var mImagesViewModel: ImagesViewModel
     private lateinit var mHistoryViewModel: HistoryViewModel
+    private val args by navArgs<SearchFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +55,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
 //            }
 //        }
 
+        setText()
         backPressed()
         onClick()
         setAdapter(requireContext())
@@ -60,12 +63,17 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         return binding.root
     }
 
+    private fun setText(){
+        if(args.currentQuery != null)
+            binding.editText.setText(args.currentQuery)
+    }
+
     private fun onClick() {
         binding.button.setOnClickListener {
             hideKeyboard()
             val searchString = binding.editText.text.toString()
 
-            val history = History(0, searchString, 13, getCurrentTime(), true)
+            val history = History(0, searchString, 13, getCurrentTime(), false)
             mHistoryViewModel.addData(history)
             toast(searchString)
 
