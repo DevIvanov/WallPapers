@@ -48,8 +48,8 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query) {
         mHistoryViewModel.readAllData.observe(viewLifecycleOwner, Observer { history ->
             val favouriteList = history.filter { it.favourite }
             adapter.setData(favouriteList)
-            binding.recyclerView.scheduleLayoutAnimation()
         })
+        binding.recyclerView.scheduleLayoutAnimation()
         Log.d("Database", "Adapter set")
     }
 

@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "images_table", indices = [Index(value = ["link"], unique = true)])
 data class ImagesEntity (

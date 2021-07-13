@@ -44,7 +44,7 @@ class HistoryFavouriteRecyclerViewAdapter(
             if (currentItem.favourite) {
                 binding.nameTextView.text = currentItem.name
                 binding.infoTextView.text = "${currentItem.count} results, ${currentItem.date}"
-                binding.imageView.setImageResource(R.drawable.ic_favorite_blue)
+                binding.imageView.setImageResource(R.drawable.ic_delete)
 
 
                 itemView.setOnClickListener {

@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_detailsFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_fullScreenFragment"
+            app:destination="@id/fullScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/favouriteImageFragment"
@@ -93,5 +96,14 @@
         <action
             android:id="@+id/action_favouriteQueryFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullScreenFragment"
+        android:name="com.example.ivanov_p3.ui.fragment.FullScreenFragment"
+        android:label="fragment_full_screen"
+        tools:layout="@layout/fragment_full_screen">
+        <argument
+            android:name="currentImage"
+            app:argType="com.example.data.database.ImagesEntity" />
     </fragment>
 </navigation>

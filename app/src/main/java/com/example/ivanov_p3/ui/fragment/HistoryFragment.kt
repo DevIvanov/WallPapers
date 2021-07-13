@@ -47,8 +47,8 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     private fun readDataFromDatabase() {
         mHistoryViewModel.readAllData.observe(viewLifecycleOwner, Observer { history ->
             adapter.setData(history)
-            binding.recyclerView.scheduleLayoutAnimation()
         })
+        binding.recyclerView.scheduleLayoutAnimation()
         Log.d("Database", "Adapter set")
     }
 

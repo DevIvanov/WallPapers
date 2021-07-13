@@ -10,15 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.data.database.ImagesEntity
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
+import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import es.dmoral.toasty.Toasty
 
 class DetailsFragment : BaseFragment(R.layout.fragment_details) {
@@ -36,16 +40,15 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
         val image = decodePhoto(args.currentImage.bitmap)
         binding.imageView.setImageBitmap(image)
-        binding.webView.visibility = View.INVISIBLE
+//        binding.webView.visibility = View.INVISIBLE
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
 
         doubleTap()
-        longClick()
+        onClick()
 
         return binding.root
     }
-
 
     private fun decodePhoto(encodedString: String?): Bitmap? {
         val decodedString: ByteArray = android.util.Base64.decode(encodedString, android.util.Base64.DEFAULT)
@@ -62,8 +65,6 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
             if (pressedTime + 1000 > System.currentTimeMillis()) {
                 addToFavourite()
-                val icon: Drawable = this.resources.getDrawable(R.drawable.ic_favorite)
-                Toasty.normal(requireContext(), "Add to favourite!", icon).show()
 //            }else{
 //                showAlertDialog("Select action", "delete or not")
             }
@@ -74,15 +75,28 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
     private fun addToFavourite() {
         val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
         mImagesViewModel.addData(image)
-        toast(args.currentImage.link.toString())
+        val icon: Drawable = this.resources.getDrawable(R.drawable.ic_favorite)
+        Toasty.normal(requireContext(), "Add to favourite!", icon).show()
     }
 
-    private fun longClick() {
-        binding.imageView.setOnLongClickListener {
-//            VibrationEffect.EFFECT_HEAVY_CLICK
-//            Vibrator.VIBRATION_EFFECT_SUPPORT_YES
-            showAlertDialog("Select action", "delete or not")
-            true
+    private fun onClick() {
+        binding.floatingActionButton.setOnClickListener {
+//            binding.floatingActionButton.visibility = View.INVISIBLE
+//            binding.toolbar.visibility = View.INVISIBLE
+//            binding.settingLayout.visibility = View.INVISIBLE
+//            binding.imageView.layoutParams = ConstraintLayout.LayoutParams(
+//                ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT
+//            )
+            val imageEntity = args.currentImage
+            val action = DetailsFragmentDirections.actionDetailsFragmentToFullScreenFragment(imageEntity)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun addFavourite() {
+        binding.imageView.setOnClickListener {
+            val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
+            mImagesViewModel.addData(image)
         }
     }
 }
