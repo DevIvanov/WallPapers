@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
@@ -27,8 +28,14 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
         val image = decodePhoto(args.currentImage.bitmap)
         binding.imageView.setImageBitmap(image)
 
-
+        onClick()
         return binding.root
+    }
+
+    private fun onClick() {
+        binding.floatingActionButton.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     private fun decodePhoto(encodedString: String?): Bitmap? {

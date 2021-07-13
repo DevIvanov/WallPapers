@@ -6,4 +6,7 @@
     <string name="search">Search</string>
     <string name="favorite">Favourite</string>
     <string name="history">History</string>
+    <string name="set_wallpaper">Установить как обои рабочего стола</string>
+    <string name="set_splash_screen">Установить на заставку экрана блокировки</string>
+    <string name="save_to_favourite">Сохранить в избранное</string>
 </resources>

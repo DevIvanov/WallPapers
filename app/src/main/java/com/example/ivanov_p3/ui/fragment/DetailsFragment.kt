@@ -4,13 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -20,6 +25,7 @@ import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
+import com.example.ivanov_p3.util.view.MyDialogFragment
 import es.dmoral.toasty.Toasty
 import java.io.File
 import java.io.FileOutputStream
@@ -89,6 +95,49 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         binding.shareView.setOnClickListener {
             shareImage()
         }
+
+
+        val popupMenu2 = PopupMenu(requireContext(), binding.textView)
+        popupMenu2.inflate(R.menu.popup_menu)
+        popupMenu2.gravity = Gravity.CENTER_HORIZONTAL
+        popupMenu2.setOnMenuItemClickListener {
+            when (it.itemId) {
+//                R.id.red -> {
+//                    textView.background = ColorDrawable(Color.RED)
+//                    textView.text = "Вы выбрали красный цвет"
+//                }
+//                R.id.yellow -> {
+//                    textView.background = ColorDrawable(Color.YELLOW)
+//                    textView.text = "Вы выбрали жёлтый цвет"
+//                }
+//                R.id.green -> {
+//                    textView.background = ColorDrawable(Color.GREEN)
+//                    textView.text = "Вы выбрали зелёный цвет"
+//                }
+            }
+            false
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            popupMenu2.setForceShowIcon(true)
+        }
+
+        binding.settingView.setOnClickListener {
+            popupMenu2.show()
+        }
+        binding.infoView.setOnClickListener {
+
+            val itemsToSelect = arrayOf(
+                getString(R.string.set_wallpaper),
+                getString(R.string.set_splash_screen),
+                getString(R.string.save_to_favourite)
+            )
+            val myDialogFragment = MyDialogFragment(itemsToSelect)
+            val manager = requireActivity().supportFragmentManager
+            myDialogFragment.show(manager, "myDialog")
+
+        }
+
     }
 
     private fun shareImage() {
