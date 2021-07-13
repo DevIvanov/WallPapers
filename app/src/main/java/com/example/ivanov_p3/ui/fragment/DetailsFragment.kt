@@ -1,35 +1,36 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentManager
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.data.database.ImagesEntity
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
-import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import es.dmoral.toasty.Toasty
+import java.io.File
+import java.io.FileOutputStream
+
 
 class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
     private lateinit var binding: FragmentDetailsBinding
     private val args by navArgs<DetailsFragmentArgs>()
     private lateinit var mImagesViewModel: ImagesViewModel
+    private lateinit var imageBitmap: Bitmap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +39,8 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 
-        val image = decodePhoto(args.currentImage.bitmap)
-        binding.imageView.setImageBitmap(image)
+        imageBitmap = decodePhoto(args.currentImage.bitmap)!!
+        binding.imageView.setImageBitmap(imageBitmap)
 //        binding.webView.visibility = View.INVISIBLE
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
@@ -81,22 +82,37 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
     private fun onClick() {
         binding.floatingActionButton.setOnClickListener {
-//            binding.floatingActionButton.visibility = View.INVISIBLE
-//            binding.toolbar.visibility = View.INVISIBLE
-//            binding.settingLayout.visibility = View.INVISIBLE
-//            binding.imageView.layoutParams = ConstraintLayout.LayoutParams(
-//                ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT
-//            )
             val imageEntity = args.currentImage
             val action = DetailsFragmentDirections.actionDetailsFragmentToFullScreenFragment(imageEntity)
             findNavController().navigate(action)
         }
+        binding.shareView.setOnClickListener {
+            shareImage()
+        }
     }
 
-    private fun addFavourite() {
-        binding.imageView.setOnClickListener {
-            val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
-            mImagesViewModel.addData(image)
+    private fun shareImage() {
+        try {
+            val file = File(requireActivity().externalCacheDir,"image.png")
+            val fOut = FileOutputStream(file)
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
+            fOut.flush()
+            fOut.close()
+            file.setReadable(true, false)
+            val imageUri = FileProvider.getUriForFile(
+                requireActivity(),
+                "com.example.ivanov_p3.ui.fragment.DetailsFragment.provider",
+                file
+            )
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.putExtra(Intent.EXTRA_STREAM, imageUri)
+            intent.type = "image/png"
+            startActivity(Intent.createChooser(intent, "Share image via"))
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("LOG", e.message.toString())
         }
     }
 }

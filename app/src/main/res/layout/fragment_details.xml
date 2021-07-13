@@ -76,6 +76,7 @@
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:layout_marginBottom="36dp"
+        android:clickable="false"
         android:background="@drawable/background_setting_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +85,7 @@
         app:layout_constraintWidth_percent="0.9">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/shareView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
