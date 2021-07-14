@@ -20,6 +20,7 @@ import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.SearchGridViewAdapter
 import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import com.example.ivanov_p3.util.view.PreferenceHelper
+import com.example.ivanov_p3.util.view.PreferenceHelper.columns
 import com.example.ivanov_p3.util.view.PreferenceHelper.query
 import kotlinx.coroutines.DelicateCoroutinesApi
 import java.net.MalformedURLException
@@ -71,7 +72,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
     }
 
     private fun onClick() {
-        binding.button.setOnClickListener {
+        binding.searchImage.setOnClickListener {
             hideKeyboard()
             val searchString = binding.editText.text.toString()
 
@@ -99,6 +100,18 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
 
             val searchTask = GoogleSearchAsyncTask(requireContext(), searchString)
             searchTask.execute(url)
+        }
+        binding.columnsImage.setOnClickListener {
+            if (prefs.columns) {
+                prefs.columns = false
+                binding.columnsImage.setImageResource(R.drawable.two_columns)
+                binding.gridView.numColumns = 2
+            }else{
+                prefs.columns = true
+                binding.columnsImage.setImageResource(R.drawable.three_columns)
+                binding.gridView.numColumns = 3
+
+            }
         }
     }
 
