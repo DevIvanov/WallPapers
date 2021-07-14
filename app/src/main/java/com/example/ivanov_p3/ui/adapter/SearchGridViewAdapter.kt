@@ -1,7 +1,6 @@
 package com.example.ivanov_p3.ui.adapter
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
@@ -10,23 +9,22 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
+import coil.load
 import com.example.data.database.ImagesEntity
-import com.example.domain.model.Images
 import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
 import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
-import java.io.ByteArrayOutputStream
 
 
 class SearchGridViewAdapter(private var mContext: Context, var query: String): BaseAdapter() {
 
-    private var bitmapList = GoogleSearchAsyncTask.bitmapList
+    private var imagesEntityList = GoogleSearchAsyncTask.imagesEntityList
 
     override fun getCount(): Int {
-        return bitmapList.size
+        return imagesEntityList.size
     }
 
     override fun getItem(position: Int): Any {
-        return bitmapList[position]!!
+        return imagesEntityList[position]!!
     }
 
     override fun getItemId(position: Int): Long {
@@ -44,26 +42,15 @@ class SearchGridViewAdapter(private var mContext: Context, var query: String): B
         } else {
             imageView = convertView as ImageView
         }
-        imageView.setImageBitmap(bitmapList[position])
 
-//        val imageBitmap = bitmapList[position]
-//        val imageString: String = encodePhoto(imageBitmap).toString()
+        imageView.load(imagesEntityList[position]?.link)
 
         imageView.setOnClickListener {
-            val imageEntity = GoogleSearchAsyncTask.imagesEntityList[position]
+            val imageEntity = imagesEntityList[position]
             val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(imageEntity as ImagesEntity)
             action.query = query
             imageView.findNavController().navigate(action)
         }
         return imageView
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun encodePhoto(photo: Bitmap?): String? {
-        val bos = ByteArrayOutputStream()
-        photo?.compress(Bitmap.CompressFormat.PNG, 0, bos)
-        val byteArray: ByteArray = bos.toByteArray()
-        return java.util.Base64.getEncoder().encodeToString(byteArray)
-    }
-
 }

@@ -3,21 +3,19 @@ package com.example.ivanov_p3.util.view
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Build
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.example.data.database.ImagesEntity
-import com.example.domain.model.Images
 import com.example.ivanov_p3.ui.fragment.SearchFragment
 import kotlinx.coroutines.DelicateCoroutinesApi
-import java.io.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.*
 
 
 @DelicateCoroutinesApi
@@ -29,20 +27,15 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
     var responseMessage: String = ""
     var result: String = ""
     var src: String = ""
-    var bitmap: Bitmap? = null
 
     companion object {
-        var bitmapList: List<Bitmap?> = listOf()
-        var imagesList: List<Images?> = listOf()
         var imagesEntityList: List<ImagesEntity?> = listOf()
 
     }
 
     override fun onPreExecute() {
         Log.d(TAG, "AsyncTask - onPreExecute")
-        // clean lists
-        bitmapList = listOf()
-        imagesList = listOf()
+        // clean list
         imagesEntityList = listOf()
         // show mProgressBar
         com.example.ivanov_p3.ui.fragment.binding.progressBar.visibility = View.VISIBLE
@@ -83,19 +76,9 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
                             src = src.replace("\"src\":", "")
                                 .replace("\"", "").replace(" ", "")
                                 .replace(",", "")
-                            bitmap = getBitmapFromURL(src)
-                            Log.d("LOG", "$bitmap")
 
-                            // add images list
-                            var stringBitmap = encodePhoto(bitmap)
-                            imagesList = imagesList.plus(Images(0, stringBitmap, src))
-
-                            // add bitmap list
-                            bitmapList = bitmapList.plus(bitmap)
-                            Log.d("LOG", "$bitmapList")
-
-                            // add bitmap list
-                            imagesEntityList = imagesEntityList.plus(ImagesEntity(0, stringBitmap, src))
+                            // add in list
+                            imagesEntityList = imagesEntityList.plus(ImagesEntity(0, "", src))  //stringBitmap
 
                             i++
                             sb.append(src + "\n")
@@ -140,28 +123,5 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
         val searchFragment = SearchFragment()
         searchFragment.setAdapter(context, query)
 
-    }
-
-    private fun getBitmapFromURL(src: String?): Bitmap? {
-        return try {
-            val url = URL(src)
-            val connection = url
-                .openConnection() as HttpURLConnection
-            connection.doInput = true
-            connection.connect()
-            val input: InputStream = connection.inputStream
-            BitmapFactory.decodeStream(input)
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun encodePhoto(photo: Bitmap?): String? {
-        val bos = ByteArrayOutputStream()
-        photo?.compress(Bitmap.CompressFormat.PNG, 0, bos)
-        val byteArray: ByteArray = bos.toByteArray()
-        return Base64.getEncoder().encodeToString(byteArray)
     }
 }

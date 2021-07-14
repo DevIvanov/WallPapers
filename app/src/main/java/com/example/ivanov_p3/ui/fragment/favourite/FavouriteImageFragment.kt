@@ -41,5 +41,4 @@ class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image) {
         val gridView = binding.gridView
         gridView.adapter = adapter
     }
-
 }

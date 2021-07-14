@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -20,15 +22,21 @@ import android.widget.PopupWindow
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.ImageLoader
+import coil.load
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
 
@@ -49,12 +57,24 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 
-        imageBitmap = decodePhoto(args.currentImage.bitmap)!!
-        binding.imageView.setImageBitmap(imageBitmap)
+        binding.imageView.load(args.currentImage.link)
+
+        MainScope().launch{
+            val loader = ImageLoader(requireContext())
+            val request = ImageRequest.Builder(requireContext())
+                .data(args.currentImage.link)
+                .allowHardware(false) // Disable hardware bitmaps.
+                .build()
+
+            val result = (loader.execute(request) as SuccessResult).drawable
+            imageBitmap = (result as BitmapDrawable).bitmap
+        }
+
 //        if (args.currentImage)
 //        binding.webView.visibility = View.INVISIBLE
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
+
         setText()
         onClick()
 
@@ -63,15 +83,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
     private fun setText(){
         if(args.query != null)
-            binding.textViewToolbar.setText(args.query)
-    }
-
-    private fun decodePhoto(encodedString: String?): Bitmap? {
-        val decodedString: ByteArray = android.util.Base64.decode(encodedString, android.util.Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(
-            decodedString, 0,
-            decodedString.size
-        )
+            binding.textViewToolbar.text = args.query
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -93,7 +105,6 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         binding.infoView.setOnClickListener {
 
         }
-
     }
 
 

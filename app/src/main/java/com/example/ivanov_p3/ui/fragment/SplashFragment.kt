@@ -1,11 +1,9 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
@@ -31,15 +29,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
         activityScope.launch {
             delay(SPLASH_TIME_OUT)
-
-//            if(prefs.state)
-                findNavController().navigate(R.id.action_splashFragment_to_searchFragment)
-//            else {
-//                val extras = FragmentNavigatorExtras(
-//                    binding.imageViewAppSplash to "imageTransition"
-//                )
-//                findNavController().navigate(R.id.action_splashFragment_to_authorisationFragment, null, null, extras)
-//            }
+            findNavController().navigate(R.id.action_splashFragment_to_searchFragment)
         }
 
         return binding.root

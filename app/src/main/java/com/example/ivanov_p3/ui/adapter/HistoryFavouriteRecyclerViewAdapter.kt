@@ -3,15 +3,12 @@ package com.example.ivanov_p3.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.database.ImagesEntity
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.RecyclerViewItemBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
-import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
 import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
