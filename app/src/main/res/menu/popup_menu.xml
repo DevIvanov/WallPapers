@@ -6,7 +6,7 @@
         android:iconTintMode="src_in"
         android:title="@string/set_wallpaper" />
     <item
-        android:id="@+id/splash_screen"
+        android:id="@+id/splashScreen"
         android:icon="@drawable/ic_image"
         android:iconTintMode="src_in"
         android:title="@string/set_splash_screen" />

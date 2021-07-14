@@ -13,6 +13,7 @@
     <color name="center_color">#B2D3EA</color>
     <color name="end_color">#E1E7F3</color>
     <color name="white_transparent">#B0FFFFFF</color>
+    <color name="transparent">#1A000000</color>
 
     <color name="blue_app">#0387C5</color>
     <color name="blueLight_app">#00ABFA</color>

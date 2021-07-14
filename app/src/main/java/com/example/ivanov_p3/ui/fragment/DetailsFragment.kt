@@ -1,15 +1,12 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog.show
 import android.app.WallpaperManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.net.wifi.hotspot2.pps.HomeSp
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,8 +14,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.PopupMenu
-
+import android.widget.PopupWindow
+import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -28,7 +29,6 @@ import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
-import com.example.ivanov_p3.util.view.MyDialogFragment
 import es.dmoral.toasty.Toasty
 import java.io.File
 import java.io.FileOutputStream
@@ -40,7 +40,9 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
     private val args by navArgs<DetailsFragmentArgs>()
     private lateinit var mImagesViewModel: ImagesViewModel
     private lateinit var imageBitmap: Bitmap
+    private var popupWindow: PopupWindow? = null
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,6 +69,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun onClick() {
         binding.floatingActionButton.setOnClickListener {
             val imageEntity = args.currentImage
@@ -77,8 +80,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
             shareImage()
         }
 
-
-        val popupMenu2 =
+            val popupMenu2 =
             PopupMenu(requireContext(), binding.textView)
         popupMenu2.inflate(R.menu.popup_menu)
         popupMenu2.gravity = Gravity.CENTER_HORIZONTAL
@@ -87,7 +89,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
                 R.id.wallpaper -> {
                     setWallpaper()
                 }
-                R.id.splash_screen -> {
+                R.id.splashScreen -> {
                     setSplashScreen()
                 }
                 R.id.favourite -> {
@@ -96,27 +98,58 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
             }
             false
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            popupMenu2.setForceShowIcon(true)
-        }
+        popupMenu2.setForceShowIcon(true)
 
         binding.settingView.setOnClickListener {
-            popupMenu2.show()
+            popupMenu()
         }
         binding.infoView.setOnClickListener {
-
-            val itemsToSelect = arrayOf(
-                getString(R.string.set_wallpaper),
-                getString(R.string.set_splash_screen),
-                getString(R.string.save_to_favourite)
-            )
-            val myDialogFragment = MyDialogFragment(itemsToSelect)
-            val manager = requireActivity().supportFragmentManager
-            myDialogFragment.show(manager, "myDialog")
-
+            popupMenu2.show()
         }
 
+    }
+
+
+    private fun popupMenu() {
+        val inflater: LayoutInflater =
+            binding.root.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.popup_window, null)
+        val popupWidth = LinearLayout.LayoutParams.MATCH_PARENT
+        val popupHeight = LinearLayout.LayoutParams.WRAP_CONTENT
+        val focusable = true
+
+        popupWindow = PopupWindow(popupView, popupWidth, popupHeight)
+        popupWindow!!.update(
+            0,
+            0,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            focusable
+        )
+        popupWindow!!.showAtLocation(view, Gravity.BOTTOM, 0, 0)
+
+        val buttonExit: Button = popupView.findViewById(R.id.buttonExit)
+        buttonExit.setOnClickListener{
+            popupWindow!!.dismiss()
+        }
+
+        val wallpaper: LinearLayoutCompat = popupView.findViewById(R.id.wallpaper)
+        wallpaper.setOnClickListener {
+            setWallpaper()
+            popupWindow!!.dismiss()
+        }
+
+        val splashScreen: LinearLayoutCompat = popupView.findViewById(R.id.splashScreen)
+        splashScreen.setOnClickListener {
+            setSplashScreen()
+            popupWindow!!.dismiss()
+        }
+
+        val favourite: LinearLayoutCompat = popupView.findViewById(R.id.favourite)
+        favourite.setOnClickListener {
+            addToFavourite()
+            popupWindow!!.dismiss()
+        }
     }
 
     private fun shareImage() {
@@ -146,8 +179,6 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
     private fun setWallpaper() {
         val wallpaperManager = WallpaperManager.getInstance(requireActivity())
-//        wallpaperManager.setBitmap(imageBitmap)
-//        toast("Wallpaper set!")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             wallpaperManager.setBitmap(
                 imageBitmap,
@@ -176,11 +207,18 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun addToFavourite() {
         val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
         mImagesViewModel.addData(image)
         val icon: Drawable = this.resources.getDrawable(R.drawable.ic_favorite)
         Toasty.normal(requireContext(), "Add to favourite!", icon)//.setGravity(Gravity.CENTER, 0, 0)
         .show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (popupWindow != null)
+            popupWindow!!.dismiss()
     }
 }
