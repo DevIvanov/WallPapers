@@ -17,7 +17,7 @@ import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 import java.io.ByteArrayOutputStream
 
 
-class SearchGridViewAdapter(private var mContext: Context): BaseAdapter() {
+class SearchGridViewAdapter(private var mContext: Context, var query: String): BaseAdapter() {
 
     private var bitmapList = GoogleSearchAsyncTask.bitmapList
 
@@ -52,6 +52,7 @@ class SearchGridViewAdapter(private var mContext: Context): BaseAdapter() {
         imageView.setOnClickListener {
             val imageEntity = GoogleSearchAsyncTask.imagesEntityList[position]
             val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(imageEntity as ImagesEntity)
+            action.query = query
             imageView.findNavController().navigate(action)
         }
         return imageView

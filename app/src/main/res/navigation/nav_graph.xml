@@ -67,6 +67,11 @@
         tools:layout="@layout/fragment_details" >
 
         <argument
+            android:name="query"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue=""/>
+        <argument
             android:name="currentImage"
             app:argType="com.example.data.database.ImagesEntity" />
         <action

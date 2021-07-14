@@ -16,7 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.PopupMenu
 import android.widget.PopupWindow
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -52,13 +51,19 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
         imageBitmap = decodePhoto(args.currentImage.bitmap)!!
         binding.imageView.setImageBitmap(imageBitmap)
+//        if (args.currentImage)
 //        binding.webView.visibility = View.INVISIBLE
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
-
+        setText()
         onClick()
 
         return binding.root
+    }
+
+    private fun setText(){
+        if(args.query != null)
+            binding.textViewToolbar.setText(args.query)
     }
 
     private fun decodePhoto(encodedString: String?): Bitmap? {
@@ -71,6 +76,9 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun onClick() {
+        binding.backView.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         binding.floatingActionButton.setOnClickListener {
             val imageEntity = args.currentImage
             val action = DetailsFragmentDirections.actionDetailsFragmentToFullScreenFragment(imageEntity)
@@ -79,38 +87,17 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         binding.shareView.setOnClickListener {
             shareImage()
         }
-
-            val popupMenu2 =
-            PopupMenu(requireContext(), binding.textView)
-        popupMenu2.inflate(R.menu.popup_menu)
-        popupMenu2.gravity = Gravity.CENTER_HORIZONTAL
-        popupMenu2.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.wallpaper -> {
-                    setWallpaper()
-                }
-                R.id.splashScreen -> {
-                    setSplashScreen()
-                }
-                R.id.favourite -> {
-                    addToFavourite()
-                }
-            }
-            false
-        }
-        popupMenu2.setForceShowIcon(true)
-
         binding.settingView.setOnClickListener {
-            popupMenu()
+            popupWidowSettings()
         }
         binding.infoView.setOnClickListener {
-            popupMenu2.show()
+
         }
 
     }
 
 
-    private fun popupMenu() {
+    private fun popupWidowSettings() {
         val inflater: LayoutInflater =
             binding.root.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView = inflater.inflate(R.layout.popup_window, null)

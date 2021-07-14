@@ -21,7 +21,8 @@ import java.util.*
 
 
 @DelicateCoroutinesApi
-class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context: Context
+class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context: Context,
+                            private val query: String
 ) : AsyncTask<URL?, Int?, String?>() {
 
     var responseCode: Int = 0
@@ -137,7 +138,7 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
 
         //set adapter
         val searchFragment = SearchFragment()
-        searchFragment.setAdapter(context)
+        searchFragment.setAdapter(context, query)
 
     }
 

@@ -1,12 +1,10 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
-import android.app.SearchManager
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.SearchRecentSuggestions
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +19,9 @@ import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.SearchGridViewAdapter
 import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
-import com.example.ivanov_p3.util.view.MySuggestionProvider
+import com.example.ivanov_p3.util.view.PreferenceHelper
+import com.example.ivanov_p3.util.view.PreferenceHelper.query
 import kotlinx.coroutines.DelicateCoroutinesApi
-import java.lang.StringBuilder
 import java.net.MalformedURLException
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -38,6 +36,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
     private lateinit var mImagesViewModel: ImagesViewModel
     private lateinit var mHistoryViewModel: HistoryViewModel
     private val args by navArgs<SearchFragmentArgs>()
+    private lateinit var prefs: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +45,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         binding = FragmentSearchBinding.inflate(layoutInflater)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
         mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
+        prefs = PreferenceHelper.customPreference(requireContext(), PreferenceHelper.CUSTOM_PREF_NAME)
 
 //        val intent = Intent()
 //        if (Intent.ACTION_SEARCH == intent.action) {
@@ -58,7 +58,9 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         setText()
         backPressed()
         onClick()
-        setAdapter(requireContext())
+
+        val query = prefs.query.toString()
+        setAdapter(requireContext(), query)
 
         return binding.root
     }
@@ -93,7 +95,9 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             Log.d(TAG, "Url = $urlString")
 
             // start AsyncTask
-            val searchTask = GoogleSearchAsyncTask(requireContext())
+            prefs.query = searchString
+
+            val searchTask = GoogleSearchAsyncTask(requireContext(), searchString)
             searchTask.execute(url)
         }
     }
@@ -112,10 +116,10 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         return time
     }
 
-    fun setAdapter(context: Context) {
-        val adapter = SearchGridViewAdapter(context)
+    fun setAdapter(context: Context, query: String) {
+        val adapter =
+            SearchGridViewAdapter(context, query)
         val gridView = binding.gridView
         gridView.adapter = adapter
     }
-
 }
