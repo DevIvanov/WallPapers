@@ -1,12 +1,15 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog.show
+import android.app.WallpaperManager
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.net.wifi.hotspot2.pps.HomeSp
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -51,7 +54,6 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
 
-        doubleTap()
         onClick()
 
         return binding.root
@@ -65,27 +67,6 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         )
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun doubleTap() {
-        var pressedTime: Long = 0
-        binding.imageView.setOnClickListener {
-
-            if (pressedTime + 1000 > System.currentTimeMillis()) {
-                addToFavourite()
-//            }else{
-//                showAlertDialog("Select action", "delete or not")
-            }
-            pressedTime = System.currentTimeMillis()
-        }
-    }
-
-    private fun addToFavourite() {
-        val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
-        mImagesViewModel.addData(image)
-        val icon: Drawable = this.resources.getDrawable(R.drawable.ic_favorite)
-        Toasty.normal(requireContext(), "Add to favourite!", icon).show()
-    }
-
     private fun onClick() {
         binding.floatingActionButton.setOnClickListener {
             val imageEntity = args.currentImage
@@ -97,23 +78,21 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
         }
 
 
-        val popupMenu2 = PopupMenu(requireContext(), binding.textView)
+        val popupMenu2 =
+            PopupMenu(requireContext(), binding.textView)
         popupMenu2.inflate(R.menu.popup_menu)
         popupMenu2.gravity = Gravity.CENTER_HORIZONTAL
         popupMenu2.setOnMenuItemClickListener {
             when (it.itemId) {
-//                R.id.red -> {
-//                    textView.background = ColorDrawable(Color.RED)
-//                    textView.text = "Вы выбрали красный цвет"
-//                }
-//                R.id.yellow -> {
-//                    textView.background = ColorDrawable(Color.YELLOW)
-//                    textView.text = "Вы выбрали жёлтый цвет"
-//                }
-//                R.id.green -> {
-//                    textView.background = ColorDrawable(Color.GREEN)
-//                    textView.text = "Вы выбрали зелёный цвет"
-//                }
+                R.id.wallpaper -> {
+                    setWallpaper()
+                }
+                R.id.splash_screen -> {
+                    setSplashScreen()
+                }
+                R.id.favourite -> {
+                    addToFavourite()
+                }
             }
             false
         }
@@ -163,5 +142,45 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
             e.printStackTrace()
             Log.e("LOG", e.message.toString())
         }
+    }
+
+    private fun setWallpaper() {
+        val wallpaperManager = WallpaperManager.getInstance(requireActivity())
+//        wallpaperManager.setBitmap(imageBitmap)
+//        toast("Wallpaper set!")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            wallpaperManager.setBitmap(
+                imageBitmap,
+                null,
+                true,
+                WallpaperManager.FLAG_SYSTEM
+            )
+            toast("Wallpaper set!")
+        } else {
+            toast("Unsupported version!")
+        }
+    }
+
+    private fun setSplashScreen() {
+        val wallpaperManager = WallpaperManager.getInstance(requireActivity())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            wallpaperManager.setBitmap(
+                imageBitmap,
+                null,
+                true,
+                WallpaperManager.FLAG_LOCK
+            )
+            toast("Splash screen set!")
+        } else {
+            toast("Unsupported version!")
+        }
+    }
+
+    private fun addToFavourite() {
+        val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
+        mImagesViewModel.addData(image)
+        val icon: Drawable = this.resources.getDrawable(R.drawable.ic_favorite)
+        Toasty.normal(requireContext(), "Add to favourite!", icon)//.setGravity(Gravity.CENTER, 0, 0)
+        .show()
     }
 }

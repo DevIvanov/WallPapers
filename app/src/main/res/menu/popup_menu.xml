@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/red"
+        android:id="@+id/wallpaper"
         android:icon="@drawable/ic_image"
         android:iconTintMode="src_in"
         android:title="@string/set_wallpaper" />
     <item
-        android:id="@+id/yellow"
+        android:id="@+id/splash_screen"
         android:icon="@drawable/ic_image"
         android:iconTintMode="src_in"
         android:title="@string/set_splash_screen" />
     <item
-        android:id="@+id/green"
+        android:id="@+id/favourite"
         android:icon="@drawable/ic_favorite"
         android:iconTintMode="src_in"
         android:title="@string/save_to_favourite" />
