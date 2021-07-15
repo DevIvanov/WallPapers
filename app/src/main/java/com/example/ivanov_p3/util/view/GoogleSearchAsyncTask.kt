@@ -7,6 +7,7 @@ import android.os.AsyncTask
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import com.example.data.database.ImagesEntity
 import com.example.ivanov_p3.ui.fragment.SearchFragment
@@ -20,7 +21,7 @@ import java.net.URL
 
 @DelicateCoroutinesApi
 class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context: Context,
-                            private val query: String
+                            private val query: String, private val widthHeight: Int
 ) : AsyncTask<URL?, Int?, String?>() {
 
     var responseCode: Int = 0
@@ -121,7 +122,7 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
 
         //set adapter
         val searchFragment = SearchFragment()
-        searchFragment.setAdapter(context, query)
+        searchFragment.setAdapter(context, query, widthHeight)
 
     }
 }

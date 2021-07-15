@@ -17,7 +17,7 @@ import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
 import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
 
 
-class SearchGridViewAdapter(private var mContext: Context, var query: String): BaseAdapter() {
+class SearchGridViewAdapter(private var mContext: Context, var query: String, val widthHeight: Int): BaseAdapter() {
 
     private var imagesEntityList = GoogleSearchAsyncTask.imagesEntityList
 
@@ -38,7 +38,7 @@ class SearchGridViewAdapter(private var mContext: Context, var query: String): B
         val imageView: ImageView
         if (convertView == null) {
             imageView = ImageView(mContext)
-            imageView.layoutParams = LinearLayout.LayoutParams(540, 540)
+            imageView.layoutParams = LinearLayout.LayoutParams(widthHeight, widthHeight)
             imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             imageView.setPadding(8, 8, 8, 8)
         } else {
@@ -51,7 +51,6 @@ class SearchGridViewAdapter(private var mContext: Context, var query: String): B
             placeholder(R.drawable.ic_image)
             transformations(RoundedCornersTransformation(10f))
         }
-
 
         imageView.setOnClickListener {
             val imageEntity = imagesEntityList[position]

@@ -26,7 +26,7 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
         val window = requireActivity().window
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN)
+                or SYSTEM_UI_FLAG_FULLSCREEN)
 
 
         onClick()

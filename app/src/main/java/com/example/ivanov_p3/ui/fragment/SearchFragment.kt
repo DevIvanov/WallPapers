@@ -65,9 +65,18 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         onClick()
 
         val query = prefs.query.toString()
-        setAdapter(requireContext(), query)
+
+        setAdapter(requireContext(), query, setWidthHeight())
 
         return binding.root
+    }
+
+    private fun setWidthHeight(): Int {
+        return if (prefs.columns) {
+            540
+        } else {
+            360
+        }
     }
 
     private fun setText(){
@@ -87,6 +96,8 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             searchImages()
         }
         binding.columnsImage.setOnClickListener {
+            val query = prefs.query.toString()
+            setAdapter(requireContext(), query, setWidthHeight())
             if (prefs.columns) {
                 prefs.columns = false
                 binding.columnsImage.setImageResource(R.drawable.two_columns)
@@ -109,7 +120,6 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             mHistoryViewModel.addData(history)
             toast(searchString)
 
-
             val searchStringNoSpaces = searchString.replace(" ", "+")
             val key = "AIzaSyCmp7XwRBMvUmPXxUtNzEr22BvaZb4sQJw"
             val searchId = "faaf876d27c79cad7" // 6c72a82ea0ce194af
@@ -128,7 +138,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             prefs.query = searchString
 
             // start AsyncTask
-            val searchTask = GoogleSearchAsyncTask(requireContext(), searchString)
+            val searchTask = GoogleSearchAsyncTask(requireContext(), searchString, setWidthHeight())
             searchTask.execute(url)
         }
     }
@@ -148,9 +158,9 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         return time
     }
 
-    fun setAdapter(context: Context, query: String) {
+    fun setAdapter(context: Context, query: String, widthHeight: Int) {
         val adapter =
-            SearchGridViewAdapter(context, query)
+            SearchGridViewAdapter(context, query, widthHeight)
         val gridView = binding.gridView
         gridView.adapter = adapter
     }
