@@ -76,7 +76,7 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
                 while ((rd.readLine().also { line = it }) != null){
                     if (line!!.contains("\"src\":")) {
                         if(line!!.contains(",")) {
-                            if(!line!!.contains("https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT7fQCk_5ECyPMApCb-Ck41JIWZbx4P4QvTddt54CVDG69RAwjPKriibDw")){
+                            if (!line!!.contains("https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT7fQCk_5ECyPMApCb-Ck41JIWZbx4P4QvTddt54CVDG69RAwjPKriibDw")) {
                                 src = line.toString()
                                 src = src.replace("\"src\":", "")
                                     .replace("\"", "").replace(" ", "")
@@ -84,28 +84,29 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
 
                                 sb.append(src + "\n")
                                 countImages++
+//                            }
+//                        }
+//                    }
+//                    if (line!!.contains("\"width\"")){
+//                        width = line.toString()
+//                        width = width.replace("\"width\":", "")
+//                            .replace("\"", "").replace(" ", "")
+//                            .replace(",", "")
+//                    }
+//                    if (line!!.contains("\"height\"")){
+//                        height = line.toString()
+//                        height = height.replace("\"height\":", "")
+//                            .replace("\"", "").replace(" ", "")
+//                            .replace(",", "")
 
-//                                imagesEntityList = imagesEntityList.plus(
-//                                    ImagesEntity(0, src, currentTime, "", "",
-//                                        "000000", "wallpaperscraft.ru"))
+                                imagesEntityList = imagesEntityList.plus(
+                                    ImagesEntity(
+                                        0, src, currentTime, width, height,
+                                        0, "wallpaperscraft.ru"
+                                    )
+                                )
                             }
                         }
-                    }
-                    if (line!!.contains("\"width\"")){
-                        width = line.toString()
-                        width = width.replace("\"width\":", "")
-                            .replace("\"", "").replace(" ", "")
-                            .replace(",", "")
-                    }
-                    if (line!!.contains("\"height\"")){
-                        height = line.toString()
-                        height = height.replace("\"height\":", "")
-                            .replace("\"", "").replace(" ", "")
-                            .replace(",", "")
-
-                        imagesEntityList = imagesEntityList.plus(
-                            ImagesEntity(0, src, currentTime, width, height,
-                                0, "wallpaperscraft.ru"))
                     }
                 }
 
