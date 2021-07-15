@@ -14,9 +14,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.PopupWindow
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.FileProvider
@@ -39,6 +37,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.String
+import kotlin.properties.Delegates
 
 
 class DetailsFragment : BaseFragment(layout.fragment_details) {
@@ -48,6 +48,8 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
     private lateinit var mImagesViewModel: ImagesViewModel
     private lateinit var imageBitmap: Bitmap
     private var popupWindow: PopupWindow? = null
+    private var popupWindowInfo: PopupWindow? = null
+    private var hex by Delegates.notNull<Int>()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -68,13 +70,16 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
 
             val result = (loader.execute(request) as SuccessResult).drawable
             imageBitmap = (result as BitmapDrawable).bitmap
+            hex = Palette.from(imageBitmap).generate().dominantSwatch?.rgb!!
         }
+
 
 //        if (args.currentImage)
 //        binding.webView.visibility = View.INVISIBLE
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
 
+//        onBackPressed()
         setText()
         onClick()
 
@@ -103,7 +108,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             popupWidowSettings()
         }
         binding.infoView.setOnClickListener {
-
+            popupWidowInfo()
         }
     }
 
@@ -149,6 +154,56 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             popupWindow!!.dismiss()
         }
     }
+
+    private fun popupWidowInfo() {
+        val inflater: LayoutInflater =
+            binding.root.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(layout.popup_window_info, null)
+        val popupWidth = LinearLayout.LayoutParams.MATCH_PARENT
+        val popupHeight = LinearLayout.LayoutParams.WRAP_CONTENT
+        val focusable = true
+
+        popupWindowInfo = PopupWindow(popupView, popupWidth, popupHeight)
+        popupWindowInfo!!.update(
+            0,
+            0,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            focusable
+        )
+
+        val textSearchLink: TextView = popupView.findViewById(R.id.textSearchLink)
+        textSearchLink.text = args.currentImage.searchLink
+
+        val textDate: TextView = popupView.findViewById(R.id.textDate)
+        textDate.text = args.currentImage.date
+
+        val hexColor = String.format("#%06X", 0xFFFFFF and hex)
+        val textColor: TextView = popupView.findViewById(R.id.textColor)
+        textColor.text = hexColor
+
+        val width = args.currentImage.width
+        val height = args.currentImage.height
+        val textDimens: TextView = popupView.findViewById(R.id.textDimens)
+        textDimens.text = "Px: $width x $height"
+
+        popupWindowInfo!!.showAtLocation(view, Gravity.BOTTOM, 0, 0)
+
+        val buttonExit: Button = popupView.findViewById(R.id.exitButton)
+        buttonExit.setOnClickListener{
+            popupWindowInfo!!.dismiss()
+        }
+    }
+
+//    private fun onBackPressed () {
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+//            when {
+//                popupWindow != null -> popupWindow!!.dismiss()
+//                popupWindowInfo != null -> popupWindowInfo!!.dismiss()
+//                else -> requireActivity().onBackPressed()
+//            }
+//        }
+//    }
 
     private fun shareImage() {
         try {
@@ -207,8 +262,6 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun addToFavourite() {
-        val hex: Int = Palette.from(imageBitmap).generate().dominantSwatch?.rgb!!
-
         val image = Images(0, args.currentImage.link, args.currentImage.date,
             args.currentImage.width, args.currentImage.height,
             hex, args.currentImage.searchLink)
@@ -218,9 +271,11 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         .show()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroyView() {
+        super.onDestroyView()
         if (popupWindow != null)
             popupWindow!!.dismiss()
+        if (popupWindowInfo != null)
+            popupWindowInfo!!.dismiss()
     }
 }
