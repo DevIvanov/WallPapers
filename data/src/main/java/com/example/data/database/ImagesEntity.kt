@@ -11,19 +11,31 @@ import org.jetbrains.annotations.NotNull
 data class ImagesEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val bitmap: String?,
-    val link: String?
+    val link: String?,
+    val date: String?,
+    val width: String?,
+    val height: String?,
+    val color: String?,
+    val searchLink: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
-        parcel.writeString(bitmap)
         parcel.writeString(link)
+        parcel.writeString(date)
+        parcel.writeString(width)
+        parcel.writeString(height)
+        parcel.writeString(color)
+        parcel.writeString(searchLink)
     }
 
     override fun describeContents(): Int {

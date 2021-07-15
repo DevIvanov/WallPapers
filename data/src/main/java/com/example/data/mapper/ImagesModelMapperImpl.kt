@@ -6,13 +6,13 @@ import com.example.domain.model.Images
 
 class ImagesModelMapperImpl : ImagesModelMapper<ImagesEntity, Images> {
     override fun fromEntity(from: ImagesEntity): Images {
-        val images = Images(from.id, from.bitmap, from.link)
+        val images = Images(from.id, from.link, from.date, from.width, from.height, from.color, from.searchLink)
         return images
     }
 
     override fun toEntity(from: Images): ImagesEntity {
         val imagesEntity =
-            ImagesEntity(from.id, from.bitmap, from.link)
+            ImagesEntity(from.id, from.link, from.date, from.width, from.height, from.color, from.searchLink)
         return imagesEntity
     }
 }

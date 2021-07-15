@@ -42,6 +42,8 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
     private lateinit var mHistoryViewModel: HistoryViewModel
     private val args by navArgs<SearchFragmentArgs>()
     private lateinit var prefs: SharedPreferences
+    private var searchString: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,17 +126,19 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
     }
 
     private fun searchImages() {
-        val searchString = binding.editText.text.toString()
+        searchString = binding.editText.text.toString()
         if (searchString == ""){
             toast("Enter the text!")
         }else{
-            val history = History(0, searchString, 13, getCurrentTime(), false)
-            mHistoryViewModel.addData(history)
-            toast(searchString)
+            toast(searchString!!)
 
-            val searchStringNoSpaces = searchString.replace(" ", "+")
+            val searchStringNoSpaces = searchString!!.replace(" ", "+")
             val key = "AIzaSyCmp7XwRBMvUmPXxUtNzEr22BvaZb4sQJw"
-            val searchId = "faaf876d27c79cad7" // 6c72a82ea0ce194af
+            val searchId = "faaf876d27c79cad7"
+                //"4b22f5803700d286b" //unsplash
+            //"ee7c443fb184e13a0"  //pexels
+            //"faaf876d27c79cad7" // wallpapercraft
+            //"bece5ab0e8134b463" //google
 
             val urlString =
                 "https://www.googleapis.com/customsearch/v1?q=$searchStringNoSpaces&key=$key&cx=$searchId&alt=json"
@@ -150,7 +154,8 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             prefs.query = searchString
 
             // start AsyncTask
-            val searchTask = GoogleSearchAsyncTask(requireContext(), searchString, setWidthHeight())
+            val searchTask = GoogleSearchAsyncTask(requireContext(), searchString!!,
+                setWidthHeight(), getCurrentTime(), mHistoryViewModel)
             searchTask.execute(url)
         }
     }

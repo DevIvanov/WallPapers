@@ -207,7 +207,9 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun addToFavourite() {
-        val image = Images(0, args.currentImage.bitmap, args.currentImage.link)
+        val image = Images(0, args.currentImage.link, args.currentImage.date,
+            args.currentImage.width, args.currentImage.height, args.currentImage.color,
+            args.currentImage.searchLink)
         mImagesViewModel.addData(image)
         val icon: Drawable = this.resources.getDrawable(R.drawable.ic_favorite)
         Toasty.normal(requireContext(), "Add to favourite!", icon)//.setGravity(Gravity.CENTER, 0, 0)
