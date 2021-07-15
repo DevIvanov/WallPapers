@@ -64,8 +64,13 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         backPressed()
         onClick()
 
-        val query = prefs.query.toString()
+        if (prefs.columns) {
+            setTwoColumns()
+        }else {
+            setThreeColumns()
+        }
 
+        val query = prefs.query.toString()
         setAdapter(requireContext(), query, setWidthHeight())
 
         return binding.root
@@ -97,18 +102,25 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         }
         binding.columnsImage.setOnClickListener {
             val query = prefs.query.toString()
-            setAdapter(requireContext(), query, setWidthHeight())
             if (prefs.columns) {
+                setThreeColumns()
                 prefs.columns = false
-                binding.columnsImage.setImageResource(R.drawable.two_columns)
-                binding.gridView.numColumns = 2
             }else{
+                setTwoColumns()
                 prefs.columns = true
-                binding.columnsImage.setImageResource(R.drawable.three_columns)
-                binding.gridView.numColumns = 3
-
             }
+            setAdapter(requireContext(), query, setWidthHeight())
         }
+    }
+
+    private fun setTwoColumns() {
+        binding.columnsImage.setImageResource(R.drawable.two_columns)
+        binding.gridView.numColumns = 2
+    }
+
+    private fun setThreeColumns() {
+        binding.columnsImage.setImageResource(R.drawable.three_columns)
+        binding.gridView.numColumns = 3
     }
 
     private fun searchImages() {
