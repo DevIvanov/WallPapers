@@ -1,9 +1,8 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.ivanov_p3.R
@@ -24,6 +23,12 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
 
         binding.imageView.load(args.currentImage.link)
 
+        val window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN)
+
+
         onClick()
         return binding.root
     }
@@ -32,5 +37,12 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
         binding.floatingActionButton.setOnClickListener {
             requireActivity().onBackPressed()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val window = requireActivity().window
+        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        window.decorView.systemUiVisibility = DEFAULT_BUFFER_SIZE
     }
 }

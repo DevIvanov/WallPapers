@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.navigation.fragment.findNavController
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
@@ -26,6 +27,10 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
     ): View? {
         binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
 
+        val window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN)
 
         activityScope.launch {
             delay(SPLASH_TIME_OUT)
@@ -33,5 +38,12 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val window = requireActivity().window
+        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        window.decorView.systemUiVisibility = DEFAULT_BUFFER_SIZE
     }
 }
