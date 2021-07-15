@@ -15,7 +15,7 @@ data class ImagesEntity (
     val date: String?,
     val width: String?,
     val height: String?,
-    val color: String?,
+    val color: Int,
     val searchLink: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -24,7 +24,7 @@ data class ImagesEntity (
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString(),
+        parcel.readInt(),
         parcel.readString()
     )
 
@@ -34,7 +34,7 @@ data class ImagesEntity (
         parcel.writeString(date)
         parcel.writeString(width)
         parcel.writeString(height)
-        parcel.writeString(color)
+        parcel.writeInt(color)
         parcel.writeString(searchLink)
     }
 

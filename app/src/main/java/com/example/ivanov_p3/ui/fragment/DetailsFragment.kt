@@ -5,8 +5,6 @@ import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -22,26 +20,28 @@ import android.widget.PopupWindow
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.FileProvider
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.palette.graphics.Palette
 import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
+import com.example.ivanov_p3.R.*
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
 
-class DetailsFragment : BaseFragment(R.layout.fragment_details) {
+class DetailsFragment : BaseFragment(layout.fragment_details) {
 
     private lateinit var binding: FragmentDetailsBinding
     private val args by navArgs<DetailsFragmentArgs>()
@@ -111,7 +111,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
     private fun popupWidowSettings() {
         val inflater: LayoutInflater =
             binding.root.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(R.layout.popup_window, null)
+        val popupView = inflater.inflate(layout.popup_window, null)
         val popupWidth = LinearLayout.LayoutParams.MATCH_PARENT
         val popupHeight = LinearLayout.LayoutParams.WRAP_CONTENT
         val focusable = true
@@ -207,11 +207,13 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details) {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun addToFavourite() {
+        val hex: Int = Palette.from(imageBitmap).generate().dominantSwatch?.rgb!!
+
         val image = Images(0, args.currentImage.link, args.currentImage.date,
-            args.currentImage.width, args.currentImage.height, args.currentImage.color,
-            args.currentImage.searchLink)
+            args.currentImage.width, args.currentImage.height,
+            hex, args.currentImage.searchLink)
         mImagesViewModel.addData(image)
-        val icon: Drawable = this.resources.getDrawable(R.drawable.ic_favorite)
+        val icon: Drawable = this.resources.getDrawable(drawable.ic_favorite)
         Toasty.normal(requireContext(), "Add to favourite!", icon)//.setGravity(Gravity.CENTER, 0, 0)
         .show()
     }

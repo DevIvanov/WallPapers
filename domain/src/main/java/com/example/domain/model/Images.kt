@@ -7,6 +7,6 @@ data class Images(
     val date: String?,
     val width: String?,
     val height: String?,
-    val color: String?,
+    val color: Int,
     val searchLink: String?
 )

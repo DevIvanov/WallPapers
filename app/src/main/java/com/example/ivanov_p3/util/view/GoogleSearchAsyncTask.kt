@@ -7,7 +7,6 @@ import android.os.AsyncTask
 import android.os.Build
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import com.example.data.database.ImagesEntity
 import com.example.domain.model.History
@@ -31,7 +30,9 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
     var responseMessage: String = ""
     var result: String = ""
     var src: String = ""
-    var i = 0
+    var width: String = ""
+    var height: String = ""
+    var countImages = 0
 
     companion object {
         var imagesEntityList: List<ImagesEntity?> = listOf()
@@ -41,7 +42,6 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
         Log.d(TAG, "AsyncTask - onPreExecute")
         // clean list
         imagesEntityList = listOf()
-//        i = 0
         // show mProgressBar
         com.example.ivanov_p3.ui.fragment.binding.progressBar.visibility = View.VISIBLE
     }
@@ -83,12 +83,29 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
                                     .replace(",", "")
 
                                 sb.append(src + "\n")
-                                i++
+                                countImages++
 
-                                imagesEntityList = imagesEntityList.plus(
-                                    ImagesEntity(0, src, "", "", "", "000000", ""))
+//                                imagesEntityList = imagesEntityList.plus(
+//                                    ImagesEntity(0, src, currentTime, "", "",
+//                                        "000000", "wallpaperscraft.ru"))
                             }
                         }
+                    }
+                    if (line!!.contains("\"width\"")){
+                        width = line.toString()
+                        width = width.replace("\"width\":", "")
+                            .replace("\"", "").replace(" ", "")
+                            .replace(",", "")
+                    }
+                    if (line!!.contains("\"height\"")){
+                        height = line.toString()
+                        height = height.replace("\"height\":", "")
+                            .replace("\"", "").replace(" ", "")
+                            .replace(",", "")
+
+                        imagesEntityList = imagesEntityList.plus(
+                            ImagesEntity(0, src, currentTime, width, height,
+                                0, "wallpaperscraft.ru"))
                     }
                 }
 
@@ -130,7 +147,7 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
         searchFragment.setAdapter(context, query, widthHeight)
 
         //add in dataBase
-        val history = History(0, query, i, currentTime, false)
+        val history = History(0, query, countImages, currentTime, false)
         mHistoryViewModel.addData(history)
     }
 }

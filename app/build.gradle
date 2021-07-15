@@ -40,6 +40,10 @@ android {
 
 dependencies {
 
+    // palette
+    //noinspection GradleCompatible
+//    implementation 'com.android.support:palette-v7:28.0.0'
+    implementation "androidx.palette:palette-ktx:1.0.0"
     // Coil - image loading library
     implementation "io.coil-kt:coil:1.1.1"
 
