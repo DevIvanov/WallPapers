@@ -6,9 +6,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView.OnEditorActionListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.domain.model.History
@@ -27,6 +30,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 @SuppressLint("StaticFieldLeak")
     lateinit var binding: FragmentSearchBinding
@@ -72,10 +76,35 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
     }
 
     private fun onClick() {
+        binding.editText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
+                searchImages()
+            }
+            false
+        })
         binding.searchImage.setOnClickListener {
             hideKeyboard()
-            val searchString = binding.editText.text.toString()
+            searchImages()
+        }
+        binding.columnsImage.setOnClickListener {
+            if (prefs.columns) {
+                prefs.columns = false
+                binding.columnsImage.setImageResource(R.drawable.two_columns)
+                binding.gridView.numColumns = 2
+            }else{
+                prefs.columns = true
+                binding.columnsImage.setImageResource(R.drawable.three_columns)
+                binding.gridView.numColumns = 3
 
+            }
+        }
+    }
+
+    private fun searchImages() {
+        val searchString = binding.editText.text.toString()
+        if (searchString == ""){
+            toast("Enter the text!")
+        }else{
             val history = History(0, searchString, 13, getCurrentTime(), false)
             mHistoryViewModel.addData(history)
             toast(searchString)
@@ -95,26 +124,16 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             }
             Log.d(TAG, "Url = $urlString")
 
-            // start AsyncTask
+            // save in prefs
             prefs.query = searchString
 
+            // start AsyncTask
             val searchTask = GoogleSearchAsyncTask(requireContext(), searchString)
             searchTask.execute(url)
         }
-        binding.columnsImage.setOnClickListener {
-            if (prefs.columns) {
-                prefs.columns = false
-                binding.columnsImage.setImageResource(R.drawable.two_columns)
-                binding.gridView.numColumns = 2
-            }else{
-                prefs.columns = true
-                binding.columnsImage.setImageResource(R.drawable.three_columns)
-                binding.gridView.numColumns = 3
-
-            }
-        }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun getCurrentTime(): String {
         val monthName = arrayOf(
             "January", "February", "March", "April", "May", "June", "July",

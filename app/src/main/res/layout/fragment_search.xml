@@ -57,6 +57,8 @@
             android:layout_marginStart="@dimen/s"
             android:ems="10"
             android:hint="Los Angeles"
+            android:focusable="auto"
+            android:imeOptions="actionSearch"
             android:inputType="textCapSentences"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/searchImage"
