@@ -84,29 +84,32 @@ class GoogleSearchAsyncTask(@SuppressLint("StaticFieldLeak") private val context
 
                                 sb.append(src + "\n")
                                 countImages++
-//                            }
-//                        }
-//                    }
-//                    if (line!!.contains("\"width\"")){
-//                        width = line.toString()
-//                        width = width.replace("\"width\":", "")
-//                            .replace("\"", "").replace(" ", "")
-//                            .replace(",", "")
-//                    }
-//                    if (line!!.contains("\"height\"")){
-//                        height = line.toString()
-//                        height = height.replace("\"height\":", "")
-//                            .replace("\"", "").replace(" ", "")
-//                            .replace(",", "")
-
-                                imagesEntityList = imagesEntityList.plus(
-                                    ImagesEntity(
-                                        0, src, currentTime, width, height,
-                                        0, "wallpaperscraft.ru"
-                                    )
-                                )
                             }
                         }
+                    }
+                    if (line!!.contains("\"width\"")){
+                        width = line.toString()
+                        width = width.replace("\"width\":", "")
+                            .replace("\"", "").replace(" ", "")
+                            .replace(",", "")
+                    }
+                    if (line!!.contains("\"height\"")){
+                        height = line.toString()
+                        height = height.replace("\"height\":", "")
+                            .replace("\"", "").replace(" ", "")
+                            .replace(",", "")
+
+                        if (src != "" && width != "" && height != ""){
+                            imagesEntityList = imagesEntityList.plus(
+                                ImagesEntity(
+                                    0, src, currentTime, width, height,
+                                    0, "wallpaperscraft.ru"
+                                )
+                            )
+                        }
+                        src = ""
+                        width = ""
+                        height = ""
                     }
                 }
 
