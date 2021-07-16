@@ -1,9 +1,12 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
+import android.app.Service
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -12,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.domain.model.History
@@ -40,9 +44,13 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
 
     private lateinit var mImagesViewModel: ImagesViewModel
     private lateinit var mHistoryViewModel: HistoryViewModel
-    private val args by navArgs<SearchFragmentArgs>()
     private lateinit var prefs: SharedPreferences
+
+    private val args by navArgs<SearchFragmentArgs>()
     private var searchString: String? = null
+    private var connectivity : ConnectivityManager? = null
+    private var info : NetworkInfo? = null
+
 
 
     override fun onCreateView(
@@ -127,11 +135,11 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
 
     private fun searchImages() {
         searchString = binding.editText.text.toString()
-        if (searchString == ""){
+        if (searchString == "")
             toast("Enter the text!")
+        else if (!checkInternetConnection()){
+            toast("INTERNET NOT CONNECTED!")
         }else{
-            toast(searchString!!)
-
             val searchStringNoSpaces = searchString!!.replace(" ", "+")
             val key = "AIzaSyCmp7XwRBMvUmPXxUtNzEr22BvaZb4sQJw"
             val searchId = "faaf876d27c79cad7"
@@ -150,7 +158,6 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             }
             Log.d(TAG, "Url = $urlString")
 
-            // save in prefs
             prefs.query = searchString
 
             // start AsyncTask
@@ -180,5 +187,16 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
             SearchGridViewAdapter(context, query, widthHeight)
         val gridView = binding.gridView
         gridView.adapter = adapter
+    }
+
+    private fun checkInternetConnection () : Boolean{
+        connectivity = requireActivity().getSystemService(Service.CONNECTIVITY_SERVICE)
+                as ConnectivityManager
+
+        if (connectivity != null) {
+            info = connectivity!!.activeNetworkInfo
+            return !(info == null || info!!.state != NetworkInfo.State.CONNECTED)
+        }
+        return false
     }
 }

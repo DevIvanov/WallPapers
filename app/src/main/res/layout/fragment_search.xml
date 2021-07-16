@@ -58,6 +58,7 @@
             android:layout_marginStart="@dimen/s"
             android:ems="10"
             android:hint="Los Angeles"
+            android:background="@null"
             android:focusable="auto"
             android:imeOptions="actionSearch"
             android:inputType="textCapSentences"
