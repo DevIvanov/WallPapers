@@ -31,17 +31,6 @@ class HistoryRecyclerViewAdapter(
         holder.onBind()
     }
 
-//    class DiffCallback : DiffUtil.ItemCallback<Mails>() {
-//        override fun areItemsTheSame(oldItem: Mails, newItem: Mails): Boolean {
-//            return oldItem == newItem
-//        }
-//
-//        override fun areContentsTheSame(oldItem: Mails, newItem: Mails): Boolean {
-//            return oldItem.date == newItem.date
-//        }
-//
-//    }
-
     inner class MyViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root){
 

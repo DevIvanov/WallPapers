@@ -10,13 +10,11 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -129,6 +127,12 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             focusable
         )
+        popupWindow!!.setOnDismissListener { darkenBackground(1f) }
+        popupWindow!!.isFocusable = true
+        popupWindow!!.isOutsideTouchable = true
+        darkenBackground(0.5f)
+
+
         popupWindow!!.showAtLocation(view, Gravity.BOTTOM, 0, 0)
 
         val buttonExit: Button = popupView.findViewById(R.id.buttonExit)
@@ -187,6 +191,11 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         val textDimens: TextView = popupView.findViewById(R.id.textDimens)
         textDimens.text = "Px: $width x $height"
 
+        popupWindowInfo!!.setOnDismissListener { darkenBackground(1f) }
+        popupWindowInfo!!.isFocusable = true
+        popupWindowInfo!!.isOutsideTouchable = true
+        darkenBackground(0.5f)
+
         popupWindowInfo!!.showAtLocation(view, Gravity.BOTTOM, 0, 0)
 
         val buttonExit: Button = popupView.findViewById(R.id.exitButton)
@@ -195,15 +204,6 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         }
     }
 
-//    private fun onBackPressed () {
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-//            when {
-//                popupWindow != null -> popupWindow!!.dismiss()
-//                popupWindowInfo != null -> popupWindowInfo!!.dismiss()
-//                else -> requireActivity().onBackPressed()
-//            }
-//        }
-//    }
 
     private fun shareImage() {
         try {
@@ -260,6 +260,13 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         }
     }
 
+    private fun darkenBackground(bgcolor: Float) {
+        val lp: WindowManager.LayoutParams = requireActivity().window.attributes
+        lp.alpha = bgcolor
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        requireActivity().window.attributes = lp
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun addToFavourite() {
         val image = Images(0, args.currentImage.link, args.currentImage.date,
@@ -269,13 +276,5 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         val icon: Drawable = this.resources.getDrawable(drawable.ic_favorite)
         Toasty.normal(requireContext(), "Add to favourite!", icon)//.setGravity(Gravity.CENTER, 0, 0)
         .show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (popupWindow != null)
-            popupWindow!!.dismiss()
-        if (popupWindowInfo != null)
-            popupWindowInfo!!.dismiss()
     }
 }

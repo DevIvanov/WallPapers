@@ -2,14 +2,17 @@ package com.example.ivanov_p3.ui.adapter
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 import coil.load
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.example.data.database.ImagesEntity
 import com.example.ivanov_p3.R
@@ -50,6 +53,11 @@ class SearchGridViewAdapter(private var mContext: Context, var query: String, va
             crossfade(1000)
             placeholder(R.drawable.ic_image)
             transformations(RoundedCornersTransformation(10f))
+            listener(
+                onError = { request: ImageRequest, throwable: Throwable ->
+                    Log.e("COIL", "Error download")
+                }
+            )
         }
 
         imageView.setOnClickListener {

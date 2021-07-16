@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_bottom_menu"
-        android:backgroundTint="@color/end_color"
+        android:backgroundTint="@color/white"
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="1dp">
