@@ -29,7 +29,7 @@ class HistoryViewModel(application: Application): AndroidViewModel(application) 
     }
 
     fun deleteData(history: History) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             interactor.delete(history)
         }
     }

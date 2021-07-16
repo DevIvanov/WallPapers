@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class HistoryFavouriteRecyclerViewAdapter(
     private var favouriteList: List<History> = listOf(),
     private val mHistoryViewModel: HistoryViewModel,
-    val context: Context
+    val mContext: Context
 ) : RecyclerView.Adapter<HistoryFavouriteRecyclerViewAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

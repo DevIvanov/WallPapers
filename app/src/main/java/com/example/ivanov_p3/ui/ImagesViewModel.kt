@@ -29,7 +29,7 @@ class ImagesViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun deleteData(image: Images) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             interactor.delete(image)
         }
     }

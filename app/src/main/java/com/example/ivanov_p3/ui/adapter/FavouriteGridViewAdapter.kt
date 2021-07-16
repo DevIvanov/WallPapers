@@ -1,63 +1,79 @@
 package com.example.ivanov_p3.ui.adapter
 
 import android.content.Context
-import android.os.Build
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.data.database.ImagesEntity
 import com.example.data.mapper.ImagesModelMapperImpl
+import com.example.domain.model.History
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
+import com.example.ivanov_p3.databinding.FavoriteGridItemBinding
+import com.example.ivanov_p3.ui.HistoryViewModel
+import com.example.ivanov_p3.ui.ImagesViewModel
+import com.example.ivanov_p3.ui.fragment.favourite.FavouriteImageFragment
 import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
-class FavouriteGridViewAdapter(private var mContext: Context,
-private val imagesList: List<Images>): BaseAdapter() {
+class FavouriteGridViewAdapter(
+    private var imagesList: List<Images> = listOf(),
+    private val mImagesViewModel: ImagesViewModel,
+    val mContext: Context
+    ): RecyclerView.Adapter<FavouriteGridViewAdapter.MyViewHolder>(){
 
-    override fun getCount(): Int {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val binding =
+            FavoriteGridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
+    }
+
+    inner class MyViewHolder(private val binding: FavoriteGridItemBinding) :
+        RecyclerView.ViewHolder(binding.root){
+
+        fun onBind() {
+
+            binding.image.load(imagesList[position].link){
+                crossfade(true)
+                crossfade(1000)
+                placeholder(R.drawable.ic_image)
+                transformations(RoundedCornersTransformation(10f))
+            }
+
+            itemView.setOnClickListener {
+                val mapper = ImagesModelMapperImpl()
+                val imageEntity: ImagesEntity = mapper.toEntity(imagesList[position])
+                val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageEntity)
+                itemView.findNavController().navigate(action)
+            }
+
+            binding.floatingActionButton2.setOnClickListener {
+                CoroutineScope(Dispatchers.IO).launch {
+                    mImagesViewModel.deleteData(imagesList[position])
+                }
+//                Toast.makeText(mContext, "delete", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.onBind()
+    }
+
+    override fun getItemCount(): Int {
         return imagesList.size
     }
 
-    override fun getItem(position: Int): Any {
-        return imagesList[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun getView(position: Int, convertView: View?, p2: ViewGroup?): View {
-        val imageView: ImageView
-        if (convertView == null) {
-            imageView = ImageView(mContext)
-            imageView.layoutParams = LinearLayout.LayoutParams(540, 540)
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            imageView.setPadding(8, 8, 8, 8)
-        } else {
-            imageView = convertView as ImageView
-        }
-
-        imageView.load(imagesList[position].link){
-            crossfade(true)
-            crossfade(1000)
-            placeholder(R.drawable.ic_image)
-            transformations(RoundedCornersTransformation(10f))
-        }
-
-        imageView.setOnClickListener {
-            val mapper = ImagesModelMapperImpl()
-            val imageEntity: ImagesEntity = mapper.toEntity(imagesList[position])
-            val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageEntity)
-            imageView.findNavController().navigate(action)
-        }
-        return imageView
+    fun setData(images: List<Images>) {
+        this.imagesList = images
+        notifyDataSetChanged()
     }
 }

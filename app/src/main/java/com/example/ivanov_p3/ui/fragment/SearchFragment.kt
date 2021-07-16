@@ -138,7 +138,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         if (searchString == "")
             toast("Enter the text!")
         else if (!checkInternetConnection()){
-            toast("INTERNET NOT CONNECTED!")
+            showAlertDialog("","CHECK INTERNET CONNECTION!")
         }else{
             val searchStringNoSpaces = searchString!!.replace(" ", "+")
             val key = "AIzaSyCmp7XwRBMvUmPXxUtNzEr22BvaZb4sQJw"

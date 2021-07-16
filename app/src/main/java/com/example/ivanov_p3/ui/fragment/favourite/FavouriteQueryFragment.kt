@@ -29,7 +29,7 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query) {
 
         adapter = HistoryFavouriteRecyclerViewAdapter(
             mHistoryViewModel = mHistoryViewModel,
-            context = requireContext()
+            mContext = requireContext()
         )
 
         setAdapter()

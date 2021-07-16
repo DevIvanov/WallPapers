@@ -5,15 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.favourite.FavouriteImageFragment">
 
-        <GridView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gridView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="56dp"
             android:gravity="center"
-            android:numColumns="2"
+            android:numColumns="1"
             tools:layout_editor_absoluteX="25dp"
             tools:layout_editor_absoluteY="107dp">
-        </GridView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

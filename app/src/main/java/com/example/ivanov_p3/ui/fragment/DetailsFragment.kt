@@ -77,7 +77,6 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
 
-//        onBackPressed()
         setText()
         onClick()
 
