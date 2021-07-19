@@ -1,5 +1,6 @@
 package com.example.ivanov_p3.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.RecyclerViewItemBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
+import com.example.ivanov_p3.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,13 +36,17 @@ class HistoryFavouriteRecyclerViewAdapter(
     inner class MyViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root){
 
+        @SuppressLint("SetTextI18n")
         fun onBind() {
 
             val currentItem: History = favouriteList[position]
 
+            val utils = Utils()
+            val date = utils.dateWithMonthName(mContext, currentItem.date!!)
+
             if (currentItem.favourite) {
                 binding.nameTextView.text = currentItem.name
-                binding.infoTextView.text = "${currentItem.count} results, ${currentItem.date}"
+                binding.infoTextView.text = "${currentItem.count} ${mContext.getString(R.string.results)}, $date"
                 binding.imageView.setImageResource(R.drawable.ic_delete)
 
 

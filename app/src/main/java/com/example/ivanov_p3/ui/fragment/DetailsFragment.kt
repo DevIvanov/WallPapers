@@ -1,21 +1,22 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
-import android.app.WallpaperManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -26,15 +27,15 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
-import com.example.ivanov_p3.R.*
+import com.example.ivanov_p3.R.drawable
+import com.example.ivanov_p3.R.layout
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
+import com.example.ivanov_p3.util.Utils
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 import java.lang.String
 import kotlin.properties.Delegates
 
@@ -99,7 +100,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             findNavController().navigate(action)
         }
         binding.shareView.setOnClickListener {
-            shareImage()
+            shareImage(imageBitmap)
         }
         binding.settingView.setOnClickListener {
             popupWidowSettings()
@@ -108,7 +109,6 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             popupWidowInfo()
         }
     }
-
 
     private fun popupWidowSettings() {
         val inflater: LayoutInflater =
@@ -141,13 +141,13 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
 
         val wallpaper: LinearLayoutCompat = popupView.findViewById(R.id.wallpaper)
         wallpaper.setOnClickListener {
-            setWallpaper()
+            setWallpaper(imageBitmap)
             popupWindow!!.dismiss()
         }
 
         val splashScreen: LinearLayoutCompat = popupView.findViewById(R.id.splashScreen)
         splashScreen.setOnClickListener {
-            setSplashScreen()
+            setSplashScreen(imageBitmap)
             popupWindow!!.dismiss()
         }
 
@@ -158,6 +158,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun popupWidowInfo() {
         val inflater: LayoutInflater =
             binding.root.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -179,7 +180,9 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         textSearchLink.text = args.currentImage.searchLink
 
         val textDate: TextView = popupView.findViewById(R.id.textDate)
-        textDate.text = args.currentImage.date
+        val utils = Utils()
+        val date = utils.dateWithMonthName(requireContext(), args.currentImage.date!!)
+        textDate.text = date
 
         val hexColor = String.format("#%06X", 0xFFFFFF and hex)
         val textColor: TextView = popupView.findViewById(R.id.textColor)
@@ -203,69 +206,6 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         }
     }
 
-
-    private fun shareImage() {
-        try {
-            val file = File(requireActivity().externalCacheDir,"image.png")
-            val fOut = FileOutputStream(file)
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
-            fOut.flush()
-            fOut.close()
-            file.setReadable(true, false)
-            val imageUri = FileProvider.getUriForFile(
-                requireActivity(),
-                "com.example.ivanov_p3.ui.fragment.DetailsFragment.provider",
-                file
-            )
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra(Intent.EXTRA_STREAM, imageUri)
-            intent.type = "image/png"
-            startActivity(Intent.createChooser(intent, "Share image via"))
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e("LOG", e.message.toString())
-        }
-    }
-
-    private fun setWallpaper() {
-        val wallpaperManager = WallpaperManager.getInstance(requireActivity())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            wallpaperManager.setBitmap(
-                imageBitmap,
-                null,
-                true,
-                WallpaperManager.FLAG_SYSTEM
-            )
-            toast("Wallpaper set!")
-        } else {
-            toast("Unsupported version!")
-        }
-    }
-
-    private fun setSplashScreen() {
-        val wallpaperManager = WallpaperManager.getInstance(requireActivity())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            wallpaperManager.setBitmap(
-                imageBitmap,
-                null,
-                true,
-                WallpaperManager.FLAG_LOCK
-            )
-            toast("Splash screen set!")
-        } else {
-            toast("Unsupported version!")
-        }
-    }
-
-    private fun darkenBackground(bgcolor: Float) {
-        val lp: WindowManager.LayoutParams = requireActivity().window.attributes
-        lp.alpha = bgcolor
-        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        requireActivity().window.attributes = lp
-    }
-
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun addToFavourite() {
         val image = Images(0, args.currentImage.link, args.currentImage.date,
@@ -273,7 +213,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             hex, args.currentImage.searchLink)
         mImagesViewModel.addData(image)
         val icon: Drawable = this.resources.getDrawable(drawable.ic_favorite)
-        Toasty.normal(requireContext(), "Add to favourite!", icon)//.setGravity(Gravity.CENTER, 0, 0)
+        Toasty.normal(requireContext(), getString(R.string.add_to_favourite), icon)
         .show()
     }
 }

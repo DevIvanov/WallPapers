@@ -8,11 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.interactor.Interactor
 import com.example.domain.model.Images
 import com.example.ivanov_p3.WallpapersApp
+import com.example.ivanov_p3.common.base.BaseViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
-class ImagesViewModel(application: Application): AndroidViewModel(application) { //(application: Application) : AndroidViewModel(application)
+class ImagesViewModel(application: Application): BaseViewModel(application) {
     @Inject
     lateinit var interactor: Interactor
     val readAllData: LiveData<List<Images>>

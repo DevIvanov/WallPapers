@@ -28,7 +28,6 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or SYSTEM_UI_FLAG_FULLSCREEN)
 
-
         onClick()
         return binding.root
     }

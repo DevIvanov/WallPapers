@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [AppModule::class]) // HistoryAppModule::class
+@Component(modules = [AppModule::class])
 interface AppComponent {
     fun inject(imagesViewModel: ImagesViewModel)
     fun inject(historyViewModel: HistoryViewModel)

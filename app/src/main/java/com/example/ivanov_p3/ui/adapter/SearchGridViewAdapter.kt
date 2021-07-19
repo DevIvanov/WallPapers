@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 import coil.load
@@ -17,10 +16,15 @@ import coil.transform.RoundedCornersTransformation
 import com.example.data.database.ImagesEntity
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
-import com.example.ivanov_p3.util.view.GoogleSearchAsyncTask
+import com.example.ivanov_p3.util.GoogleSearchAsyncTask
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 
-class SearchGridViewAdapter(private var mContext: Context, var query: String, val widthHeight: Int): BaseAdapter() {
+@DelicateCoroutinesApi
+class SearchGridViewAdapter(
+    private var mContext: Context, var query: String,
+    private val widthHeight: Int
+): BaseAdapter() {
 
     private var imagesEntityList = GoogleSearchAsyncTask.imagesEntityList
 

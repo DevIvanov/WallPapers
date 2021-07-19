@@ -3,20 +3,16 @@ package com.example.ivanov_p3.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.data.database.ImagesEntity
 import com.example.data.mapper.ImagesModelMapperImpl
-import com.example.domain.model.History
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.FavoriteGridItemBinding
-import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.ImagesViewModel
-import com.example.ivanov_p3.ui.fragment.favourite.FavouriteImageFragment
 import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +55,6 @@ class FavouriteGridViewAdapter(
                 CoroutineScope(Dispatchers.IO).launch {
                     mImagesViewModel.deleteData(imagesList[position])
                 }
-//                Toast.makeText(mContext, "delete", Toast.LENGTH_SHORT).show()
             }
         }
     }

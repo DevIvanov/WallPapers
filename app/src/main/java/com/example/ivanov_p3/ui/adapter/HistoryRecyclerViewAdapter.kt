@@ -1,5 +1,6 @@
 package com.example.ivanov_p3.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.RecyclerViewItemBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.fragment.HistoryFragmentDirections
+import com.example.ivanov_p3.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ import kotlinx.coroutines.launch
 class HistoryRecyclerViewAdapter(
     private var historyList: List<History> = listOf(),
     private val mHistoryViewModel: HistoryViewModel,
-    val context: Context
+    val mContext: Context
 ) : RecyclerView.Adapter<HistoryRecyclerViewAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -34,12 +36,17 @@ class HistoryRecyclerViewAdapter(
     inner class MyViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root){
 
+        @SuppressLint("SetTextI18n")
         fun onBind() {
 
             val currentItem: History = historyList[position]
 
             binding.nameTextView.text = currentItem.name
-            binding.infoTextView.text = "${currentItem.count} results, ${currentItem.date}"
+
+            val utils = Utils()
+            val date = utils.dateWithMonthName(mContext, currentItem.date!!)
+
+            binding.infoTextView.text = "${currentItem.count} ${mContext.getString(R.string.results)}, $date"
             if (currentItem.favourite) {
                 binding.imageView.setImageResource(R.drawable.ic_favorite_blue)
             }else{

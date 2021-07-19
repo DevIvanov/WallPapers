@@ -1,12 +1,36 @@
 <resources>
     <string name="app_name">Wallpapers</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_hint">San Francisco</string>
     <string name="search">Search</string>
     <string name="favorite">Favourite</string>
     <string name="history">History</string>
-    <string name="set_wallpaper">Установить как обои рабочего стола</string>
-    <string name="set_splash_screen">Установить на заставку экрана блокировки</string>
-    <string name="save_to_favourite">Сохранить в избранное</string>
+    <string name="set_wallpaper">Set as wallpaper</string>
+    <string name="set_splash_screen">Set as splash screen</string>
+    <string name="save_to_favourite">Save to favourite</string>
+    <string name="wallpaper_set">Wallpaper has been set!</string>
+    <string name="splash_screen_set">Splash screen was set!</string>
+    <string name="unsupported_version">Unsupported version!</string>
+    <string name="add_to_favourite">Added to favourites!</string>
+    <string name="enter_the_text">Enter the text!</string>
+    <string name="check_interet">CHECK INTERNET CONNECTION!</string>
+    <string name="dimens">Dimens</string>
+    <string name="color">Color</string>
+    <string name="date">Date</string>
+    <string name="results">results</string>
+
+    <string-array name="monthName_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 </resources>

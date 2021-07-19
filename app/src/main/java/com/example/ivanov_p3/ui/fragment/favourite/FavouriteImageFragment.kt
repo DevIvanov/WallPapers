@@ -24,7 +24,7 @@ class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavouriteImageBinding.inflate(inflater, container, false)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 

@@ -29,7 +29,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
         adapter = HistoryRecyclerViewAdapter(
             mHistoryViewModel = mHistoryViewModel,
-            context = requireContext()
+            mContext = requireContext()
         )
 
         setAdapter()
@@ -51,5 +51,4 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         binding.recyclerView.scheduleLayoutAnimation()
         Log.d("Database", "Adapter set")
     }
-
 }

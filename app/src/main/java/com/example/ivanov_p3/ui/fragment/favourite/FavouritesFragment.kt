@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
@@ -24,7 +23,7 @@ class FavouritesFragment : BaseFragment(R.layout.fragment_favourites) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavouritesBinding.inflate(inflater, container, false)
 
         adapter = TabAdapter(requireActivity())

@@ -35,7 +35,6 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query) {
         setAdapter()
         readDataFromDatabase()
 
-
         return  binding.root
     }
 
@@ -52,5 +51,4 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query) {
         binding.recyclerView.scheduleLayoutAnimation()
         Log.d("Database", "Adapter set")
     }
-
 }
