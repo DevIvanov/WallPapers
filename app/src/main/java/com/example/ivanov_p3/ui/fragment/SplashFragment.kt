@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
@@ -18,7 +19,6 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
     private lateinit var binding: FragmentSplashBinding
     private val SPLASH_TIME_OUT = 1500L
-    private val activityScope = CoroutineScope(Dispatchers.Main)
 
 
     override fun onCreateView(
@@ -32,7 +32,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
 
-        activityScope.launch {
+        lifecycleScope.launchWhenResumed{
             delay(SPLASH_TIME_OUT)
             findNavController().navigate(R.id.action_splashFragment_to_searchFragment)
         }

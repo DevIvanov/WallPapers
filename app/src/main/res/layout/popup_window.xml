@@ -15,7 +15,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/wallpaper"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/popup_line_height"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/m"
         android:background="@color/white">
@@ -37,7 +37,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/splashScreen"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/popup_line_height"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/m"
         android:background="@color/white">
@@ -59,7 +59,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/favourite"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/popup_line_height"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/m"
         android:background="@color/white">
