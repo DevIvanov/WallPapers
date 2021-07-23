@@ -7,7 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "images_table")//, indices = [Index(value = ["link"], unique = true)]
+@Entity(tableName = "images_table", indices = [Index(value = ["link"], unique = true)])
 data class ImagesEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
