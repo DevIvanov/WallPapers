@@ -16,12 +16,16 @@ import com.example.domain.repository.HRepository
 import com.example.domain.repository.Repository
 import com.example.domain.use_cases.HUseCase
 import com.example.domain.use_cases.UseCase
+import com.example.ivanov_p3.WallpapersApp
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val application: Application) {
+//@InstallIn(ApplicationComponent::class)
+class AppModule (private val application: Application){ //(private val application: Application)
+
+//    private val application = WallpapersApp()
 
     @Singleton
     @Provides
@@ -107,5 +111,4 @@ class AppModule(private val application: Application) {
     fun provideHistoryAppContext(): Context {
         return application.applicationContext
     }
-
 }

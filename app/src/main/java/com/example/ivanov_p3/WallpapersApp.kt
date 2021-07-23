@@ -3,7 +3,7 @@ package com.example.ivanov_p3
 import android.app.Application
 import com.example.ivanov_p3.di.*
 
-
+//@HiltAndroidApp
 class WallpapersApp : Application() {
     private lateinit var appComponent: AppComponent
 
@@ -12,6 +12,7 @@ class WallpapersApp : Application() {
 
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
+//            .appModule(AppModule(this))
             .build()
     }
 
