@@ -17,15 +17,29 @@ import com.example.domain.repository.Repository
 import com.example.domain.use_cases.HUseCase
 import com.example.domain.use_cases.UseCase
 import com.example.ivanov_p3.WallpapersApp
+import com.example.ivanov_p3.api.UnsplashApi
 import dagger.Module
 import dagger.Provides
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
 //@InstallIn(ApplicationComponent::class)
 class AppModule (private val application: Application){ //(private val application: Application)
 
-//    private val application = WallpapersApp()
+    @Provides
+    @Singleton
+    fun provideRetrofit(): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(UnsplashApi.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideUnsplashApi(retrofit: Retrofit): UnsplashApi =
+        retrofit.create(UnsplashApi::class.java)
 
     @Singleton
     @Provides

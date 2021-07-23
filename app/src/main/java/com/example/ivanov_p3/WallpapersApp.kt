@@ -11,8 +11,8 @@ class WallpapersApp : Application() {
         super.onCreate()
 
         appComponent = DaggerAppComponent.builder()
+//            .appModule(AppModule())
             .appModule(AppModule(this))
-//            .appModule(AppModule(this))
             .build()
     }
 
