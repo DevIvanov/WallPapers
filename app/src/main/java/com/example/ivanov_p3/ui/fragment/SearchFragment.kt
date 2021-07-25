@@ -22,12 +22,14 @@ import com.example.ivanov_p3.util.GoogleSearchAsyncTask
 import com.example.ivanov_p3.util.view.PreferenceHelper
 import com.example.ivanov_p3.util.view.PreferenceHelper.columns
 import com.example.ivanov_p3.util.view.PreferenceHelper.query
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 @SuppressLint("StaticFieldLeak")
 lateinit var binding: FragmentSearchBinding
 
 @DelicateCoroutinesApi
+@AndroidEntryPoint
 class SearchFragment: BaseFragment(R.layout.fragment_search) {
 
     private lateinit var mImagesViewModel: ImagesViewModel

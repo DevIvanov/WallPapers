@@ -1,25 +1,24 @@
 //package com.example.ivanov_p3.ui
 //
-////import androidx.hilt.Assisted
-////import androidx.hilt.lifecycle.ViewModelInject
-//import android.app.Application
-//import androidx.lifecycle.*
+//import androidx.hilt.Assisted
+//import androidx.hilt.lifecycle.ViewModelInject
+//import androidx.lifecycle.SavedStateHandle
+//import androidx.lifecycle.ViewModel
+//import androidx.lifecycle.switchMap
+//import androidx.lifecycle.viewModelScope
 //import androidx.paging.cachedIn
-//import com.example.ivanov_p3.WallpapersApp
-//import com.example.ivanov_p3.common.base.BaseViewModel
 //import com.example.ivanov_p3.data.UnsplashRepository
-////import dagger.assisted.Assisted
-//import dagger.assisted.AssistedInject
 //import javax.inject.Inject
 //
-////class GalleryViewModel constructor(
-//    class GalleryViewModel @ViewModelInject constructor(
+//
+//class GalleryViewModel @ViewModelInject constructor(
 //    private val repository: UnsplashRepository,
 //    @Assisted state: SavedStateHandle
 //) : ViewModel() {
 //    @Inject
 //
-//    private val currentQuery = state.getLiveData(CURRENT_QUERY, DEFAULT_QUERY)
+//    @JvmField
+//    val currentQuery = state.getLiveData(CURRENT_QUERY, DEFAULT_QUERY)
 //
 //    val photos = currentQuery.switchMap { queryString ->
 //        repository.getSearchResults(queryString).cachedIn(viewModelScope)

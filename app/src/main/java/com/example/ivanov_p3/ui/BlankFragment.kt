@@ -7,21 +7,19 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.data.UnsplashPhoto
 import com.example.ivanov_p3.databinding.FragmentBlankBinding
-//import com.example.ivanov_p3.ui.GalleryViewModel
-//import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class BlankFragment : Fragment(R.layout.fragment_blank),
     UnsplashPhotoAdapter.OnItemClickListener {
 
-//    private val viewModel by viewModels<GalleryViewModel>() //
+
 //    private lateinit var viewModel: GalleryViewModel
+//    private val viewModel by viewModels<GalleryViewModel>()
 
     private var _binding: FragmentBlankBinding? = null
     private val binding get() = _binding!!
@@ -30,7 +28,13 @@ class BlankFragment : Fragment(R.layout.fragment_blank),
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentBlankBinding.bind(view)
-//        viewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
+
+//        val viewModelFactory = ViewModelFactory(ImagesViewModel(
+//            repository = UnsplashRepository(unsplashApi = UnsplashApi as UnsplashApi),
+//            application = WallpapersApp()))
+
+//        viewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
+
 
         val adapter = UnsplashPhotoAdapter(this)
 

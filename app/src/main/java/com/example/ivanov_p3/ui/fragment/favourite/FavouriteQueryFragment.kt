@@ -13,7 +13,9 @@ import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentFavouriteQueryBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.adapter.HistoryFavouriteRecyclerViewAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query) {
 
     private lateinit var binding: FragmentFavouriteQueryBinding

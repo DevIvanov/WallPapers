@@ -13,7 +13,9 @@ import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentHistoryBinding
 import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.adapter.HistoryRecyclerViewAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
     private lateinit var binding: FragmentHistoryBinding
@@ -23,7 +25,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
         mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
 

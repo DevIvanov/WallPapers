@@ -7,9 +7,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 private lateinit var binding: ActivityMainBinding
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

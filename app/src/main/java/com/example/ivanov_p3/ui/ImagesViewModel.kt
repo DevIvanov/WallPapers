@@ -1,25 +1,22 @@
 package com.example.ivanov_p3.ui
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactor.Interactor
 import com.example.domain.model.Images
-import com.example.ivanov_p3.WallpapersApp
-import com.example.ivanov_p3.common.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
-class ImagesViewModel(application: Application): BaseViewModel(application) {
-    @Inject
-    lateinit var interactor: Interactor
+@HiltViewModel
+class ImagesViewModel @Inject constructor(val interactor: Interactor) : ViewModel() {
+
     val readAllData: LiveData<List<Images>>
 
     init {
-        (application as WallpapersApp).getAppComponent().inject(this)
         readAllData = interactor.readAll().asLiveData()
     }
 

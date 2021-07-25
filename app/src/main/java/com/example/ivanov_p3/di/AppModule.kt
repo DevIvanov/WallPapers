@@ -1,6 +1,5 @@
 package com.example.ivanov_p3.di
 
-import android.app.Application
 import android.content.Context
 import com.example.data.database.HistoryDao
 import com.example.data.database.HistoryDatabase
@@ -10,24 +9,23 @@ import com.example.data.mapper.HistoryModelMapperImpl
 import com.example.data.mapper.ImagesModelMapperImpl
 import com.example.data.repository.HistoryRepository
 import com.example.data.repository.ImagesRepository
-import com.example.domain.interactor.HInteractor
-import com.example.domain.interactor.Interactor
 import com.example.domain.repository.HRepository
 import com.example.domain.repository.Repository
-import com.example.domain.use_cases.HUseCase
-import com.example.domain.use_cases.UseCase
-import com.example.ivanov_p3.WallpapersApp
 import com.example.ivanov_p3.api.UnsplashApi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-//@InstallIn(ApplicationComponent::class)
-class AppModule (private val application: Application){ //(private val application: Application)
+@InstallIn(SingletonComponent::class)
+class AppModule {
 
+    // Retrofit
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit =
@@ -41,6 +39,8 @@ class AppModule (private val application: Application){ //(private val applicati
     fun provideUnsplashApi(retrofit: Retrofit): UnsplashApi =
         retrofit.create(UnsplashApi::class.java)
 
+
+    // Image database
     @Singleton
     @Provides
     fun getImagesDao(imagesDatabase: ImagesDatabase): ImagesDao {
@@ -49,41 +49,18 @@ class AppModule (private val application: Application){ //(private val applicati
 
     @Singleton
     @Provides
-    fun getInteractor(): Interactor {
-        return Interactor(getUseCase())
+    fun getRepositoryImages(roomDatabase: ImagesDatabase, mapperImpl: ImagesModelMapperImpl): Repository {
+        return ImagesRepository(roomDatabase.imagesDao(), mapperImpl)
     }
 
     @Singleton
     @Provides
-    fun getUseCase(): UseCase {
-        return UseCase(getRepository())
+    fun getRoomDbInstanceImages(@ApplicationContext context: Context): ImagesDatabase {
+        return ImagesDatabase.getDatabase(context)
     }
 
-    @Singleton
-    @Provides
-    fun getRepository(): Repository {
-        return ImagesRepository(getImagesDao(getRoomDbInstance()), getMapper())
-    }
 
-    @Singleton
-    @Provides
-    fun getMapper(): ImagesModelMapperImpl {
-        return ImagesModelMapperImpl()
-    }
-
-    @Singleton
-    @Provides
-    fun getRoomDbInstance(): ImagesDatabase {
-        return ImagesDatabase.getDatabase(provideAppContext())
-    }
-
-    @Singleton
-    @Provides
-    fun provideAppContext(): Context {
-        return application.applicationContext
-    }
-
-    // AppModule for HistoryDatabase
+    // History Database
     @Singleton
     @Provides
     fun getHistoryDao(historyDatabase: HistoryDatabase): HistoryDao {
@@ -92,37 +69,13 @@ class AppModule (private val application: Application){ //(private val applicati
 
     @Singleton
     @Provides
-    fun getHistoryInteractor(): HInteractor {
-        return HInteractor(getHistoryUseCase())
+    fun getRepositoryHistory(roomDatabase: HistoryDatabase, mapperImpl: HistoryModelMapperImpl): HRepository {
+        return HistoryRepository(roomDatabase.historyDao(), mapperImpl)
     }
 
     @Singleton
     @Provides
-    fun getHistoryUseCase(): HUseCase {
-        return HUseCase(getHistoryRepository())
-    }
-
-    @Singleton
-    @Provides
-    fun getHistoryRepository(): HRepository {
-        return HistoryRepository(getHistoryDao(getHistoryRoomDbInstance()), getHistoryMapper())
-    }
-
-    @Singleton
-    @Provides
-    fun getHistoryMapper(): HistoryModelMapperImpl {
-        return HistoryModelMapperImpl()
-    }
-
-    @Singleton
-    @Provides
-    fun getHistoryRoomDbInstance(): HistoryDatabase {
-        return HistoryDatabase.getDatabase(provideHistoryAppContext())
-    }
-
-    @Singleton
-    @Provides
-    fun provideHistoryAppContext(): Context {
-        return application.applicationContext
+    fun getRoomDbInstanceHistory(@ApplicationContext context: Context): HistoryDatabase {
+        return HistoryDatabase.getDatabase(context)
     }
 }
