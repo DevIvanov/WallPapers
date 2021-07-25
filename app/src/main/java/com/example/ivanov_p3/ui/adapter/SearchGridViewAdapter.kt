@@ -10,11 +10,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.example.data.database.ImagesEntity
 import com.example.ivanov_p3.R
+import com.example.ivanov_p3.data.UnsplashPhoto
 import com.example.ivanov_p3.ui.fragment.SearchFragmentDirections
 import com.example.ivanov_p3.util.GoogleSearchAsyncTask
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -71,5 +73,15 @@ class SearchGridViewAdapter(
             imageView.findNavController().navigate(action)
         }
         return imageView
+    }
+
+    companion object {
+        private val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<UnsplashPhoto>() {
+            override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto) =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto) =
+                oldItem == newItem
+        }
     }
 }

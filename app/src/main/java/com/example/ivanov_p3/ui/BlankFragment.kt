@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.data.UnsplashPhoto
@@ -17,8 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BlankFragment : Fragment(R.layout.fragment_blank),
     UnsplashPhotoAdapter.OnItemClickListener {
 
-
-//    private lateinit var viewModel: GalleryViewModel
+    private lateinit var viewModel: GalleryViewModel
 //    private val viewModel by viewModels<GalleryViewModel>()
 
     private var _binding: FragmentBlankBinding? = null
@@ -29,11 +29,8 @@ class BlankFragment : Fragment(R.layout.fragment_blank),
 
         _binding = FragmentBlankBinding.bind(view)
 
-//        val viewModelFactory = ViewModelFactory(ImagesViewModel(
-//            repository = UnsplashRepository(unsplashApi = UnsplashApi as UnsplashApi),
-//            application = WallpapersApp()))
 
-//        viewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
 
 
         val adapter = UnsplashPhotoAdapter(this)
@@ -48,9 +45,9 @@ class BlankFragment : Fragment(R.layout.fragment_blank),
             buttonRetry.setOnClickListener { adapter.retry() }
         }
 
-//        viewModel.photos.observe(viewLifecycleOwner) { //
-//            adapter.submitData(viewLifecycleOwner.lifecycle, it)
-//        }
+        viewModel.photos.observe(viewLifecycleOwner) {
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
 
         adapter.addLoadStateListener { loadState ->
             binding.apply {
@@ -93,7 +90,7 @@ class BlankFragment : Fragment(R.layout.fragment_blank),
 
                 if (query != null) {
                     binding.recyclerView.scrollToPosition(0)
-//                    viewModel.searchPhotos(query) //
+                    viewModel.searchPhotos(query) //
                     searchView.clearFocus()
                 }
                 return true

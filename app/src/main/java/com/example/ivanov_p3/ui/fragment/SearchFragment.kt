@@ -12,11 +12,16 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
+import com.example.ivanov_p3.data.UnsplashPhoto
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
+import com.example.ivanov_p3.ui.GalleryViewModel
 import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.ImagesViewModel
+import com.example.ivanov_p3.ui.UnsplashPhotoAdapter
 import com.example.ivanov_p3.ui.adapter.SearchGridViewAdapter
 import com.example.ivanov_p3.util.GoogleSearchAsyncTask
 import com.example.ivanov_p3.util.view.PreferenceHelper
@@ -30,14 +35,20 @@ lateinit var binding: FragmentSearchBinding
 
 @DelicateCoroutinesApi
 @AndroidEntryPoint
-class SearchFragment: BaseFragment(R.layout.fragment_search) {
+class SearchFragment: BaseFragment(R.layout.fragment_search),
+    UnsplashPhotoAdapter.OnItemClickListener  {
 
+    private lateinit var mGalleryViewModel: GalleryViewModel
     private lateinit var mImagesViewModel: ImagesViewModel
     private lateinit var mHistoryViewModel: HistoryViewModel
     private lateinit var prefs: SharedPreferences
+    private lateinit var gridView: RecyclerView
+    private var numColumns: Int = 1
+    private lateinit var adapter: UnsplashPhotoAdapter
 
     private val args by navArgs<SearchFragmentArgs>()
     private var searchString: String? = null
+
 
 
     override fun onCreateView(
@@ -45,6 +56,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater)
+        mGalleryViewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
         mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         prefs = PreferenceHelper.customPreference(requireContext(), PreferenceHelper.CUSTOM_PREF_NAME)
@@ -54,13 +66,18 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         onClick()
 
         if (prefs.columns) {
-            setTwoColumns()
+            numColumns = 2
         }else {
-            setThreeColumns()
+            numColumns = 3
         }
 
-        val query = prefs.query.toString()
-        setAdapter(requireContext(), query, setWidthHeight())
+        gridView = binding.gridView
+        gridView.layoutManager = GridLayoutManager(requireContext(), numColumns)
+
+//        val query = prefs.query.toString()
+        adapter =
+            UnsplashPhotoAdapter(this)
+        setAdapter()
 
         return binding.root
     }
@@ -98,21 +115,25 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
                 setTwoColumns()
                 prefs.columns = true
             }
-            setAdapter(requireContext(), query, setWidthHeight())
+
+            setAdapter()
         }
     }
 
     private fun setTwoColumns() {
         binding.columnsImage.setImageResource(R.drawable.two_columns)
-        binding.gridView.numColumns = 2
+        numColumns = 2
+        gridView.layoutManager = GridLayoutManager(requireContext(), numColumns)
     }
 
     private fun setThreeColumns() {
         binding.columnsImage.setImageResource(R.drawable.three_columns)
-        binding.gridView.numColumns = 3
+        numColumns = 3
+        gridView.layoutManager = GridLayoutManager(requireContext(), numColumns)
     }
 
     private fun searchImages() {
+
         searchString = binding.editText.text.toString()
         if (searchString == "")
             toast(R.string.enter_the_text)
@@ -121,16 +142,21 @@ class SearchFragment: BaseFragment(R.layout.fragment_search) {
         }else{
             prefs.query = searchString
 
-            val searchTask = GoogleSearchAsyncTask(requireContext(), searchString!!,
-                setWidthHeight(), getCurrentTime(), mHistoryViewModel)
-            searchTask.execute(getUrl(searchString!!))
+            mGalleryViewModel.searchPhotos(searchString!!)
         }
     }
 
-    fun setAdapter(context: Context, query: String, widthHeight: Int) {
-        val adapter =
-            SearchGridViewAdapter(context, query, widthHeight)
-        val gridView = binding.gridView
+
+    private fun setAdapter() {
         gridView.adapter = adapter
+
+        mGalleryViewModel.photos.observe(viewLifecycleOwner) {
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
     }
+
+    override fun onItemClick(photo: UnsplashPhoto) {
+        TODO("Not yet implemented")
+    }
+
 }

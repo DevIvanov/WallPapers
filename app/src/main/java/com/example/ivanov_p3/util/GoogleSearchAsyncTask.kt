@@ -166,7 +166,7 @@ class GoogleSearchAsyncTask(
 
         binding.progressBar.visibility = View.GONE
         val searchFragment = SearchFragment()
-        searchFragment.setAdapter(mContext, query, widthHeight)
+//        searchFragment.setAdapter(mContext, query, widthHeight)
         val history = History(0, query, countImages, currentTime, false)
         mHistoryViewModel.addData(history)
     }
