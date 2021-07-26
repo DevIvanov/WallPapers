@@ -74,14 +74,4 @@ class SearchGridViewAdapter(
         }
         return imageView
     }
-
-    companion object {
-        private val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<UnsplashPhoto>() {
-            override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto) =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto) =
-                oldItem == newItem
-        }
-    }
 }

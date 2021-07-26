@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_searchFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
@@ -113,5 +116,14 @@
         <action
             android:id="@+id/action_fullScreenFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.ivanov_p3.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" >
+        <argument
+            android:name="photo"
+            app:argType="com.example.ivanov_p3.data.UnsplashPhoto" />
     </fragment>
 </navigation>

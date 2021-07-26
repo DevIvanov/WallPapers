@@ -1,7 +1,6 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.KeyEvent
@@ -11,9 +10,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.data.UnsplashPhoto
@@ -22,8 +23,6 @@ import com.example.ivanov_p3.ui.GalleryViewModel
 import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.UnsplashPhotoAdapter
-import com.example.ivanov_p3.ui.adapter.SearchGridViewAdapter
-import com.example.ivanov_p3.util.GoogleSearchAsyncTask
 import com.example.ivanov_p3.util.view.PreferenceHelper
 import com.example.ivanov_p3.util.view.PreferenceHelper.columns
 import com.example.ivanov_p3.util.view.PreferenceHelper.query
@@ -47,7 +46,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
     private lateinit var adapter: UnsplashPhotoAdapter
 
     private val args by navArgs<SearchFragmentArgs>()
-    private var searchString: String? = null
+    private var query: String? = null
 
 
 
@@ -65,18 +64,15 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
         backPressed()
         onClick()
 
+        gridView = binding.gridView
+        adapter = UnsplashPhotoAdapter(this)
+
         if (prefs.columns) {
-            numColumns = 2
+            setTwoColumns()
         }else {
-            numColumns = 3
+            setThreeColumns()
         }
 
-        gridView = binding.gridView
-        gridView.layoutManager = GridLayoutManager(requireContext(), numColumns)
-
-//        val query = prefs.query.toString()
-        adapter =
-            UnsplashPhotoAdapter(this)
         setAdapter()
 
         return binding.root
@@ -107,7 +103,6 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
             searchImages()
         }
         binding.columnsImage.setOnClickListener {
-            val query = prefs.query.toString()
             if (prefs.columns) {
                 setThreeColumns()
                 prefs.columns = false
@@ -115,7 +110,6 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
                 setTwoColumns()
                 prefs.columns = true
             }
-
             setAdapter()
         }
     }
@@ -133,30 +127,31 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
     }
 
     private fun searchImages() {
-
-        searchString = binding.editText.text.toString()
-        if (searchString == "")
+        query = binding.editText.text.toString()
+        if (query == "")
             toast(R.string.enter_the_text)
         else if (!checkInternetConnection()){
             showAlertDialog("",getString(R.string.check_interet))
         }else{
-            prefs.query = searchString
+            prefs.query = query
 
-            mGalleryViewModel.searchPhotos(searchString!!)
+            mGalleryViewModel.searchPhotos(query!!)
         }
-    }
 
+//        val countImages = 100
+//        val history = History(0, query, countImages, getCurrentTime(), false)
+//        mHistoryViewModel.addData(history)
+    }
 
     private fun setAdapter() {
         gridView.adapter = adapter
-
         mGalleryViewModel.photos.observe(viewLifecycleOwner) {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
     }
 
     override fun onItemClick(photo: UnsplashPhoto) {
-        TODO("Not yet implemented")
+        val action = SearchFragmentDirections.actionSearchFragmentToBlankFragment(photo)
+        findNavController().navigate(action)
     }
-
 }

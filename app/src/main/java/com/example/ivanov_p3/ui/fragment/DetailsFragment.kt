@@ -33,13 +33,14 @@ import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.util.Utils
+import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.lang.String
 import kotlin.properties.Delegates
 
-
+@AndroidEntryPoint
 class DetailsFragment : BaseFragment(layout.fragment_details) {
 
     private lateinit var binding: FragmentDetailsBinding
@@ -54,7 +55,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 

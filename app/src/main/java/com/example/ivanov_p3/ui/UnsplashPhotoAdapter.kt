@@ -49,6 +49,7 @@ class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
                 Glide.with(itemView)
                     .load(photo.urls.regular)
                     .centerCrop()
+                    .placeholder(R.drawable.ic_image)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)
                     .into(imageView)
