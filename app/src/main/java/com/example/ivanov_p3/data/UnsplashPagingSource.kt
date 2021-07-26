@@ -12,12 +12,17 @@ class UnsplashPagingSource(
     private val query: String
 ) : PagingSource<Int, UnsplashPhoto>() {
 
+    companion object{
+        var total: String? = ""
+    }
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {
         val position = params.key ?: UNSPLASH_STARTING_PAGE_INDEX
 
         return try {
             val response = unsplashApi.searchPhotos(query, position, params.loadSize)
             val photos = response.results
+            total = response.total
 
             LoadResult.Page(
                 data = photos,

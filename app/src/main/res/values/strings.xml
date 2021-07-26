@@ -18,6 +18,9 @@
     <string name="color">Color</string>
     <string name="date">Date</string>
     <string name="results">results</string>
+    <string name="title_dialog">Select the action</string>
+    <string name="delete_one">Delete item</string>
+    <string name="delete_all">Delete all</string>
 
     <string-array name="monthName_array">
         <item>January</item>

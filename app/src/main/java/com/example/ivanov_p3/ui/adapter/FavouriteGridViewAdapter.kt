@@ -37,7 +37,7 @@ class FavouriteGridViewAdapter(
 
         fun onBind() {
 
-            binding.image.load(imagesList[position].link){
+            binding.image.load(imagesList[position].urlRegular){
                 crossfade(true)
                 crossfade(1000)
                 placeholder(R.drawable.ic_image)

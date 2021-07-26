@@ -3,7 +3,6 @@ package com.example.ivanov_p3.ui.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -17,14 +16,16 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.palette.graphics.Palette
-import coil.ImageLoader
-import coil.load
-import coil.request.ImageRequest
-import coil.request.SuccessResult
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.R.drawable
@@ -32,13 +33,10 @@ import com.example.ivanov_p3.R.layout
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
-import com.example.ivanov_p3.util.Utils
+import com.example.ivanov_p3.util.view.MyDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import java.lang.String
-import kotlin.properties.Delegates
+import kotlinx.android.synthetic.main.favorite_grid_item.*
 
 @AndroidEntryPoint
 class DetailsFragment : BaseFragment(layout.fragment_details) {
@@ -49,7 +47,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
     private lateinit var imageBitmap: Bitmap
     private var popupWindow: PopupWindow? = null
     private var popupWindowInfo: PopupWindow? = null
-    private var hex by Delegates.notNull<Int>()
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -59,29 +57,49 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 
-        binding.imageView.load(args.currentImage.link)
+        var url = ""
 
-        MainScope().launch{
-            val loader = ImageLoader(requireContext())
-            val request = ImageRequest.Builder(requireContext())
-                .data(args.currentImage.link)
-                .allowHardware(false) // Disable hardware bitmaps.
-                .build()
+        if (args.image.urlFull != null)
+            url = args.image.urlFull.toString()
 
-            val result = (loader.execute(request) as SuccessResult).drawable
-            imageBitmap = (result as BitmapDrawable).bitmap
-            hex = Palette.from(imageBitmap).generate().dominantSwatch?.rgb!!
+        binding.apply {
+            Glide.with(this@DetailsFragment)
+                .asBitmap()
+                .load(url)
+                .error(R.drawable.ic_error)
+                .listener(object : RequestListener<Bitmap> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Bitmap>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        progressBarDetails.isVisible = false
+                        onClick()
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Bitmap?,
+                        model: Any?,
+                        target: Target<Bitmap>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        progressBarDetails.isVisible = false
+                        onClick()
+                        imageBitmap = resource as Bitmap
+                        return false
+                    }
+                })
+                .into(imageView)
         }
-
-
 //        if (args.currentImage)
 //        binding.webView.visibility = View.INVISIBLE
 //        val link: String = args.currentImage.link.toString()
 //        binding.webView.loadUrl(link)
 
         setText()
-        onClick()
-
         return binding.root
     }
 
@@ -96,7 +114,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             requireActivity().onBackPressed()
         }
         binding.floatingActionButton.setOnClickListener {
-            val imageEntity = args.currentImage
+            val imageEntity = args.image
             val action = DetailsFragmentDirections.actionDetailsFragmentToFullScreenFragment(imageEntity)
             findNavController().navigate(action)
         }
@@ -177,20 +195,22 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             focusable
         )
 
-        val textSearchLink: TextView = popupView.findViewById(R.id.textSearchLink)
-        textSearchLink.text = args.currentImage.searchLink
+        val textName: TextView = popupView.findViewById(R.id.textName)
+        textName.text = args.image.name
+
+        val textDescription: TextView = popupView.findViewById(R.id.textDescription)
+        textDescription.text = args.image.description
 
         val textDate: TextView = popupView.findViewById(R.id.textDate)
-        val utils = Utils()
-        val date = utils.dateWithMonthName(requireContext(), args.currentImage.date!!)
+        var date = args.image.date
+        date = date?.replaceRange(10, date.length, "")
         textDate.text = date
 
-        val hexColor = String.format("#%06X", 0xFFFFFF and hex)
         val textColor: TextView = popupView.findViewById(R.id.textColor)
-        textColor.text = hexColor
+        textColor.text = args.image.color
 
-        val width = args.currentImage.width
-        val height = args.currentImage.height
+        val width = args.image.width
+        val height = args.image.height
         val textDimens: TextView = popupView.findViewById(R.id.textDimens)
         textDimens.text = "Px: $width x $height"
 
@@ -209,9 +229,9 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun addToFavourite() {
-        val image = Images(0, args.currentImage.link, args.currentImage.date,
-            args.currentImage.width, args.currentImage.height,
-            hex, args.currentImage.searchLink)
+        val image = Images(0, args.image.urlFull, args.image.urlRegular,
+            args.image.date, args.image.width, args.image.height,
+            args.image.color, args.image.name, args.image.description)
         mImagesViewModel.addData(image)
         val icon: Drawable = this.resources.getDrawable(drawable.ic_favorite)
         Toasty.normal(requireContext(), getString(R.string.add_to_favourite), icon)

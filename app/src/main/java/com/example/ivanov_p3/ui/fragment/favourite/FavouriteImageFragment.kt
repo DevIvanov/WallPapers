@@ -13,6 +13,7 @@ import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentFavouriteImageBinding
 import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.FavouriteGridViewAdapter
+import com.example.ivanov_p3.util.view.MyDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,6 +51,5 @@ class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image) {
             setAdapter()
             adapter.setData(images)
         })
-        Log.d("Database", "Adapter set")
     }
 }

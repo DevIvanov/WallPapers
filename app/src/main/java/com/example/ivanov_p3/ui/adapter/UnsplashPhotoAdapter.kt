@@ -1,4 +1,4 @@
-package com.example.ivanov_p3.ui
+package com.example.ivanov_p3.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

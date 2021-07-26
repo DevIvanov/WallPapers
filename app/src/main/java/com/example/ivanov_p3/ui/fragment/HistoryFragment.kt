@@ -1,7 +1,6 @@
 package com.example.ivanov_p3.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,9 +28,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
         mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
 
+        val fragmentManager = childFragmentManager
         adapter = HistoryRecyclerViewAdapter(
             mHistoryViewModel = mHistoryViewModel,
-            mContext = requireContext()
+            mContext = requireContext(),
+            fm = fragmentManager
         )
 
         setAdapter()
@@ -51,6 +52,5 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
             adapter.setData(history)
         })
         binding.recyclerView.scheduleLayoutAnimation()
-        Log.d("Database", "Adapter set")
     }
 }

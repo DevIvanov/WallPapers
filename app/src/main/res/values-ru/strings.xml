@@ -18,6 +18,9 @@
     <string name="color">Цвет</string>
     <string name="date">Дата</string>
     <string name="results">результатов</string>
+    <string name="title_dialog">Выберите действие</string>
+    <string name="delete_one">Удалить элемент</string>
+    <string name="delete_all">Удалить всё</string>
 
     <string-array name="monthName_array">
         <item>Январь</item>

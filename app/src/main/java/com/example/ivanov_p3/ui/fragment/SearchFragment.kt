@@ -14,20 +14,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.database.ImagesEntity
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
+import com.example.ivanov_p3.data.UnsplashPagingSource
 import com.example.ivanov_p3.data.UnsplashPhoto
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
 import com.example.ivanov_p3.ui.GalleryViewModel
 import com.example.ivanov_p3.ui.HistoryViewModel
 import com.example.ivanov_p3.ui.ImagesViewModel
-import com.example.ivanov_p3.ui.UnsplashPhotoAdapter
+import com.example.ivanov_p3.ui.adapter.UnsplashPhotoAdapter
 import com.example.ivanov_p3.util.view.PreferenceHelper
 import com.example.ivanov_p3.util.view.PreferenceHelper.columns
 import com.example.ivanov_p3.util.view.PreferenceHelper.query
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.*
 
 @SuppressLint("StaticFieldLeak")
 lateinit var binding: FragmentSearchBinding
@@ -73,17 +75,12 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
             setThreeColumns()
         }
 
+        val query = prefs.query.toString()
+        mGalleryViewModel.searchPhotos(query)
+
         setAdapter()
 
         return binding.root
-    }
-
-    private fun setWidthHeight(): Int {
-        return if (prefs.columns) {
-            540
-        } else {
-            360
-        }
     }
 
     private fun setText(){
@@ -99,7 +96,6 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
             false
         })
         binding.searchImage.setOnClickListener {
-            hideKeyboard()
             searchImages()
         }
         binding.columnsImage.setOnClickListener {
@@ -128,6 +124,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
 
     private fun searchImages() {
         query = binding.editText.text.toString()
+        hideKeyboard()
         if (query == "")
             toast(R.string.enter_the_text)
         else if (!checkInternetConnection()){
@@ -136,11 +133,18 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
             prefs.query = query
 
             mGalleryViewModel.searchPhotos(query!!)
+            addHistoryInDatabase()
         }
+    }
 
-//        val countImages = 100
-//        val history = History(0, query, countImages, getCurrentTime(), false)
-//        mHistoryViewModel.addData(history)
+    private fun addHistoryInDatabase(){
+        GlobalScope.async(Dispatchers.Main) {
+            delay(1000L)
+            val countImages = UnsplashPagingSource.total!!.toInt()
+
+            val history = History(0, query, countImages, getCurrentTime(), false)
+            mHistoryViewModel.addData(history)
+        }
     }
 
     private fun setAdapter() {
@@ -151,7 +155,9 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
     }
 
     override fun onItemClick(photo: UnsplashPhoto) {
-        val action = SearchFragmentDirections.actionSearchFragmentToBlankFragment(photo)
+        val imageEntity = ImagesEntity(0, photo.urls.full, photo.urls.regular, photo.created_at,
+            photo.width, photo.height, photo.color, photo.user.name, photo.description)
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(imageEntity)
         findNavController().navigate(action)
     }
 }

@@ -75,7 +75,7 @@
             app:nullable="true"
             android:defaultValue=""/>
         <argument
-            android:name="currentImage"
+            android:name="image"
             app:argType="com.example.data.database.ImagesEntity" />
         <action
             android:id="@+id/action_detailsFragment_to_favouritesFragment"

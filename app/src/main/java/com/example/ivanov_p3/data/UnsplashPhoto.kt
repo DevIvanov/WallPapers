@@ -1,6 +1,5 @@
 package com.example.ivanov_p3.data
 
-import android.graphics.Color
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -14,22 +13,22 @@ data class UnsplashPhoto(
     val description: String?,
     val urls: UnsplashPhotoUrls,
     val user: UnsplashUser
-) : Parcelable {
+    ) : Parcelable{
 
-    @Parcelize
-    data class UnsplashPhotoUrls(
-        val raw: String,
-        val full: String,
-        val regular: String,
-        val small: String,
-        val thumb: String
-    ) : Parcelable
+        @Parcelize
+        data class UnsplashPhotoUrls(
+            val raw: String,
+            val full: String,
+            val regular: String,
+            val small: String,
+            val thumb: String
+        ) : Parcelable
 
-    @Parcelize
-    data class UnsplashUser(
-        val name: String,
-        val username: String
-    ) : Parcelable {
-        val attributionUrl get() = "https://unsplash.com/$username?utm_source=Ivanov_P3&utm_medium=referral"
+        @Parcelize
+        data class UnsplashUser(
+            val name: String,
+            val username: String
+        ) : Parcelable {
+            val attributionUrl get() = "https://unsplash.com/$username?utm_source=Ivanov_P3&utm_medium=referral"
+        }
     }
-}

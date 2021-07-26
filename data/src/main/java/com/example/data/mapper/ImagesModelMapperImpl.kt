@@ -7,13 +7,15 @@ import javax.inject.Inject
 
 class ImagesModelMapperImpl @Inject constructor() : ImagesModelMapper<ImagesEntity, Images> {
     override fun fromEntity(from: ImagesEntity): Images {
-        val images = Images(from.id, from.link, from.date, from.width, from.height, from.color, from.searchLink)
+        val images = Images(from.id, from.urlFull, from.urlRegular, from.date, from.width,
+            from.height, from.color, from.name, from.description)
         return images
     }
 
     override fun toEntity(from: Images): ImagesEntity {
         val imagesEntity =
-            ImagesEntity(from.id, from.link, from.date, from.width, from.height, from.color, from.searchLink)
+            ImagesEntity(from.id, from.urlFull, from.urlRegular, from.date, from.width,
+                from.height, from.color, from.name, from.description)
         return imagesEntity
     }
 }

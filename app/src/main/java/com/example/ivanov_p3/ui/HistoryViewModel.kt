@@ -42,7 +42,7 @@ class HistoryViewModel @Inject constructor(val interactor: HInteractor) : ViewMo
         }
     }
 
-    private fun deleteAllData() {
+    fun deleteAllData() {
         viewModelScope.launch {
             interactor.deleteAll()
         }

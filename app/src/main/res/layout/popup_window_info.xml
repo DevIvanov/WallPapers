@@ -16,15 +16,13 @@
         tools:layout_editor_absoluteX="1dp">
 
         <TextView
-            android:id="@+id/textSearchLink"
+            android:id="@+id/textName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/xl"
-            android:layout_marginBottom="@dimen/xl"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/text_xl"
-            app:layout_constraintBottom_toTopOf="@+id/cardColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -66,9 +64,10 @@
 
             <TextView
                 android:id="@+id/textDimens"
+                style="@style/textInfoSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/textInfoSmall"
+                android:layout_marginBottom="@dimen/l"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -112,9 +111,10 @@
 
             <TextView
                 android:id="@+id/textColor"
+                style="@style/textInfoSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/textInfoSmall"
+                android:layout_marginBottom="@dimen/l"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -157,13 +157,26 @@
 
             <TextView
                 android:id="@+id/textDate"
+                style="@style/textInfoSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/textInfoSmall"
+                android:layout_marginBottom="@dimen/l"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m"
+            android:layout_marginBottom="@dimen/m"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/cardColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

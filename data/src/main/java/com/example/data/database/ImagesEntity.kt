@@ -7,16 +7,18 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "images_table", indices = [Index(value = ["link"], unique = true)])
+@Entity(tableName = "images_table") //, indices = [Index(value = ["urlFull"], unique = true)]
 data class ImagesEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val link: String?,
+    val urlFull: String?,
+    val urlRegular: String?,
     val date: String?,
     val width: String?,
     val height: String?,
-    val color: Int,
-    val searchLink: String?
+    val color: String?,
+    val name: String?,
+    val description: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -24,18 +26,22 @@ data class ImagesEntity (
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
-        parcel.writeString(link)
+        parcel.writeString(urlFull)
+        parcel.writeString(urlRegular)
         parcel.writeString(date)
         parcel.writeString(width)
         parcel.writeString(height)
-        parcel.writeInt(color)
-        parcel.writeString(searchLink)
+        parcel.writeString(color)
+        parcel.writeString(name)
+        parcel.writeString(description)
     }
 
     override fun describeContents(): Int {
