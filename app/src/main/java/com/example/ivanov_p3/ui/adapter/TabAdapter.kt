@@ -13,8 +13,8 @@ class TabAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment ?= null
         when (position) {
-            1 -> fragment = FavouriteImageFragment()
-            0 -> fragment = FavouriteQueryFragment()
+            0 -> fragment = FavouriteImageFragment()
+            1 -> fragment = FavouriteQueryFragment()
         }
         return fragment!!
     }

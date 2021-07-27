@@ -24,7 +24,7 @@ abstract class ImagesDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context,
                     ImagesDatabase::class.java,
-                    "images_table"
+                    "image_table"
                 ).build()
                 INSTANCE = instance
                 return instance

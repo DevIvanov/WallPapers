@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImagesDao {
-    @Query("SELECT * FROM images_table ORDER BY id ASC")
+    @Query("SELECT * FROM image_table ORDER BY id ASC")
     fun readAllData(): Flow<List<ImagesEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -18,6 +18,6 @@ interface ImagesDao {
     @Insert
     fun insertAll(items: List<ImagesEntity>)
 
-    @Query("DELETE FROM images_table")
+    @Query("DELETE FROM image_table")
     suspend fun deleteAll()
 }

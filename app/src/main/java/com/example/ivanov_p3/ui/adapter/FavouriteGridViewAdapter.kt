@@ -3,10 +3,15 @@ package com.example.ivanov_p3.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.RoundedCornersTransformation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.example.data.database.ImagesEntity
 import com.example.data.mapper.ImagesModelMapperImpl
 import com.example.domain.model.Images
@@ -35,32 +40,35 @@ class FavouriteGridViewAdapter(
     inner class MyViewHolder(private val binding: FavoriteGridItemBinding) :
         RecyclerView.ViewHolder(binding.root){
 
-        fun onBind() {
+        fun bind() {
+            binding.apply {
+                Glide.with(itemView)
+                    .load(imagesList[position].urlRegular)
+                    .transforms(CenterCrop(), RoundedCorners(20))
+                    .placeholder(R.drawable.ic_image)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .error(R.drawable.ic_error)
+                    .into(image)
 
-            binding.image.load(imagesList[position].urlRegular){
-                crossfade(true)
-                crossfade(1000)
-                placeholder(R.drawable.ic_image)
-                transformations(RoundedCornersTransformation(10f))
-            }
+                itemView.setOnClickListener {
+                    val mapper = ImagesModelMapperImpl()
+                    val imageEntity: ImagesEntity = mapper.toEntity(imagesList[position])
+                    val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageEntity)
+                    itemView.findNavController().navigate(action)
+                }
 
-            itemView.setOnClickListener {
-                val mapper = ImagesModelMapperImpl()
-                val imageEntity: ImagesEntity = mapper.toEntity(imagesList[position])
-                val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageEntity)
-                itemView.findNavController().navigate(action)
-            }
-
-            binding.floatingActionButton2.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    mImagesViewModel.deleteData(imagesList[position])
+                floatingActionButton2.setOnClickListener {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        mImagesViewModel.deleteData(imagesList[position])
+                        Toast.makeText(mContext, R.string.delete_image, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.onBind()
+        holder.bind()
     }
 
     override fun getItemCount(): Int {

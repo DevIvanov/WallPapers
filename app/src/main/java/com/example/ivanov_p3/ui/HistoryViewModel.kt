@@ -1,15 +1,11 @@
 package com.example.ivanov_p3.ui
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interactor.HInteractor
-import com.example.domain.interactor.Interactor
 import com.example.domain.model.History
-import com.example.ivanov_p3.WallpapersApp
-import com.example.ivanov_p3.common.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

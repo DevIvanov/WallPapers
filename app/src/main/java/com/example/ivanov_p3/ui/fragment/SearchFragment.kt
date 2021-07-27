@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.database.ImagesEntity
@@ -151,6 +153,24 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
         gridView.adapter = adapter
         mGalleryViewModel.photos.observe(viewLifecycleOwner) {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+
+        adapter.addLoadStateListener { loadState ->
+            binding.apply {
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                gridView.isVisible = loadState.source.refresh is LoadState.NotLoading
+
+                // empty view
+                if (loadState.source.refresh is LoadState.NotLoading &&
+                    loadState.append.endOfPaginationReached &&
+                    adapter.itemCount < 1
+                ) {
+                    gridView.isVisible = false
+                    textViewEmpty!!.isVisible = true
+                } else {
+                    textViewEmpty!!.isVisible = false
+                }
+            }
         }
     }
 

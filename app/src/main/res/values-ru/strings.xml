@@ -21,6 +21,10 @@
     <string name="title_dialog">Выберите действие</string>
     <string name="delete_one">Удалить элемент</string>
     <string name="delete_all">Удалить всё</string>
+    <string name="delete_image">Изображение удалено</string>
+    <string name="no_results_query">По вашему запросу ничего не найдено</string>
+    <string name="results_could_not_be_loaded">Загрузка не удалась</string>
+    <string name="retry">Повторить</string>
 
     <string-array name="monthName_array">
         <item>Январь</item>

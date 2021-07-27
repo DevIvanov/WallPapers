@@ -168,14 +168,15 @@
 
         <TextView
             android:id="@+id/textDescription"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/m"
             android:layout_marginBottom="@dimen/m"
             android:text="TextView"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/cardColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardSize"
+            app:layout_constraintStart_toStartOf="@+id/cardDate"
             app:layout_constraintTop_toBottomOf="@+id/textName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

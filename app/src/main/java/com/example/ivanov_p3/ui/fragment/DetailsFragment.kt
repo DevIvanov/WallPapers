@@ -57,6 +57,18 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 
+        bindingApply()
+
+//        if (args.currentImage)
+//        binding.webView.visibility = View.INVISIBLE
+//        val link: String = args.currentImage.link.toString()
+//        binding.webView.loadUrl(link)
+
+        setText()
+        return binding.root
+    }
+
+    private fun bindingApply() {
         var url = ""
 
         if (args.image.urlFull != null)
@@ -66,7 +78,6 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
             Glide.with(this@DetailsFragment)
                 .asBitmap()
                 .load(url)
-                .error(R.drawable.ic_error)
                 .listener(object : RequestListener<Bitmap> {
                     override fun onLoadFailed(
                         e: GlideException?,
@@ -75,10 +86,19 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
                         isFirstResource: Boolean
                     ): Boolean {
                         progressBarDetails.isVisible = false
-                        onClick()
+                        layoutError.isVisible = true
+                        backView.setOnClickListener {
+                            requireActivity().onBackPressed()
+                        }
+                        buttonRetry.setOnClickListener {
+                            progressBarDetails.isVisible = true
+                            layoutError.isVisible = false
+                            bindingApply()
+                        }
                         return false
                     }
 
+                    @RequiresApi(Build.VERSION_CODES.Q)
                     override fun onResourceReady(
                         resource: Bitmap?,
                         model: Any?,
@@ -94,13 +114,6 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
                 })
                 .into(imageView)
         }
-//        if (args.currentImage)
-//        binding.webView.visibility = View.INVISIBLE
-//        val link: String = args.currentImage.link.toString()
-//        binding.webView.loadUrl(link)
-
-        setText()
-        return binding.root
     }
 
     private fun setText(){

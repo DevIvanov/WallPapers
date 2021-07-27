@@ -5,9 +5,8 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "images_table") //, indices = [Index(value = ["urlFull"], unique = true)]
+@Entity(tableName = "image_table", indices = [Index(value = ["urlFull"], unique = true)])
 data class ImagesEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long,

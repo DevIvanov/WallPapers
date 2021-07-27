@@ -33,14 +33,14 @@ class HistoryRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.onBind()
+        holder.bind()
     }
 
     inner class MyViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root){
 
         @SuppressLint("SetTextI18n")
-        fun onBind() {
+        fun bind() {
 
             val currentItem: History = historyList[position]
 

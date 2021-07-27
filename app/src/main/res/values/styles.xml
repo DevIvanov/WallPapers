@@ -21,7 +21,6 @@
     <style name="fab">
         <item name="android:layout_marginTop">@dimen/xxxl</item>
         <item name="android:layout_marginEnd">@dimen/xxxl</item>
-        <item name="android:clickable">true</item>
         <item name="android:backgroundTint">@color/white</item>
     </style>
 

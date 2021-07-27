@@ -52,9 +52,7 @@ class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
                     .placeholder(R.drawable.ic_image)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)
-                    .into(imageView)
-
-                textViewUserName.text = photo.user.username
+                    .into(imageViewUnsplash)
             }
         }
     }
