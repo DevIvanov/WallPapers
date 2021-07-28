@@ -24,7 +24,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
 
         val window = requireActivity().window

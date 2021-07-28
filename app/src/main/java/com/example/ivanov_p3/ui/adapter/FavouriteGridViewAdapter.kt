@@ -60,8 +60,8 @@ class FavouriteGridViewAdapter(
                 floatingActionButton2.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
                         mImagesViewModel.deleteData(imagesList[position])
-                        Toast.makeText(mContext, R.string.delete_image, Toast.LENGTH_SHORT).show()
                     }
+                    Toast.makeText(mContext, R.string.delete_image, Toast.LENGTH_SHORT).show()
                 }
             }
         }

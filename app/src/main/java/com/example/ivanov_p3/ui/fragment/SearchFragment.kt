@@ -1,6 +1,5 @@
 package com.example.ivanov_p3.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.KeyEvent
@@ -33,25 +32,22 @@ import com.example.ivanov_p3.util.view.PreferenceHelper.query
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
-@SuppressLint("StaticFieldLeak")
-lateinit var binding: FragmentSearchBinding
-
 @DelicateCoroutinesApi
 @AndroidEntryPoint
 class SearchFragment: BaseFragment(R.layout.fragment_search),
     UnsplashPhotoAdapter.OnItemClickListener  {
 
+    private lateinit var binding: FragmentSearchBinding
     private lateinit var mGalleryViewModel: GalleryViewModel
     private lateinit var mImagesViewModel: ImagesViewModel
     private lateinit var mHistoryViewModel: HistoryViewModel
     private lateinit var prefs: SharedPreferences
     private lateinit var gridView: RecyclerView
-    private var numColumns: Int = 1
     private lateinit var adapter: UnsplashPhotoAdapter
 
     private val args by navArgs<SearchFragmentArgs>()
     private var query: String? = null
-
+    private var numColumns: Int = 1
 
 
     override fun onCreateView(

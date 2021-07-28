@@ -23,10 +23,11 @@
     <string name="delete_all">Delete all</string>
     <string name="delete_image">Image was delete</string>
     <string name="no_results_query">No results found for this query</string>
-    <string name="results_could_not_be_loaded">Results could not be loaded</string>
+    <string name="results_could_not_be_loaded">Image could not be loaded</string>
     <string name="retry">Retry</string>
+    <string name="double_press">Press back again to exit</string>
 
-    <string-array name="monthName_array">
+    <string-array name="month_name_array">
         <item>January</item>
         <item>February</item>
         <item>March</item>

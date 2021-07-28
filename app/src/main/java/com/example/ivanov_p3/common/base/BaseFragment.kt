@@ -51,7 +51,7 @@ abstract class BaseFragment (@LayoutRes layoutId: Int) : Fragment(layoutId) {
         var backPressedTime:Long = 0
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
 
-            val backToast: Toast = Toast.makeText(activity, "Press back again to exit", Toast.LENGTH_SHORT)
+            val backToast: Toast = Toast.makeText(activity, getString(R.string.double_press), Toast.LENGTH_SHORT)
             if (backPressedTime + 1000 > System.currentTimeMillis()) {
                 backToast.cancel()
                 activity?.finish()

@@ -25,8 +25,9 @@
     <string name="no_results_query">По вашему запросу ничего не найдено</string>
     <string name="results_could_not_be_loaded">Загрузка не удалась</string>
     <string name="retry">Повторить</string>
+    <string name="double_press">Для выхода нажмите два раза</string>
 
-    <string-array name="monthName_array">
+    <string-array name="month_name_array">
         <item>Январь</item>
         <item>Февраль</item>
         <item>Март</item>
