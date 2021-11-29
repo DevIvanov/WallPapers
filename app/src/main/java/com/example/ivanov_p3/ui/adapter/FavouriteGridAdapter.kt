@@ -1,6 +1,5 @@
 package com.example.ivanov_p3.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -8,28 +7,33 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.example.data.database.ImagesEntity
 import com.example.data.mapper.ImagesModelMapperImpl
+import com.example.domain.model.History
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.FavoriteGridItemBinding
-import com.example.ivanov_p3.ui.ImagesViewModel
 import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 
-class FavouriteGridViewAdapter(
-    private var imagesList: List<Images> = listOf(),
-    private val mImagesViewModel: ImagesViewModel,
-    val mContext: Context
-    ): RecyclerView.Adapter<FavouriteGridViewAdapter.MyViewHolder>(){
+class FavouriteGridAdapter(
+    private val itemListener: OnItemClickListener,
+    private val deleteListener: OnDeleteClickListener
+    ): RecyclerView.Adapter<FavouriteGridAdapter.MyViewHolder>(){
 
+    private val imagesList: MutableList<Images> = LinkedList()
+
+    fun setData(images: List<Images>) {
+        imagesList.clear()
+        imagesList.addAll(images)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
@@ -40,6 +44,19 @@ class FavouriteGridViewAdapter(
     inner class MyViewHolder(private val binding: FavoriteGridItemBinding) :
         RecyclerView.ViewHolder(binding.root){
 
+        init {
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION)
+                    itemListener.onItemClick(imagesList[position])
+            }
+            binding.fabDelete.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION)
+                    deleteListener.onDeleteClick(imagesList[position])
+            }
+        }
+
         fun bind() {
             binding.apply {
                 Glide.with(itemView)
@@ -49,20 +66,6 @@ class FavouriteGridViewAdapter(
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)
                     .into(image)
-
-                itemView.setOnClickListener {
-                    val mapper = ImagesModelMapperImpl()
-                    val imageEntity: ImagesEntity = mapper.toEntity(imagesList[position])
-                    val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(imageEntity)
-                    itemView.findNavController().navigate(action)
-                }
-
-                floatingActionButton2.setOnClickListener {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        mImagesViewModel.deleteData(imagesList[position])
-                    }
-                    Toast.makeText(mContext, R.string.delete_image, Toast.LENGTH_SHORT).show()
-                }
             }
         }
     }
@@ -75,8 +78,11 @@ class FavouriteGridViewAdapter(
         return imagesList.size
     }
 
-    fun setData(images: List<Images>) {
-        this.imagesList = images
-        notifyDataSetChanged()
+    interface OnItemClickListener {
+        fun onItemClick(item: Images)
+    }
+
+    interface OnDeleteClickListener {
+        fun onDeleteClick(item: Images)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.ivanov_p3.ui
+package com.example.ivanov_p3.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

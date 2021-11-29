@@ -5,33 +5,38 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentFavouriteQueryBinding
-import com.example.ivanov_p3.ui.HistoryViewModel
-import com.example.ivanov_p3.ui.adapter.HistoryFavouriteRecyclerViewAdapter
+import com.example.ivanov_p3.ui.viewmodel.HistoryViewModel
+import com.example.ivanov_p3.ui.adapter.HistoryFavouriteAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query) {
+class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query),
+    HistoryFavouriteAdapter.OnItemClickListener,
+    HistoryFavouriteAdapter.OnFavouriteClickListener{
 
     private lateinit var binding: FragmentFavouriteQueryBinding
-    private lateinit var mHistoryViewModel: HistoryViewModel
-    private lateinit var adapter: HistoryFavouriteRecyclerViewAdapter
+    private val mHistoryViewModel: HistoryViewModel by viewModels()
+    private lateinit var adapter: HistoryFavouriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavouriteQueryBinding.inflate(layoutInflater, container, false)
-        mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
 
-        adapter = HistoryFavouriteRecyclerViewAdapter(
-            mHistoryViewModel = mHistoryViewModel,
-            mContext = requireContext()
+        adapter = HistoryFavouriteAdapter(
+            itemListener = this,
+            favouriteListener = this
         )
 
         setAdapter()
@@ -52,5 +57,23 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query) {
         })
         binding.recyclerView.scheduleLayoutAnimation()
         Log.d("Database", "Adapter set")
+    }
+
+    override fun onItemClick(item: History) {
+        val currentQuery = item.name.toString()
+        val action = FavouritesFragmentDirections.actionFavouritesFragmentToSearchFragment()
+        action.currentQuery = currentQuery
+        findNavController().navigate(action)
+    }
+
+    override fun onFavouriteClick(item: History) {
+        val newItem = History(
+            item.id,
+            item.name,
+            item.count,
+            item.date,
+            !item.favourite
+        )
+        mHistoryViewModel.updateData(newItem)
     }
 }

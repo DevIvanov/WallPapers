@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
-import com.example.ivanov_p3.ui.HistoryViewModel
+import com.example.ivanov_p3.ui.viewmodel.HistoryViewModel
 
 
 class MyDialogFragment(var itemsToSelect: Array<String>,

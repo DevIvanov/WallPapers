@@ -17,8 +17,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -32,8 +31,7 @@ import com.example.ivanov_p3.R.drawable
 import com.example.ivanov_p3.R.layout
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentDetailsBinding
-import com.example.ivanov_p3.ui.ImagesViewModel
-import com.example.ivanov_p3.util.view.MyDialogFragment
+import com.example.ivanov_p3.ui.viewmodel.ImagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.favorite_grid_item.*
@@ -43,7 +41,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
 
     private lateinit var binding: FragmentDetailsBinding
     private val args by navArgs<DetailsFragmentArgs>()
-    private lateinit var mImagesViewModel: ImagesViewModel
+    private val mImagesViewModel: ImagesViewModel by viewModels()
     private lateinit var imageBitmap: Bitmap
     private var popupWindow: PopupWindow? = null
     private var popupWindowInfo: PopupWindow? = null
@@ -55,15 +53,8 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
-        mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
 
         bindingApply()
-
-//        if (args.currentImage)
-//        binding.webView.visibility = View.INVISIBLE
-//        val link: String = args.currentImage.link.toString()
-//        binding.webView.loadUrl(link)
-
         setText()
         return binding.root
     }
@@ -112,7 +103,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
                         return false
                     }
                 })
-                .into(imageView)
+                .into(imgFavourite)
         }
     }
 
@@ -126,7 +117,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         binding.backView.setOnClickListener {
             requireActivity().onBackPressed()
         }
-        binding.floatingActionButton.setOnClickListener {
+        binding.fabFullScreen.setOnClickListener {
             val imageEntity = args.image
             val action = DetailsFragmentDirections.actionDetailsFragmentToFullScreenFragment(imageEntity)
             findNavController().navigate(action)

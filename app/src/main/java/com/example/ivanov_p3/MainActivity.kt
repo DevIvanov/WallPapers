@@ -1,4 +1,4 @@
-package com.example.ivanov_p3.ui
+package com.example.ivanov_p3
 
 import android.os.Bundle
 import android.view.View

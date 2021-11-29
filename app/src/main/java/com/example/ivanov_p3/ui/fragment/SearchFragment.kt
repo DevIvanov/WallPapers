@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,9 +23,9 @@ import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.data.UnsplashPagingSource
 import com.example.ivanov_p3.data.UnsplashPhoto
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
-import com.example.ivanov_p3.ui.GalleryViewModel
-import com.example.ivanov_p3.ui.HistoryViewModel
-import com.example.ivanov_p3.ui.ImagesViewModel
+import com.example.ivanov_p3.ui.viewmodel.GalleryViewModel
+import com.example.ivanov_p3.ui.viewmodel.HistoryViewModel
+import com.example.ivanov_p3.ui.viewmodel.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.UnsplashPhotoAdapter
 import com.example.ivanov_p3.util.view.PreferenceHelper
 import com.example.ivanov_p3.util.view.PreferenceHelper.columns
@@ -38,9 +39,9 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
     UnsplashPhotoAdapter.OnItemClickListener  {
 
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var mGalleryViewModel: GalleryViewModel
-    private lateinit var mImagesViewModel: ImagesViewModel
-    private lateinit var mHistoryViewModel: HistoryViewModel
+    private val mGalleryViewModel: GalleryViewModel by viewModels()
+    private val mImagesViewModel: ImagesViewModel by viewModels()
+    private val mHistoryViewModel: HistoryViewModel by viewModels()
     private lateinit var prefs: SharedPreferences
     private lateinit var gridView: RecyclerView
     private lateinit var adapter: UnsplashPhotoAdapter
@@ -55,23 +56,19 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater)
-        mGalleryViewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
-        mImagesViewModel = ViewModelProvider(this).get(ImagesViewModel::class.java)
-        mHistoryViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         prefs = PreferenceHelper.customPreference(requireContext(), PreferenceHelper.CUSTOM_PREF_NAME)
+        adapter = UnsplashPhotoAdapter(this)
 
         setText()
         backPressed()
         onClick()
 
         gridView = binding.gridView
-        adapter = UnsplashPhotoAdapter(this)
 
-        if (prefs.columns) {
+        if (prefs.columns)
             setTwoColumns()
-        }else {
+        else
             setThreeColumns()
-        }
 
         val query = prefs.query.toString()
         mGalleryViewModel.searchPhotos(query)
@@ -136,13 +133,10 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
     }
 
     private fun addHistoryInDatabase(){
-        GlobalScope.async(Dispatchers.Main) {
-            delay(1000L)
-            val countImages = UnsplashPagingSource.total!!.toInt()
+        val countImages = UnsplashPagingSource.total!!.toInt()
 
-            val history = History(0, query, countImages, getCurrentTime(), false)
-            mHistoryViewModel.addData(history)
-        }
+        val history = History(0, query, countImages, getCurrentTime(), false)
+        mHistoryViewModel.addData(history)
     }
 
     private fun setAdapter() {
@@ -156,7 +150,6 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
                 progressBar.isVisible = loadState.source.refresh is LoadState.Loading
                 gridView.isVisible = loadState.source.refresh is LoadState.NotLoading
 
-                // empty view
                 if (loadState.source.refresh is LoadState.NotLoading &&
                     loadState.append.endOfPaginationReached &&
                     adapter.itemCount < 1

@@ -53,28 +53,30 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
                         return false
                     }
                 })
-                .into(imageView)
+                .into(imgFavourite)
         }
 
         val window = requireActivity().window
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or SYSTEM_UI_FLAG_FULLSCREEN)
+        window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_FULLSCREEN)
+//        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                or SYSTEM_UI_FLAG_FULLSCREEN)
 
         onClick()
         return binding.root
     }
 
     private fun onClick() {
-        binding.floatingActionButton.setOnClickListener {
+        binding.fabFullScreen.setOnClickListener {
             requireActivity().onBackPressed()
+//            navigate(FullScreenFragmentDirections.actionFullScreenFragmentToDetailsFragment(args.currentImage))
         }
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         val window = requireActivity().window
         window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         window.decorView.systemUiVisibility = DEFAULT_BUFFER_SIZE
+        super.onDestroyView()
     }
 }

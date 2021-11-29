@@ -31,7 +31,7 @@
         tools:text="@tools:sample/lorem[4:10]" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgFavourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/l"

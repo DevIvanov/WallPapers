@@ -46,7 +46,7 @@
 <!--        app:layout_constraintTop_toBottomOf="@+id/imageView"/>-->
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgFavourite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/bottom_nav_height"
@@ -59,7 +59,7 @@
         tools:src="@tools:sample/avatars" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/fabFullScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/fab"
@@ -118,7 +118,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imgFavourite"
         app:layout_constraintStart_toStartOf="@+id/settingLayout" />
 
     <ProgressBar

@@ -37,9 +37,8 @@ class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = getItem(position)
-                    if (item != null) {
+                    if (item != null)
                         listener.onItemClick(item)
-                    }
                 }
             }
         }

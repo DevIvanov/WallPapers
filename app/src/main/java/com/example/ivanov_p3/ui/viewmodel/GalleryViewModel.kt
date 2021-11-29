@@ -1,13 +1,11 @@
-package com.example.ivanov_p3.ui
+package com.example.ivanov_p3.ui.viewmodel
 
 import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.example.ivanov_p3.api.UnsplashResponse
 import com.example.ivanov_p3.data.UnsplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
