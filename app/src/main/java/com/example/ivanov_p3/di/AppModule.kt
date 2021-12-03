@@ -11,7 +11,7 @@ import com.example.data.repository.HistoryRepository
 import com.example.data.repository.ImagesRepository
 import com.example.domain.repository.HRepository
 import com.example.domain.repository.Repository
-import com.example.ivanov_p3.api.UnsplashApi
+import com.example.data.network.api.UnsplashApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

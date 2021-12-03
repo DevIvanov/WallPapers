@@ -52,5 +52,4 @@ class ImagesViewModel @Inject constructor(val interactor: Interactor) : ViewMode
             addAllData(imagesList)
         }
     }
-
 }

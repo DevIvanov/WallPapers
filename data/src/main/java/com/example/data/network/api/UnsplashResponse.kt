@@ -1,6 +1,6 @@
-package com.example.ivanov_p3.api
+package com.example.data.network.api
 
-import com.example.ivanov_p3.data.UnsplashPhoto
+import com.example.data.network.data.UnsplashPhoto
 
 data class UnsplashResponse(
     val total: String?,

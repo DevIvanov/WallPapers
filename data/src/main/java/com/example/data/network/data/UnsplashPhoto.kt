@@ -1,4 +1,4 @@
-package com.example.ivanov_p3.data
+package com.example.data.network.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

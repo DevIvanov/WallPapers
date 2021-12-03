@@ -10,23 +10,22 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.database.ImagesEntity
+import com.example.data.network.data.UnsplashPagingSource
+import com.example.data.network.data.UnsplashPhoto
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
-import com.example.ivanov_p3.data.UnsplashPagingSource
-import com.example.ivanov_p3.data.UnsplashPhoto
 import com.example.ivanov_p3.databinding.FragmentSearchBinding
+import com.example.ivanov_p3.ui.adapter.UnsplashPhotoAdapter
 import com.example.ivanov_p3.ui.viewmodel.GalleryViewModel
 import com.example.ivanov_p3.ui.viewmodel.HistoryViewModel
 import com.example.ivanov_p3.ui.viewmodel.ImagesViewModel
-import com.example.ivanov_p3.ui.adapter.UnsplashPhotoAdapter
 import com.example.ivanov_p3.util.view.PreferenceHelper
 import com.example.ivanov_p3.util.view.PreferenceHelper.columns
 import com.example.ivanov_p3.util.view.PreferenceHelper.query
@@ -40,7 +39,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
 
     private lateinit var binding: FragmentSearchBinding
     private val mGalleryViewModel: GalleryViewModel by viewModels()
-    private val mImagesViewModel: ImagesViewModel by viewModels()
+//    private val mImagesViewModel: ImagesViewModel by viewModels()
     private val mHistoryViewModel: HistoryViewModel by viewModels()
     private lateinit var prefs: SharedPreferences
     private lateinit var gridView: RecyclerView

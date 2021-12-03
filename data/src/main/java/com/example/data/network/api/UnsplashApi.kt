@@ -1,7 +1,6 @@
-package com.example.ivanov_p3.api
+package com.example.data.network.api
 
-
-import com.example.ivanov_p3.BuildConfig
+import com.example.data.BuildConfig
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query

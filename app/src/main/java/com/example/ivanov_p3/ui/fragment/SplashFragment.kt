@@ -10,10 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentSplashBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 

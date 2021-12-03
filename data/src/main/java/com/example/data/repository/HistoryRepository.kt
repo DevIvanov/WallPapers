@@ -33,7 +33,4 @@ class HistoryRepository @Inject constructor(
     override suspend fun deleteAll() {
         historyDao.deleteAll()
     }
-
-
-
 }

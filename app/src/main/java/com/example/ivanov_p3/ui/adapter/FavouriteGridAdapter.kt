@@ -2,23 +2,14 @@ package com.example.ivanov_p3.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.data.database.ImagesEntity
-import com.example.data.mapper.ImagesModelMapperImpl
-import com.example.domain.model.History
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.FavoriteGridItemBinding
-import com.example.ivanov_p3.ui.fragment.favourite.FavouritesFragmentDirections
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 
 

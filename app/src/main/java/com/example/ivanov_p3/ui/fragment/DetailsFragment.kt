@@ -34,7 +34,6 @@ import com.example.ivanov_p3.databinding.FragmentDetailsBinding
 import com.example.ivanov_p3.ui.viewmodel.ImagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.favorite_grid_item.*
 
 @AndroidEntryPoint
 class DetailsFragment : BaseFragment(layout.fragment_details) {

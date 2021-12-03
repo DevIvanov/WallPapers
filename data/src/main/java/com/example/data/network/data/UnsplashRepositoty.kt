@@ -1,9 +1,9 @@
-package com.example.ivanov_p3.data
+package com.example.data.network.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
-import com.example.ivanov_p3.api.UnsplashApi
+import com.example.data.network.api.UnsplashApi
 import javax.inject.Inject
 import javax.inject.Singleton
 

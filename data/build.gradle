@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -17,6 +18,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String", "UNSPLASH_ACCESS_KEY", unsplash_access_key)
     }
 
     buildTypes {
@@ -36,6 +39,9 @@ android {
 
 dependencies {
     implementation project(':domain')
+
+    // Paging 3
+    implementation "androidx.paging:paging-runtime:$pagingVersion"
 
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.37"

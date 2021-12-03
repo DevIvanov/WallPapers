@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.data.network.data.UnsplashPhoto
 import com.example.ivanov_p3.R
-import com.example.ivanov_p3.data.UnsplashPhoto
 import com.example.ivanov_p3.databinding.ItemUnsplashPhotoBinding
 
 class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :

@@ -1,7 +1,7 @@
-package com.example.ivanov_p3.data
+package com.example.data.network.data
 
 import androidx.paging.PagingSource
-import com.example.ivanov_p3.api.UnsplashApi
+import com.example.data.network.api.UnsplashApi
 import retrofit2.HttpException
 import java.io.IOException
 

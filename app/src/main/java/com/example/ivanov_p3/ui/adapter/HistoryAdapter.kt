@@ -3,12 +3,10 @@ package com.example.ivanov_p3.ui.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.databinding.RecyclerViewItemBinding
-import com.example.ivanov_p3.ui.fragment.HistoryFragmentDirections
 import com.example.ivanov_p3.util.Utils
 import java.util.*
 

@@ -7,16 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.History
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentFavouriteQueryBinding
-import com.example.ivanov_p3.ui.viewmodel.HistoryViewModel
 import com.example.ivanov_p3.ui.adapter.HistoryFavouriteAdapter
+import com.example.ivanov_p3.ui.viewmodel.HistoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -4,26 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.data.database.ImagesEntity
 import com.example.data.mapper.ImagesModelMapperImpl
-import com.example.domain.model.History
 import com.example.domain.model.Images
 import com.example.ivanov_p3.R
 import com.example.ivanov_p3.common.base.BaseFragment
 import com.example.ivanov_p3.databinding.FragmentFavouriteImageBinding
-import com.example.ivanov_p3.ui.viewmodel.ImagesViewModel
 import com.example.ivanov_p3.ui.adapter.FavouriteGridAdapter
+import com.example.ivanov_p3.ui.viewmodel.ImagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image),
