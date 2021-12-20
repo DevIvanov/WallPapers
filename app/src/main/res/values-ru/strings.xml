@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Wallpapers</string>
+
+    <string name="search_hint">Москва</string>
+    <string name="search">Поиск</string>
+    <string name="favorite">Избранное</string>
+    <string name="history">История</string>
+    <string name="set_wallpaper">Установить как обои рабочего стола</string>
+    <string name="set_splash_screen">Установить на заставку экрана блокировки</string>
+    <string name="save_to_favourite">Сохранить в избранное</string>
+    <string name="wallpaper_set">Обои установлены!</string>
+    <string name="splash_screen_set">Заставка установлена!</string>
+    <string name="unsupported_version">Неподдерживаемая версия устройства!</string>
+    <string name="add_to_favourite">Добавлено в избранное!</string>
+    <string name="enter_the_text">Введите текст!</string>
+    <string name="check_interet">ПРОВЕРЬТЕ ИНТЕРНЕТ!</string>
+    <string name="dimens">Размеры</string>
+    <string name="color">Цвет</string>
+    <string name="date">Дата</string>
+    <string name="results">результатов</string>
+    <string name="title_dialog">Выберите действие</string>
+    <string name="delete_one">Удалить элемент</string>
+    <string name="delete_all">Удалить всё</string>
+    <string name="delete_image">Изображение удалено</string>
+    <string name="no_results_query">По вашему запросу ничего не найдено</string>
+    <string name="results_could_not_be_loaded">Загрузка не удалась</string>
+    <string name="retry">Повторить</string>
+    <string name="double_press">Для выхода нажмите два раза</string>
+
+    <string-array name="month_name_array">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+</resources>

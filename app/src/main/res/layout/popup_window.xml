@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
+        android:background="@color/transparent" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/popup_line_height"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/m"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageWallpaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_image" />
+
+        <TextView
+            android:id="@+id/textWallpaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_wallpaper"
+            android:layout_marginStart="@dimen/m"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/splashScreen"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/popup_line_height"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/m"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageSplashScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_image" />
+
+        <TextView
+            android:id="@+id/textSplashScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_splash_screen"
+            android:layout_marginStart="@dimen/m"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/favourite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/popup_line_height"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/m"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageFavourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_favorite" />
+
+        <TextView
+            android:id="@+id/textFavourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_to_favourite"
+            android:layout_marginStart="@dimen/m"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>
