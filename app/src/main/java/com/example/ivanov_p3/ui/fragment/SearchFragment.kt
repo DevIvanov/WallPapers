@@ -25,7 +25,6 @@ import com.example.ivanov_p3.databinding.FragmentSearchBinding
 import com.example.ivanov_p3.ui.adapter.UnsplashPhotoAdapter
 import com.example.ivanov_p3.ui.viewmodel.GalleryViewModel
 import com.example.ivanov_p3.ui.viewmodel.HistoryViewModel
-import com.example.ivanov_p3.ui.viewmodel.ImagesViewModel
 import com.example.ivanov_p3.util.view.PreferenceHelper
 import com.example.ivanov_p3.util.view.PreferenceHelper.columns
 import com.example.ivanov_p3.util.view.PreferenceHelper.query
@@ -38,15 +37,14 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
     UnsplashPhotoAdapter.OnItemClickListener  {
 
     private lateinit var binding: FragmentSearchBinding
-    private val mGalleryViewModel: GalleryViewModel by viewModels()
-//    private val mImagesViewModel: ImagesViewModel by viewModels()
-    private val mHistoryViewModel: HistoryViewModel by viewModels()
+    private val galleryViewModel: GalleryViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var prefs: SharedPreferences
     private lateinit var gridView: RecyclerView
     private lateinit var adapter: UnsplashPhotoAdapter
 
     private val args by navArgs<SearchFragmentArgs>()
-    private var query: String? = null
+    private var query = ""
     private var numColumns: Int = 1
 
 
@@ -70,7 +68,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
             setThreeColumns()
 
         val query = prefs.query.toString()
-        mGalleryViewModel.searchPhotos(query)
+        galleryViewModel.searchPhotos(query)
 
         setAdapter()
 
@@ -126,7 +124,7 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
         }else{
             prefs.query = query
 
-            mGalleryViewModel.searchPhotos(query!!)
+            galleryViewModel.searchPhotos(query)
             addHistoryInDatabase()
         }
     }
@@ -135,12 +133,12 @@ class SearchFragment: BaseFragment(R.layout.fragment_search),
         val countImages = UnsplashPagingSource.total!!.toInt()
 
         val history = History(0, query, countImages, getCurrentTime(), false)
-        mHistoryViewModel.addData(history)
+        historyViewModel.addData(history)
     }
 
     private fun setAdapter() {
         gridView.adapter = adapter
-        mGalleryViewModel.photos.observe(viewLifecycleOwner) {
+        galleryViewModel.photos.observe(viewLifecycleOwner) {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
 

@@ -7,13 +7,10 @@ import javax.inject.Inject
 
 class HistoryModelMapperImpl @Inject constructor()  : HistoryModelMapper<HistoryEntity, History> {
     override fun fromEntity(from: HistoryEntity): History {
-        val history = History(from.id, from.name, from.count, from.date, from.favourite)
-        return history
+        return History(from.id, from.name, from.count, from.date, from.favourite)
     }
 
     override fun toEntity(from: History): HistoryEntity {
-        val historyEntity =
-            HistoryEntity(from.id, from.name, from.count, from.date, from.favourite)
-        return historyEntity
+        return HistoryEntity(from.id, from.name, from.count, from.date, from.favourite)
     }
 }

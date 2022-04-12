@@ -24,7 +24,7 @@ class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image),
     FavouriteGridAdapter.OnDeleteClickListener{
 
     private lateinit var binding: FragmentFavouriteImageBinding
-    private val mImagesViewModel: ImagesViewModel by viewModels()
+    private val imagesViewModel: ImagesViewModel by viewModels()
     private lateinit var adapter: FavouriteGridAdapter
 
     override fun onCreateView(
@@ -49,7 +49,7 @@ class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image),
     }
 
     private fun readData() {
-        mImagesViewModel.readAllData.observe(viewLifecycleOwner, Observer { images ->
+        imagesViewModel.readAllData.observe(viewLifecycleOwner, Observer { images ->
             adapter.setData(images)
         })
     }
@@ -62,7 +62,7 @@ class FavouriteImageFragment : BaseFragment(R.layout.fragment_favourite_image),
     }
 
     override fun onDeleteClick(item: Images) {
-        mImagesViewModel.deleteData(item)
+        imagesViewModel.deleteData(item)
         toast(R.string.delete_image)
     }
 }

@@ -7,11 +7,11 @@ import com.example.data.database.ImagesDao
 import com.example.data.database.ImagesDatabase
 import com.example.data.mapper.HistoryModelMapperImpl
 import com.example.data.mapper.ImagesModelMapperImpl
+import com.example.data.network.api.UnsplashApi
 import com.example.data.repository.HistoryRepository
 import com.example.data.repository.ImagesRepository
 import com.example.domain.repository.HRepository
 import com.example.domain.repository.Repository
-import com.example.data.network.api.UnsplashApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,7 +49,10 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun getRepositoryImages(roomDatabase: ImagesDatabase, mapperImpl: ImagesModelMapperImpl): Repository {
+    fun getRepositoryImages(
+        roomDatabase: ImagesDatabase,
+        mapperImpl: ImagesModelMapperImpl
+    ): Repository {
         return ImagesRepository(roomDatabase.imagesDao(), mapperImpl)
     }
 
@@ -69,7 +72,10 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun getRepositoryHistory(roomDatabase: HistoryDatabase, mapperImpl: HistoryModelMapperImpl): HRepository {
+    fun getRepositoryHistory(
+        roomDatabase: HistoryDatabase,
+        mapperImpl: HistoryModelMapperImpl
+    ): HRepository {
         return HistoryRepository(roomDatabase.historyDao(), mapperImpl)
     }
 

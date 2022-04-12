@@ -23,7 +23,7 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query),
     HistoryFavouriteAdapter.OnFavouriteClickListener{
 
     private lateinit var binding: FragmentFavouriteQueryBinding
-    private val mHistoryViewModel: HistoryViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var adapter: HistoryFavouriteAdapter
 
     override fun onCreateView(
@@ -49,12 +49,12 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query),
     }
 
     private fun readDataFromDatabase() {
-        mHistoryViewModel.readAllData.observe(viewLifecycleOwner, Observer { history ->
+        historyViewModel.readAllData.observe(viewLifecycleOwner, Observer { history ->
             val favouriteList = history.filter { it.favourite }
             adapter.setData(favouriteList)
         })
         binding.recyclerView.scheduleLayoutAnimation()
-        Log.d("Database", "Adapter set")
+        Log.i("Database", "Adapter set")
     }
 
     override fun onItemClick(item: History) {
@@ -72,6 +72,6 @@ class FavouriteQueryFragment : BaseFragment(R.layout.fragment_favourite_query),
             item.date,
             !item.favourite
         )
-        mHistoryViewModel.updateData(newItem)
+        historyViewModel.updateData(newItem)
     }
 }

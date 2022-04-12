@@ -1,5 +1,6 @@
 package com.example.ivanov_p3.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ class HistoryFavouriteAdapter(
 
     private val favouriteList: MutableList<History> = LinkedList()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(list: List<History>) {
         favouriteList.clear()
         favouriteList.addAll(list)
@@ -50,11 +52,12 @@ class HistoryFavouriteAdapter(
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun onBind() {
-            val currentItem: History = favouriteList[position]
+            val currentItem: History = favouriteList[bindingAdapterPosition]
 
             val utils = Utils()
-            val date = utils.dateWithMonthName(itemView.context, currentItem.date!!)
+            val date = utils.dateWithMonthName(itemView.context, currentItem.date)
 
             if (currentItem.favourite) {
                 binding.nameTextView.text = currentItem.name

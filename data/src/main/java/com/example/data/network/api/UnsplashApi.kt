@@ -7,16 +7,23 @@ import retrofit2.http.Query
 
 interface UnsplashApi {
 
+    @Headers(HEADER_1, HEADER_2)
+    @GET(GET)
+    suspend fun searchPhotos(
+        @Query(QUERY) query: String,
+        @Query(PAGE) page: Int,
+        @Query(PER_PAGE) perPage: Int
+    ): UnsplashResponse
+
     companion object {
         const val BASE_URL = "https://api.unsplash.com/"
-        const val CLIENT_ID = BuildConfig.UNSPLASH_ACCESS_KEY
-    }
+        private const val CLIENT_ID = BuildConfig.UNSPLASH_ACCESS_KEY
 
-    @Headers("Accept-Version: v1", "Authorization: Client-ID $CLIENT_ID")
-    @GET("search/photos")
-    suspend fun searchPhotos(
-        @Query("query") query: String,
-        @Query("page") page: Int,
-        @Query("per_page") perPage: Int
-    ): UnsplashResponse
+        const val HEADER_1 = "Accept-Version: v1"
+        const val HEADER_2 = "Authorization: Client-ID $CLIENT_ID"
+        const val GET = "search/photos"
+        const val QUERY = "query"
+        const val PAGE = "page"
+        const val PER_PAGE = "per_page"
+    }
 }

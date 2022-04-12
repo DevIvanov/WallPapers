@@ -22,6 +22,5 @@
         android:background="@drawable/background_bottom_menu"
         android:elevation="@dimen/m"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp"
         app:menu="@menu/bottom_menu"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

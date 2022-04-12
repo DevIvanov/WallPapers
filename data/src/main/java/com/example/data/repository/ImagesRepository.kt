@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ImagesRepository @Inject constructor(
-    val imagesDao: ImagesDao,
-    val mapper: ImagesModelMapperImpl
+    private val imagesDao: ImagesDao,
+    private val mapper: ImagesModelMapperImpl
 ) : Repository{
 
 
@@ -32,7 +32,7 @@ class ImagesRepository @Inject constructor(
     }
 
     override suspend fun insertAll(images: List<Images>) {
-        var imagesEntity: List<ImagesEntity> = images.map { mapper.toEntity(it) }
+        val imagesEntity: List<ImagesEntity> = images.map { mapper.toEntity(it) }
             imagesDao.insertAll(imagesEntity)
     }
 }

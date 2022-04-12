@@ -12,13 +12,9 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ImagesViewModel @Inject constructor(val interactor: Interactor) : ViewModel() {
+class ImagesViewModel @Inject constructor(private val interactor: Interactor) : ViewModel() {
 
-    val readAllData: LiveData<List<Images>>
-
-    init {
-        readAllData = interactor.readAll().asLiveData()
-    }
+    val readAllData: LiveData<List<Images>> = interactor.readAll().asLiveData()
 
     fun addData(image: Images) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,27 +25,6 @@ class ImagesViewModel @Inject constructor(val interactor: Interactor) : ViewMode
     fun deleteData(image: Images) {
         viewModelScope.launch(Dispatchers.IO) {
             interactor.delete(image)
-        }
-    }
-
-    private fun addAllData(images: List<Images>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            interactor.insertAll(images)
-        }
-    }
-
-    private fun deleteAllData() {
-        viewModelScope.launch {
-            interactor.deleteAll()
-        }
-    }
-
-    @DelicateCoroutinesApi
-    fun insertData(imagesList: List<Images>) {
-        GlobalScope.async(Dispatchers.Main) {
-            deleteAllData()
-            delay(10L)
-            addAllData(imagesList)
         }
     }
 }

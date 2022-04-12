@@ -1,5 +1,6 @@
 package com.example.ivanov_p3.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ class FavouriteGridAdapter(
 
     private val imagesList: MutableList<Images> = LinkedList()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(images: List<Images>) {
         imagesList.clear()
         imagesList.addAll(images)
@@ -51,8 +53,8 @@ class FavouriteGridAdapter(
         fun bind() {
             binding.apply {
                 Glide.with(itemView)
-                    .load(imagesList[position].urlRegular)
-                    .transforms(CenterCrop(), RoundedCorners(20))
+                    .load(imagesList[bindingAdapterPosition].urlRegular)
+                    .transform(CenterCrop(), RoundedCorners(20))
                     .placeholder(R.drawable.ic_image)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)

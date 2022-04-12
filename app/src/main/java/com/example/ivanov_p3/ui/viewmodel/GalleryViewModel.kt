@@ -1,7 +1,6 @@
 package com.example.ivanov_p3.ui.viewmodel
 
-import androidx.hilt.Assisted
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
@@ -12,12 +11,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GalleryViewModel @Inject constructor(
-    private val repository: UnsplashRepository,
-    @Assisted state: SavedStateHandle
+    private val repository: UnsplashRepository
 ) : ViewModel() {
 
-    @JvmField
-    var currentQuery = state.getLiveData(CURRENT_QUERY, DEFAULT_QUERY)
+    var currentQuery = MutableLiveData<String>().apply {
+            value = DEFAULT_QUERY
+    }
 
     val photos = currentQuery.switchMap { queryString ->
         repository.getSearchResults(queryString).cachedIn(viewModelScope)
@@ -28,7 +27,6 @@ class GalleryViewModel @Inject constructor(
     }
 
     companion object {
-        private const val CURRENT_QUERY = "current_query"
         private const val DEFAULT_QUERY = "cats"
     }
 }

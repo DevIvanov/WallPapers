@@ -15,7 +15,6 @@ import kotlinx.coroutines.delay
 class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
     private lateinit var binding: FragmentSplashBinding
-    private val SPLASH_TIME_OUT = 1500L
 
 
     override fun onCreateView(
@@ -42,5 +41,9 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
         val window = requireActivity().window
         window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         window.decorView.systemUiVisibility = DEFAULT_BUFFER_SIZE
+    }
+
+    companion object {
+        private const val SPLASH_TIME_OUT = 1500L
     }
 }

@@ -40,7 +40,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
 
     private lateinit var binding: FragmentDetailsBinding
     private val args by navArgs<DetailsFragmentArgs>()
-    private val mImagesViewModel: ImagesViewModel by viewModels()
+    private val imagesViewModel: ImagesViewModel by viewModels()
     private lateinit var imageBitmap: Bitmap
     private var popupWindow: PopupWindow? = null
     private var popupWindowInfo: PopupWindow? = null
@@ -235,7 +235,7 @@ class DetailsFragment : BaseFragment(layout.fragment_details) {
         val image = Images(0, args.image.urlFull, args.image.urlRegular,
             args.image.date, args.image.width, args.image.height,
             args.image.color, args.image.name, args.image.description)
-        mImagesViewModel.addData(image)
+        imagesViewModel.addData(image)
         val icon: Drawable = this.resources.getDrawable(drawable.ic_favorite)
         Toasty.normal(requireContext(), getString(R.string.add_to_favourite), icon)
         .show()

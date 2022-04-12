@@ -3,17 +3,12 @@ package com.example.ivanov_p3.util.view
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 
 object PreferenceHelper {
 
     const val CUSTOM_PREF_NAME = "User_data"
-    private const val USER_STATE = "USER_STATE"
     private const val USER_QUERY= "USER_QUERY"
     private const val USER_COLUMNS= "USER_COLUMNS"
-
-    fun defaultPreference(context: Context): SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
 
     fun customPreference(context: Context, name: String): SharedPreferences =
         context.getSharedPreferences(name, Context.MODE_PRIVATE)
@@ -23,14 +18,6 @@ object PreferenceHelper {
         operation(editMe)
         editMe.apply()
     }
-
-    var SharedPreferences.state
-        get() = getBoolean(USER_STATE, false)
-        set(value) {
-            editMe {
-                it.putBoolean(USER_STATE, value)
-            }
-        }
 
     var SharedPreferences.query
         get() = getString(USER_QUERY, "")

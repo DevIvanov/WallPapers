@@ -59,13 +59,14 @@ class HistoryAdapter(
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind() {
-            val currentItem: History = historyList[position]
+            val currentItem: History = historyList[bindingAdapterPosition]
 
             binding.nameTextView.text = currentItem.name
 
             val utils = Utils()
-            val date = utils.dateWithMonthName(itemView.context, currentItem.date!!)
+            val date = utils.dateWithMonthName(itemView.context, currentItem.date)
 
             binding.infoTextView.text = "${currentItem.count} ${itemView.context.getString(R.string.results)}, $date"
             if (currentItem.favourite)

@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 data class HistoryEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val name: String?,
+    val name: String,
     val count: Int,
-    val date: String?,
+    val date: String,
     val favourite: Boolean
 )

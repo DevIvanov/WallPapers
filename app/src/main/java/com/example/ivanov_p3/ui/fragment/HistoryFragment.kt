@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -21,10 +22,12 @@ import dagger.hilt.android.AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history),
     HistoryAdapter.OnItemClickListener,
     HistoryAdapter.OnItemLongClickListener,
-    HistoryAdapter.OnFavouriteClickListener {
+    HistoryAdapter.OnFavouriteClickListener,
+    MyDialogFragment.OnClickListenerDialog
+{
 
     private lateinit var binding: FragmentHistoryBinding
-    private val mHistoryViewModel: HistoryViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var adapter: HistoryAdapter
 
     override fun onCreateView(
@@ -50,23 +53,22 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),
     }
 
     private fun readDataFromDatabase() {
-        mHistoryViewModel.readAllData.observe(viewLifecycleOwner, Observer { history ->
+        historyViewModel.readAllData.observe(viewLifecycleOwner, Observer { history ->
             adapter.setData(history)
         })
         binding.recyclerView.scheduleLayoutAnimation()
     }
 
     override fun onItemClick(item: History) {
-        val currentQuery = item.name.toString()
+        val currentQuery = item.name
         val action = HistoryFragmentDirections.actionHistoryFragmentToSearchFragment()
         action.currentQuery = currentQuery
         findNavController().navigate(action)
     }
 
     override fun onItemLongClick(item: History) {
-        val dialogItems = arrayOf(resources.getString(R.string.delete_one),
-            resources.getString(R.string.delete_all))
-        val myDialogFragment = MyDialogFragment(dialogItems, mHistoryViewModel, item)
+        historyViewModel.setItem(item)
+        val myDialogFragment = MyDialogFragment(this)
         myDialogFragment.show(childFragmentManager, "myDialog")
     }
 
@@ -79,6 +81,29 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),
             item.date,
             favourite
         )
-        mHistoryViewModel.updateData(newItem)
+        historyViewModel.updateData(newItem)
+    }
+
+    override fun onDialogClick(index: Int) {
+        val itemsToSelect = arrayOf(resources.getString(R.string.delete_one),
+            resources.getString(R.string.delete_all))
+        val item = historyViewModel.item.value
+
+        if (index == 0) {
+            if (item != null)
+            historyViewModel.deleteData(item)
+            Toast.makeText(
+                activity,
+                itemsToSelect[index],
+                Toast.LENGTH_SHORT
+            ).show()
+        }else {
+            historyViewModel.deleteAllData()
+            Toast.makeText(
+                activity,
+                itemsToSelect[index],
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

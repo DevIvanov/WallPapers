@@ -96,6 +96,7 @@ abstract class BaseFragment (@LayoutRes layoutId: Int) : Fragment(layoutId) {
         return url
     }
 
+    @SuppressLint("SetWorldReadable")
     fun shareImage(imageBitmap: Bitmap) {
         try {
             val file = File(requireActivity().externalCacheDir,"image.png")

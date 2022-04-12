@@ -2,8 +2,11 @@ package com.example.ivanov_p3.ui.fragment
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
+import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -59,8 +62,6 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
         val window = requireActivity().window
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_FULLSCREEN)
-//        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                or SYSTEM_UI_FLAG_FULLSCREEN)
 
         onClick()
         return binding.root
@@ -69,7 +70,6 @@ class FullScreenFragment : BaseFragment(R.layout.fragment_full_screen) {
     private fun onClick() {
         binding.fabFullScreen.setOnClickListener {
             requireActivity().onBackPressed()
-//            navigate(FullScreenFragmentDirections.actionFullScreenFragmentToDetailsFragment(args.currentImage))
         }
     }
 
